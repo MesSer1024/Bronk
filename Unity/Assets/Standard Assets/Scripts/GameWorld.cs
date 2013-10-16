@@ -15,7 +15,7 @@ public class GameWorld : MonoBehaviour {
     private const int VISIBLE_Y = 4;
     private const int VISIBLE_Z = 20;
 
-    public enum BlockType : sbyte {
+    public enum BlockType {
         None,
         Unknown,
         Dirt,
@@ -26,6 +26,9 @@ public class GameWorld : MonoBehaviour {
 	{
 		_cubes = new List<GameObject>();
         _data = new List<BlockType>(SIZE_X * SIZE_Y * SIZE_Z);
+        
+        //reset randomizer with a seed (to make sure that no other values are taken prior to this)
+        Random.seed = "I am LEEEET! (1337)".GetHashCode();
 
 		for (int x=0; x < SIZE_X; ++x) {
 			for (int y=0; y < SIZE_Y; ++y) {
