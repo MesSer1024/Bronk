@@ -66,7 +66,6 @@ public class SelectionBox : MonoBehaviour {
 						);
 					if (selection.Contains (screenCoordinates)) {
 						cube.GetComponent<CubeLogic> ().setSelected (true);
-						cube.GetComponent<MeshRenderer> ().material.color = new Color (1, 1, 1);
 					}
 				}
 			} else {
