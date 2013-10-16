@@ -1,0 +1,52 @@
+-----------
+Background:
+-----------
+
+CubePrefab:
+	GameObject with some stuff on it
+	Has code file linked to it (CubeLogic) with a function I want to call:
+		public void setSelected(bool selected) {
+			//do magic
+		}
+	
+
+GameWorld (has code file attached to it)
+	Start()
+		_cubes = new List<GameObject>();
+		//3x nested for-loops x,y,z
+		_cubes.Add(Instantiate (cubePrefab, new Vector3 (x, y, z), Quaternion.identity) as GameObject);
+		
+	List<GameObject> getCubes()
+		return _cubes;
+
+Camera	(has code file attached to it 'SelectionBox')
+	Update()
+		if(criteria && _selection)
+			//find all the cubes under selection box and 1) Modify their color, 2) call function found in CubePrefab
+			var cubes = world.getCubes ();
+			foreach (var cube in cubes) {
+				var screenCoordinates = Camera.main.WorldToScreenPoint (cube.transform.position);				
+				if (_selection.Contains (screenCordinates)) {
+					cube.transform.material.color = new Color (1, 1, 1);
+					cube.code.setEnabled(true);
+				}
+			}
+
+-----------
+Question:
+-----------
+1) Inside Camera/SelectionBox I want to access the color-property of the cube - How do I do that?
+2) @ Same place I want to access code on the cube, and call the function setEnabled() - How do I do that?
+
+
+-----------
+Solution:
+-----------
+var cubes = world.getCubes ();
+foreach (var cube in world.getCubes()) {
+	var screenCoordinates = Camera.main.WorldToScreenPoint (cube.transform.position);				
+	if (_selection.Contains (screenCoordinates)) {
+		cube.GetComponent<CubeLogic> ().setSelected (true);
+		cube.GetComponent<MeshRenderer> ().material.color = new Color (1, 1, 1);
+	}
+}

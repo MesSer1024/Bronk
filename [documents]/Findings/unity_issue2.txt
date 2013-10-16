@@ -1,0 +1,26 @@
+Philip Ruuska Boquist: vi använder VS ja
+Philip Ruuska Boquist: går att ställa in i options
+Philip Ruuska Boquist: Edit-Preferences-External Tools
+MesSer: aha, får googla lite mer på det då, går det enkelt att göra så spelet startar via unity sen osv?
+MesSer: när man kompilerar i VS
+MesSer: osv
+Philip Ruuska Boquist: nä, man måste kompilera om det i Unity sen
+MesSer: okaj
+Philip Ruuska Boquist: så det är lite drygt
+Philip Ruuska Boquist: blir mycket fram och tillbaka
+MesSer: så ni använder bara VS för kod-skrivning och editering?
+Philip Ruuska Boquist: men det är väl så det är antar jag :)
+Philip Ruuska Boquist: japp
+MesSer: ingen kompilering alls?
+Philip Ruuska Boquist: är mycket bättre än MonoDevelop tycker jag
+Philip Ruuska Boquist: jo, man kan ju se kompileringsfel och sånt
+Philip Ruuska Boquist: men den måste ändå kompilera det till Mono sen
+MesSer: får hooka in någon UnityEngine.dll sen osv
+Philip Ruuska Boquist: inuti Unity
+MesSer: japp, förstår
+Philip Ruuska Boquist: [19:03:21] Philip Ruuska Boquist: Edit-Preferences-External Tools 
+ 
+<<< 
+MesSer: men bättre än MonoDevelop som verkar äta upp lite random-tecken då och då
+Philip Ruuska Boquist: om du ställer in det på VS där
+Philip Ruuska Boquist: så kan du dubbelklicka på en scriptfil så öppnar den ett projekt automatiskt!
