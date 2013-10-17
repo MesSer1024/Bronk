@@ -4,7 +4,7 @@ using Bronk;
 
 public class SelectionBox : MonoBehaviour {
 	public int MinSelection = 25;
-	public GameWorld world;
+    public WorldGameObject world;
 	
 	private Vector3 orgPos;
 	private Vector3 currPos;
@@ -56,7 +56,7 @@ public class SelectionBox : MonoBehaviour {
 			if (selectionOverTreshold ()) {
 				//multiple cubes selected (using selection box)
 				var cubes = world.getCubes ();
-				foreach (var cube in cubes) {
+				foreach (var cube in cubes) {                    
 					var screenCoordinates = Camera.main.WorldToScreenPoint (cube.transform.position);	
 					var selection = new Rect (
 						Mathf.Min (orgPos.x, currPos.x) 

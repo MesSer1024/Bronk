@@ -1,10 +1,10 @@
-using UnityEngine;
 using System.Collections.Generic;
-using System;
 
 namespace Bronk
 {
 public static class MessageManager {
+    public const string GameMessage = "game";
+
 	private static List<IMessageListener> _listeners = new List<IMessageListener>();
 	private static Queue<IMessage> _queue = new Queue<IMessage>();
 	
@@ -45,7 +45,7 @@ public static class MessageManager {
 	public static void ExecuteMessage (IMessage msg)
 	{
 		if (isExecuting) {
-			ErrorHandler.Error ("LOGIC_ERROR: Cannot execute a message while another message is being Executed");
+			Logger.Error ("LOGIC_ERROR: Cannot execute a message while another message is being Executed");
 		}
 		
 		isExecuting = true;

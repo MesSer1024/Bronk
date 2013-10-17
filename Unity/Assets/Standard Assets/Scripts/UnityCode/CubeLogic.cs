@@ -1,10 +1,13 @@
 using UnityEngine;
 using System.Collections;
+using Bronk;
 
 public class CubeLogic : MonoBehaviour {
 	public bool selected = false;
 	private Color originalColor;
-    private GameWorld.BlockType _data;
+    private CubeData _data;
+    public int Index { get; set; }
+
 	
 	// Use this for initialization
 	void Start () {
@@ -15,10 +18,10 @@ public class CubeLogic : MonoBehaviour {
 	void Update ()
 	{
         gameObject.renderer.enabled = true;
-        if (selected && _data != GameWorld.BlockType.None) {
+        if (selected && _data.Type != GameWorld.BlockType.None) {
             gameObject.renderer.material.color = Color.green;
         } else {
-            switch (_data) {
+            switch (_data.Type) {
                 case GameWorld.BlockType.None:
                     gameObject.renderer.enabled = false;
                     break;
@@ -38,14 +41,12 @@ public class CubeLogic : MonoBehaviour {
 	public void setSelected(bool flag) {
 		selected = flag;
 	}
-	
-	void OnMouseOver ()
-	{
-		//if (Input.GetMouseButton (0))			
-		//	selected = !selected;
-	}
 
-    public void setData(GameWorld.BlockType block) {
-        _data = block;
+    void OnMouseDown() {
+        MessageManager.ExecuteMessage(new CubeClickedMessage("cube", this));
+    }
+
+    internal void setData(CubeData data) {
+        _data = data;
     }
 }

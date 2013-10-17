@@ -1,10 +1,8 @@
 using UnityEngine;
-using System.Collections;
-using System;
 
 namespace Bronk
 {
-public static class ErrorHandler {
+public static class Logger {
 	
 	public static void Info (string s)
 	{
