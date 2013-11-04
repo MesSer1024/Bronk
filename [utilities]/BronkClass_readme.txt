@@ -1,5 +1,5 @@
 Intention:
-	Template for easily creating classes inside Visual Studio
+	Template for easily creating classes inside Visual Studio with correct namespace and whatnot
 	Place in following place: C:\Users\<your users name>\Documents\Visual Studio 2010\Templates\ItemTemplates
 
 
