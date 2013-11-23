@@ -12,6 +12,6 @@ public class StartupLogic : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+        Game.update(Time.deltaTime);
 	}
 }

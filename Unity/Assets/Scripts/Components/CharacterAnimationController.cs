@@ -1,13 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
-
-public enum AnimationEnum
-{
-	Laugh,
-	Enraged,
-	Death,
-}
+using Bronk;
 
 [RequireComponent(typeof(Animator))]
 public class CharacterAnimationController : MonoBehaviour 
@@ -29,38 +23,39 @@ public class CharacterAnimationController : MonoBehaviour
 		if (Velocity != Vector3.zero)
 			_Transform.rotation = Quaternion.LookRotation(Velocity.normalized);
 
-		//_Animator.humanScale
-
-		//Vector3 scale = Vector3.one * (1f / _Animator.humanScale);
-		//_Transform.localScale = scale;
-
-		// Animations are timed for scale = 1. 
-		// If we divide the speed by the scale we'll play run animations slower/faster if they are bigger/smaller.
+		// Animations are timed for scale = 1. // If we divide the speed by the scale we'll play run animations slower/faster if they are bigger/smaller.
 		float sizeScaleFactor = _Transform.localScale.x * _Animator.humanScale;
 		float velocityMagnitude = Velocity.magnitude / sizeScaleFactor;
 		_Animator.SetFloat("Speed", velocityMagnitude);
 	}
 
-	public void PlayAnimation(AnimationEnum animation)
+	public void PlayAnimation(AnimationEnum animationEnum)
 	{
-
-
-		_Animator.Play(Animator.StringToHash(GetStateName(animation)));
+		_Animator.Play(Animations.GetAnimationHash(animationEnum));
 		//Debug.Log("Play animation: " + animation.ToString() + "  " + Time.time);
 	}
 
-	public static string GetStateName(AnimationEnum animationEnum)
-	{
-		switch (animationEnum)
-		{
-			case AnimationEnum.Death:
-				return "Animations.Death";
-			case AnimationEnum.Enraged:
-				return "Animations.Enraged";
-			case AnimationEnum.Laugh:
-				return "Animations.Laugh";
-			default:
-				return string.Empty;
-		}
-	}
+    internal void updateState(Bronk.Ant ant)
+    {
+        var timelines = ant.getActiveTimelines();
+
+        foreach (var item in timelines)
+        {
+            if (item is WalkTimeline)
+            {
+                var walktimeline = item as WalkTimeline;
+                Velocity = transform.position - walktimeline.getPosition(Time.time);
+                transform.position = walktimeline.getPosition(Time.time);
+            }
+            else if (item is MiningTimeline)
+            {
+                var miningtimeline = item as MiningTimeline;
+                PlayAnimation(AnimationEnum.Laugh);
+            }
+            else
+            {
+                PlayAnimation(AnimationEnum.Death);
+            }
+        }
+    }
 }

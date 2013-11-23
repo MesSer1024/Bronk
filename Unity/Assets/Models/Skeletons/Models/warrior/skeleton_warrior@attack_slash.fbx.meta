@@ -105,7 +105,7 @@ ModelImporter:
     3300002: sword
     4300000: shield
     4300002: sword
-    7400000: attack_slash
+    7400000: AttackSlash
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -123,7 +123,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: attack_slash
+      name: AttackSlash
       takeName: warrior_attack2
       firstFrame: 0
       lastFrame: 30
@@ -139,7 +139,7 @@ ModelImporter:
       loopBlendPositionXZ: 1
       keepOriginalOrientation: 1
       keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
+      keepOriginalPositionXZ: 1
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
