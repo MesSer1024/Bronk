@@ -29,7 +29,15 @@ public class CharacterAnimationController : MonoBehaviour
 		if (Velocity != Vector3.zero)
 			_Transform.rotation = Quaternion.LookRotation(Velocity.normalized);
 
-		float velocityMagnitude = Velocity.magnitude;
+		//_Animator.humanScale
+
+		//Vector3 scale = Vector3.one * (1f / _Animator.humanScale);
+		//_Transform.localScale = scale;
+
+		// Animations are timed for scale = 1. 
+		// If we divide the speed by the scale we'll play run animations slower/faster if they are bigger/smaller.
+		float sizeScaleFactor = _Transform.localScale.x * _Animator.humanScale;
+		float velocityMagnitude = Velocity.magnitude / sizeScaleFactor;
 		_Animator.SetFloat("Speed", velocityMagnitude);
 	}
 
@@ -38,7 +46,7 @@ public class CharacterAnimationController : MonoBehaviour
 
 
 		_Animator.Play(Animator.StringToHash(GetStateName(animation)));
-		Debug.Log("Play animation: " + animation.ToString() + "  " + Time.time);
+		//Debug.Log("Play animation: " + animation.ToString() + "  " + Time.time);
 	}
 
 	public static string GetStateName(AnimationEnum animationEnum)
