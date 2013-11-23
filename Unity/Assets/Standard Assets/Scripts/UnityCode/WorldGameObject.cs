@@ -13,7 +13,7 @@ public class WorldGameObject : MonoBehaviour {
 	void Start ()
 	{
 		_cubes = new List<GameObject>();
-
+		CubeLogic.InitializeMaterials (cubePrefab.renderer.sharedMaterial);
         //draw a 20x4x20 grid of items
         for (var i = 0; i < System.Math.Min(Game.World.Cubes.Count, VISIBLE_X*VISIBLE_Z); ++i) {
             //#TODO: fix some kind of way of getting the real data depending on camera position and what not...
