@@ -29,6 +29,11 @@ public class Hud : MonoBehaviour, IMessageListener
 
 			//mark all items in this range...
 			cube.setSelected (!cube.selected);
+		} else if (message is CubeSemiSelectedMessage) {
+
+			var msg = message as CubeSemiSelectedMessage;
+			CubeLogic cube = msg.getCube ();
+			cube.setSemiSelected (msg.getSemiSelected());
 		}
 	}
 }

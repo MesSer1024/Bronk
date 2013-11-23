@@ -9,7 +9,9 @@ public class CubeLogic : MonoBehaviour
 	private static Material _StoneMaterial;
 	private static Material _DefaultMaterial;
 	private static Material _SelectedMaterial;
+	private static Material _SemiSelectedMaterial;
 	public bool selected = false;
+	private bool _semiSelected = false;
 	private Color originalColor;
 	private CubeData _data;
 
@@ -27,6 +29,8 @@ public class CubeLogic : MonoBehaviour
 			_StoneMaterial.color = new Color (0.827f, 0.827f, 0.827f);
 			_SelectedMaterial = new Material (defaultMaterial);
 			_SelectedMaterial.color = Color.green;
+			_SemiSelectedMaterial = new Material (defaultMaterial);
+			_SemiSelectedMaterial.color = Color.yellow;
 		}
 	}
 
@@ -46,6 +50,8 @@ public class CubeLogic : MonoBehaviour
 		gameObject.renderer.enabled = true;
 		if (selected && _data.Type != GameWorld.BlockType.None) {
 			gameObject.renderer.sharedMaterial = _SelectedMaterial;
+		} else if (_semiSelected && _data.Type != GameWorld.BlockType.None) {
+			gameObject.renderer.sharedMaterial = _SemiSelectedMaterial;
 		} else {
 			switch (_data.Type) {
 			case GameWorld.BlockType.None:
@@ -66,7 +72,14 @@ public class CubeLogic : MonoBehaviour
 
 	public void setSelected (bool flag)
 	{
+		_semiSelected = false;
 		selected = flag;
+		UpdateMaterial ();
+	}
+
+	public void setSemiSelected (bool semiSelected)
+	{
+		_semiSelected = semiSelected;
 		UpdateMaterial ();
 	}
 
