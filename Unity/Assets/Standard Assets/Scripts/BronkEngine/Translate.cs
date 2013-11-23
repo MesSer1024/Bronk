@@ -23,5 +23,6 @@ public static class Translate {
 		}
 		return _texts[id];
 	}
+	
 }
 }
