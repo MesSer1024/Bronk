@@ -1,7 +1,8 @@
 ﻿using System;
 
 namespace Bronk {
-    class CubeData {
+    public class CubeData
+    {
         internal GameWorld.BlockType Type { get { return _type; } }
         internal int Index { get { return _index; } }
 

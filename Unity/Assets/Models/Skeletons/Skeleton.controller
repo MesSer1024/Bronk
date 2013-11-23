@@ -54,10 +54,17 @@ BlendTree:
     m_CycleOffset: 0
     m_IsAnim: 1
     m_Mirror: 0
+  - m_Motion: {fileID: 7400000, guid: d65de069c34009b4f95aa33bbf160f2b, type: 3}
+    m_Threshold: 20
+    m_Position: {x: 0, y: 0}
+    m_TimeScale: 4
+    m_CycleOffset: 0
+    m_IsAnim: 1
+    m_Mirror: 0
   m_BlendParameter: Speed
   m_BlendParameterY: Speed
   m_MinThreshold: 1
-  m_MaxThreshold: 10
+  m_MaxThreshold: 20
   m_UseAutomaticThresholds: 0
   m_BlendType: 0
 --- !u!1101 &110100000
@@ -299,6 +306,14 @@ StateMachine:
   - {x: 384, y: 108, z: 0}
   m_OrderedTransitions:
     data:
+      first: {fileID: 110281374}
+      second:
+      - {fileID: 110100000}
+    data:
+      first: {fileID: 110200000}
+      second:
+      - {fileID: 110183656}
+    data:
       first: {fileID: 110200627}
       second:
       - {fileID: 110143943}
@@ -313,14 +328,6 @@ StateMachine:
       second:
       - {fileID: 110171119}
       - {fileID: 110120312}
-    data:
-      first: {fileID: 110281374}
-      second:
-      - {fileID: 110100000}
-    data:
-      first: {fileID: 110200000}
-      second:
-      - {fileID: 110183656}
   m_MotionSetCount: 1
   m_AnyStatePosition: {x: 50, y: 20, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
