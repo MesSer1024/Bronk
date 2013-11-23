@@ -36,6 +36,7 @@ public class GameCamera : MonoBehaviour
 	void Awake ()
 	{
 		Application.targetFrameRate = 60;
+		UpdatePosition ();
 	}
 
 	void LateUpdate ()
@@ -139,13 +140,34 @@ public class GameCamera : MonoBehaviour
 			}
 			data.TapTargets = null;
 		}
+		if (Input.GetKey (KeyCode.LeftArrow)) {
+			data.LastPanTime = Time.time;
+			data.Velocity.x = -Screen.width / Sensitivity / 30;
+		}
+		if (Input.GetKey (KeyCode.RightArrow)) {
+			data.LastPanTime = Time.time;
+			data.Velocity.x = Screen.width / Sensitivity / 30;
+		}
+		if (Input.GetKey (KeyCode.UpArrow)) {
+			data.LastPanTime = Time.time;
+			data.Velocity.y = Screen.height / Sensitivity / 30;
+		}
+		if (Input.GetKey (KeyCode.DownArrow)) {
+			data.LastPanTime = Time.time;
+			data.Velocity.y = -Screen.height / Sensitivity / 30;
+		}
 		if (data.Velocity != Vector2.zero) {
 			Position2D += data.Velocity * Sensitivity * Time.deltaTime;
-			Vector3 lookatPos;
-			Vector3 cameraPos = GetCameraPos (Position2D, out lookatPos);
-			transform.position = cameraPos;
-			transform.LookAt (lookatPos);
+			UpdatePosition ();		
 		}
+	}
+
+	void UpdatePosition ()
+	{
+		Vector3 lookatPos;
+		Vector3 cameraPos = GetCameraPos (Position2D, out lookatPos);
+		transform.position = cameraPos;
+		transform.LookAt (lookatPos);
 	}
 
 	static public float GetDistPointToLine (Vector3 origin, Vector3 direction, Vector3 point)
