@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Bronk
 {
     public class Ant : GameEntity
-	{
+	{   
         private List<ITimeline> _timelines;
         private List<ITimeline> _activeTimelines;
 

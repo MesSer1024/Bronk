@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using Bronk;
 
 [RequireComponent(typeof(Animator))]
 public class CharacterAnimationController : MonoBehaviour 
@@ -60,6 +61,30 @@ public class CharacterAnimationController : MonoBehaviour
 		_Animator.Play(Animations.GetAnimationHash(animationEnum));
 		//Debug.Log("Play animation: " + animation.ToString() + "  " + Time.time);
 	}
+
+    internal void updateState(Bronk.Ant ant)
+    {
+        var timelines = ant.getActiveTimelines();
+
+        foreach (var item in timelines)
+        {
+            if (item is WalkTimeline)
+            {
+                var walktimeline = item as WalkTimeline;
+                Velocity = transform.position - walktimeline.getPosition(Time.time);
+                transform.position = walktimeline.getPosition(Time.time);
+            }
+            else if (item is MiningTimeline)
+            {
+                var miningtimeline = item as MiningTimeline;
+                PlayAnimation(AnimationEnum.Laugh);
+            }
+            else
+            {
+                PlayAnimation(AnimationEnum.Death);
+            }
+        }
+    }
 
 	void DoIdle()
 	{

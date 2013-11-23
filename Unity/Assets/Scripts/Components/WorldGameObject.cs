@@ -1,18 +1,21 @@
 using UnityEngine;
 using System.Collections.Generic;
 using Bronk;
+using System;
 
 public class WorldGameObject : MonoBehaviour {
 	public GameObject cubePrefab;
 	
 	private List<GameObject> _cubes;
+    private List<CharacterAnimationController> _ants;
 
     private const int VISIBLE_X = 100;
     private const int VISIBLE_Z = 100;
 
 	void Start ()
 	{
-		_cubes = new List<GameObject>();
+        _cubes = new List<GameObject>();
+        _ants = new List<CharacterAnimationController>();
 		CubeLogic.InitializeMaterials (cubePrefab.renderer.sharedMaterial);
         //draw a 20x4x20 grid of items
         for (var i = 0; i < System.Math.Min(Game.World.Cubes.Count, VISIBLE_X*VISIBLE_Z); ++i) {
@@ -24,6 +27,13 @@ public class WorldGameObject : MonoBehaviour {
             view.setData(block);
             view.Index = i;
         }
+
+        var go = Instantiate(Resources.Load<GameObject>("CharacterPrefabs/AntWorker")) as GameObject;
+        var c = go.GetComponent<CharacterAnimationController>();
+        if (c == null)
+            throw new Exception("Unable to create object from gameobject.getcomponent");
+
+        Game.AI.addAntView(c);
 	}
 	
 	// Update is called once per frame
