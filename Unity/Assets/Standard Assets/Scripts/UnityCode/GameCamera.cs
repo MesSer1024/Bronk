@@ -1,37 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Bronk;
 
 public class GameCamera : MonoBehaviour
 {
-	enum CameraState
-	{
-		Neutral,
-		Select,
-	}
-
-	struct SelectStateData
-	{
-		public int StartXIndex;
-		public int StartYIndex;
-		public int EndXIndex;
-		public int EndYIndex;
-	}
-
-	struct NeutralStateData
-	{
-		public Vector2 Velocity;
-		public float LastPanTime;
-		public RaycastHit[] TapTargets;
-	}
-
 	public Vector3 Offset = new Vector3 (0, 15, -5);
 	public Vector2 Position2D;
 	public float StopTimer = 0.5f;
 	public float Sensitivity = 0.01f;
 	public float FingerDeltaThreshold = 600;
-	private CameraState _State;
-	private NeutralStateData _NeutralData;
-	private SelectStateData _SelectData;
+	private Vector2 Velocity;
+	private float LastPanTime;
+	private RaycastHit[] TapTargets;
 
 	void Awake ()
 	{
@@ -41,124 +21,130 @@ public class GameCamera : MonoBehaviour
 
 	void LateUpdate ()
 	{
-		switch (_State) {
-		case CameraState.Neutral:
-			UpdateNeutralState (ref _NeutralData);
-			break;
-		case CameraState.Select:
-			UpdateSelectState (ref _SelectData);
-			break;
+		#if UNITY_IPHONE && !UNITY_EDITOR
+		UpdatePadInput ();
+		#else
+		UpdatePCInput ();
+		#endif
+		if (Velocity != Vector2.zero) {
+			Position2D += Velocity * Sensitivity * Time.deltaTime;
+			UpdatePosition ();		
 		}
 	}
 
-	void UpdateSelectState (ref SelectStateData data)
+	void UpdatePCInput ()
 	{
-		if (Input.touchCount == 1) {
-			Touch finger = Input.touches [0];
+		if (Input.GetKey (KeyCode.LeftArrow) || Input.GetKey (KeyCode.A)) {
+			LastPanTime = Time.time;
+			Velocity.x = -Screen.width / Sensitivity / 30;
+		}
+		if (Input.GetKey (KeyCode.RightArrow) || Input.GetKey (KeyCode.D)) {
+			LastPanTime = Time.time;
+			Velocity.x = Screen.width / Sensitivity / 30;
+		}
+		if (Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W)) {
+			LastPanTime = Time.time;
+			Velocity.y = Screen.height / Sensitivity / 30;
+		}
+		if (Input.GetKey (KeyCode.DownArrow) || Input.GetKey (KeyCode.S)) {
+			LastPanTime = Time.time;
+			Velocity.y = -Screen.height / Sensitivity / 30;
+		}
 
-			Ray ray = camera.ScreenPointToRay (finger.position);
+		if (Velocity != Vector2.zero) {
+			Velocity = Vector2.Lerp (Velocity, Vector2.zero, Mathf.Clamp01 ((Time.time - LastPanTime) / StopTimer));
+		}
 
-			GetTileIndices (ray, out data.EndXIndex, out data.EndYIndex);
+		if (Input.GetMouseButtonDown (0)) {
+			Ray ray = camera.ScreenPointToRay (Input.mousePosition);
+
+			RaycastHit[] newHits = Physics.SphereCastAll (ray, 0.5f);
+			float closestDistance = float.MaxValue;
+			int closestTarget = -1;
+			for (int i = 0; i < newHits.Length; i++) {
+				float distance = GetDistPointToLine (ray.origin, ray.direction, newHits [i].transform.position); 
+				if (newHits [i].collider.gameObject.GetComponent<CubeLogic> () != null) {
+					if (distance < closestDistance) {
+						closestTarget = i;
+						closestDistance = distance;
+					}
+				}
+			}
+
+			if (closestTarget != -1) {
+
+				CubeLogic cube = newHits [closestTarget].collider.gameObject.GetComponent<CubeLogic> ();
+				MessageManager.ExecuteMessage (new CubeClickedMessage ("cube", cube));
+			}
 		}
 	}
 
-	void EnterSelectState (int xIndexStart, int yIndexStart)
-	{
-		_SelectData = default(SelectStateData);
-		_SelectData.StartXIndex = xIndexStart;
-		_SelectData.StartYIndex = yIndexStart;
-		_SelectData.EndXIndex = xIndexStart;
-		_SelectData.EndYIndex = yIndexStart;
-		_State = CameraState.Select;
-	}
-
-	void EnterNeutralState ()
-	{
-		_NeutralData = default(NeutralStateData);
-		_State = CameraState.Neutral;
-	}
-
-	void UpdateNeutralState (ref NeutralStateData data)
+	void UpdatePadInput ()
 	{
 		if (Input.touchCount == 2) {
+			TapTargets = null;
 			Touch finger1 = Input.touches [0];
 			Touch finger2 = Input.touches [1];
 			float distance = Vector2.Distance (finger1.position, finger2.position);
 			if (distance < FingerDeltaThreshold) {
-				data.LastPanTime = Time.time;
+				LastPanTime = Time.time;
 				if (finger1.phase == TouchPhase.Moved || finger2.phase == TouchPhase.Moved || finger1.phase == TouchPhase.Began || finger2.phase == TouchPhase.Began) {
 					Vector2 deltaPos = (finger1.deltaPosition + finger2.deltaPosition) / 2;
 					if (deltaPos.magnitude > 10)
-						data.Velocity = -deltaPos / ((finger1.deltaTime + finger2.deltaTime) / 2);
+						Velocity = -deltaPos / ((finger1.deltaTime + finger2.deltaTime) / 2);
 					else
-						data.Velocity = Vector2.zero;
+						Velocity = Vector2.zero;
 				} else if (finger1.phase == TouchPhase.Stationary && finger2.phase == TouchPhase.Stationary) {
-					data.Velocity = Vector2.zero;
+					Velocity = Vector2.zero;
 				}
 			}
 		} else if (Input.touchCount == 1) {
 			Touch finger = Input.touches [0];
 			if (finger.phase == TouchPhase.Began) {
-				data.Velocity = Vector2.zero;
+				Velocity = Vector2.zero;
 				Ray ray = camera.ScreenPointToRay (finger.position);
 
-				data.TapTargets = Physics.SphereCastAll (ray, 0.5f);
+				TapTargets = Physics.SphereCastAll (ray, 0.5f);
 
 			} else if (finger.phase == TouchPhase.Ended) {
 				Ray ray = camera.ScreenPointToRay (finger.position);
 
-				if (data.TapTargets != null && data.TapTargets.Length > 0) {
+				if (TapTargets != null && TapTargets.Length > 0) {
 					RaycastHit[] newHits = Physics.SphereCastAll (ray, 0.5f);
 					float closestDistance = float.MaxValue;
 					int closestTarget = -1;
 					for (int i = 0; i < newHits.Length; i++) {
-						bool hitFirst = false;
-						for (int j = 0; j < data.TapTargets.Length; j++) {
-							if (data.TapTargets [j].collider == newHits [j].collider) {
-								hitFirst = true;
-								break;
+
+						if (newHits [i].collider.gameObject.GetComponent<CubeLogic> () != null) {
+							bool hitFirst = false;
+							for (int j = 0; j < TapTargets.Length; j++) {
+								if (TapTargets [j].collider == newHits [i].collider) {
+									hitFirst = true;
+									break;
+								}
 							}
-						}
-						if (hitFirst) {
-							float distance = GetDistPointToLine (ray.origin, ray.direction, newHits [i].point);
-							if (distance < closestDistance) {
-								closestTarget = i;
-								closestDistance = distance;
+							if (hitFirst) {
+								float distance = GetDistPointToLine (ray.origin, ray.direction, newHits [i].point);
+								if (distance < closestDistance) {
+									closestTarget = i;
+									closestDistance = distance;
+								}
 							}
 						}
 					}
 
 					if (closestTarget != -1) {
-						Debug.Log ("hit " + newHits [closestTarget].collider.gameObject, newHits [closestTarget].collider.gameObject);
+						CubeLogic cube = newHits [closestTarget].collider.gameObject.GetComponent<CubeLogic> ();
+						MessageManager.ExecuteMessage (new CubeClickedMessage ("cube", cube));
 					}
 				}
-				data.TapTargets = null;
+				TapTargets = null;
 			}
 		} else if (Input.touchCount == 0) {
-			if (data.Velocity != Vector2.zero) {
-				data.Velocity = Vector2.Lerp (data.Velocity, Vector2.zero, Mathf.Clamp01 ((Time.time - data.LastPanTime) / StopTimer));
+			if (Velocity != Vector2.zero) {
+				Velocity = Vector2.Lerp (Velocity, Vector2.zero, Mathf.Clamp01 ((Time.time - LastPanTime) / StopTimer));
 			}
-			data.TapTargets = null;
-		}
-		if (Input.GetKey (KeyCode.LeftArrow)) {
-			data.LastPanTime = Time.time;
-			data.Velocity.x = -Screen.width / Sensitivity / 30;
-		}
-		if (Input.GetKey (KeyCode.RightArrow)) {
-			data.LastPanTime = Time.time;
-			data.Velocity.x = Screen.width / Sensitivity / 30;
-		}
-		if (Input.GetKey (KeyCode.UpArrow)) {
-			data.LastPanTime = Time.time;
-			data.Velocity.y = Screen.height / Sensitivity / 30;
-		}
-		if (Input.GetKey (KeyCode.DownArrow)) {
-			data.LastPanTime = Time.time;
-			data.Velocity.y = -Screen.height / Sensitivity / 30;
-		}
-		if (data.Velocity != Vector2.zero) {
-			Position2D += data.Velocity * Sensitivity * Time.deltaTime;
-			UpdatePosition ();		
+			TapTargets = null;
 		}
 	}
 
