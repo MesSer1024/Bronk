@@ -319,7 +319,8 @@ MonoBehaviour:
   MoveSpeed: 5
   CircleSpeed: 1
   CircleSize: 5
-  RandomActions: 1
+  UseTimeline: 1
+  DummyState: 0
 --- !u!114 &455923543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -332,6 +333,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f28bdb49bdd0b474ba309963b4b4d622, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LogicCharacter: {fileID: 0}
 --- !u!1 &479770756
 GameObject:
   m_ObjectHideFlags: 0
@@ -889,6 +891,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f28bdb49bdd0b474ba309963b4b4d622, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LogicCharacter: {fileID: 0}
 --- !u!95 &1075262133
 Animator:
   serializedVersion: 2
@@ -932,7 +935,8 @@ MonoBehaviour:
   MoveSpeed: 10
   CircleSpeed: 1.5
   CircleSize: 9
-  RandomActions: 0
+  UseTimeline: 1
+  DummyState: 0
 --- !u!1 &1121047922
 GameObject:
   m_ObjectHideFlags: 0
@@ -1216,6 +1220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f28bdb49bdd0b474ba309963b4b4d622, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LogicCharacter: {fileID: 0}
 --- !u!95 &1226041918
 Animator:
   serializedVersion: 2
@@ -1245,7 +1250,8 @@ MonoBehaviour:
   MoveSpeed: 10
   CircleSpeed: 2
   CircleSize: 7
-  RandomActions: 0
+  UseTimeline: 1
+  DummyState: 0
 --- !u!1 &1289897751
 GameObject:
   m_ObjectHideFlags: 0
@@ -1431,7 +1437,8 @@ MonoBehaviour:
   MoveSpeed: 10
   CircleSpeed: .200000003
   CircleSize: 5
-  RandomActions: 0
+  UseTimeline: 1
+  DummyState: 0
 --- !u!95 &1423086848
 Animator:
   serializedVersion: 2
@@ -1459,6 +1466,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f28bdb49bdd0b474ba309963b4b4d622, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LogicCharacter: {fileID: 0}
 --- !u!1 &1575814032
 GameObject:
   m_ObjectHideFlags: 0
@@ -1565,6 +1573,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f28bdb49bdd0b474ba309963b4b4d622, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LogicCharacter: {fileID: 0}
 --- !u!95 &1672984212
 Animator:
   serializedVersion: 2
@@ -1594,7 +1603,8 @@ MonoBehaviour:
   MoveSpeed: 10
   CircleSpeed: 2
   CircleSize: 7
-  RandomActions: 0
+  UseTimeline: 1
+  DummyState: 0
 --- !u!1 &1686942019
 GameObject:
   m_ObjectHideFlags: 0
