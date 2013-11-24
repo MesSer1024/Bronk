@@ -17,7 +17,8 @@ namespace Bronk
             Combat,
             Retreat, 
             Dead,
-            Move
+            Move,
+			Sleep
         }
 
         public float Health

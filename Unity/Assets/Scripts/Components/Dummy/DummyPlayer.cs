@@ -47,9 +47,11 @@ public class DummyPlayer : MonoBehaviour
 		return _PositionTimeline;
 	}
 
-	void AddKeyframe(GameEntity.States state)
+	void AddKeyframe(GameEntity.States state, float startTime = float.NegativeInfinity)
 	{
-		float startTime = Time.time + 2f;
+		if (startTime == float.NegativeInfinity)
+			startTime = Time.time + 2f;
+
 		_AntStateTimeline.AddKeyframe(startTime, state);
 		if (state == GameEntity.States.Move)
 		{
@@ -65,6 +67,19 @@ public class DummyPlayer : MonoBehaviour
 		}
 	}
 
+	float AddMoveKeyframe(float startTime, Vector3 targetPos)
+	{
+		Vector3 currentPos = _PositionTimeline.GetValue(startTime);
+		float duration = (targetPos - currentPos).magnitude / MoveSpeed;
+		float endTime = startTime + duration;
+		
+		_PositionTimeline.AddKeyframe(startTime, currentPos);		
+		_PositionTimeline.AddKeyframe(endTime, targetPos);
+		_AntStateTimeline.AddKeyframe(startTime, GameEntity.States.Move);
+
+		return endTime;
+	}
+
 	[ContextMenu("prnt")]
 	void PrintStateTimeline()
 	{
@@ -74,11 +89,13 @@ public class DummyPlayer : MonoBehaviour
 
 	GameEntity.States GetRandomState()
 	{
-		int random = Random.Range(0, 3);
+		int random = Random.Range(0, 4);
 		if (random == 0)
 			return GameEntity.States.Idle;
 		else if (random == 1)
 			return GameEntity.States.Move;
+		else if (random == 2)
+			return GameEntity.States.Sleep;
 		else 
 			return GameEntity.States.Mine;
 	}
@@ -90,7 +107,22 @@ public class DummyPlayer : MonoBehaviour
 		{
 			// New timeline
 			if (_AntStateTimeline.GetNextKeyTime(Time.time) < Time.time)
-				AddKeyframe(GetRandomState());
+			{
+				var newState = GetRandomState();
+				if (newState == GameEntity.States.Mine)
+				{
+					float endTime = AddMoveKeyframe(Time.time, DummyWorld.Instance.GetGoldPos());
+					AddKeyframe(GameEntity.States.Mine, endTime);
+				}
+				else if (newState == GameEntity.States.Sleep)
+				{
+					DummyBed dummyBed = DummyWorld.Instance.GetBed();
+					float endTime = AddMoveKeyframe(Time.time, dummyBed.transform.position);
+					AddKeyframe(GameEntity.States.Sleep, endTime);
+				}
+				else
+					AddKeyframe(newState);
+			}
 
 			CurrentState = _AntStateTimeline.GetValue(Time.time);
 		}

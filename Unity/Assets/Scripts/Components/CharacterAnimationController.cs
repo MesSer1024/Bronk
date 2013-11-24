@@ -43,6 +43,9 @@ public class CharacterAnimationController : MonoBehaviour
 			case GameEntity.States.Move:
 				DoMovement();
 				break;
+			case GameEntity.States.Sleep:
+				DoSleep();
+				break;
 			}
 
 			PositionTimeline posTimeline = LogicCharacter.GetPositionTimeline();
@@ -62,23 +65,13 @@ public class CharacterAnimationController : MonoBehaviour
 			float velocityMagnitude = Velocity.magnitude / sizeScaleFactor;
 			_Animator.SetFloat("Speed", velocityMagnitude);
 		}
-
-		/*
-		if (Velocity != Vector3.zero)
-			_Transform.rotation = Quaternion.LookRotation(Velocity.normalized);
-
-		// Animations are timed for scale = 1. // If we divide the speed by the scale we'll play run animations slower/faster if they are bigger/smaller.
-		float sizeScaleFactor = _Transform.localScale.x * _Animator.humanScale;
-		float velocityMagnitude = Velocity.magnitude / sizeScaleFactor;
-		_Animator.SetFloat("Speed", velocityMagnitude);
-		*/
 	}
 
 	public void PlayAnimation(AnimationEnum animationEnum, float stateTime, float fadeTime = 0.1f)
 	{
 		float normalizedTime = (stateTime / Animations.Get(animationEnum).Lenght) % 1f;
 		_Animator.CrossFade(Animations.Get(animationEnum).Hash, Mathf.Max(0f, fadeTime - normalizedTime), 0, normalizedTime);
-		//Debug.Log("startTime: " +stateTime + " normalized: " + normalizedTime + " fade: " + fadeTime + "  " + Time.time);
+		Debug.Log("startTime: " +stateTime + " normalized: " + normalizedTime + " fade: " + fadeTime + "  " + Time.time);
 	}
 
 	void DoIdle()
@@ -86,12 +79,23 @@ public class CharacterAnimationController : MonoBehaviour
 		
 	}
 
+	void DoSleep()
+	{
+		AnimationEnum animEnum = AnimationEnum.Death;
+		if (_CurrentStateInfo.nameHash != Animations.Get(animEnum).Hash &&
+		    _NextStateInfo.nameHash != Animations.Get(animEnum).Hash)
+		{
+			PlayAnimation(animEnum, _StateTimeline.GetCurrentKeyframeTime(Time.time));
+		}
+	}
+
 	void DoMining()
 	{
-		if (_CurrentStateInfo.nameHash != Animations.Get(AnimationEnum.Mine).Hash &&
-		    _NextStateInfo.nameHash != Animations.Get(AnimationEnum.Mine).Hash)
+		AnimationEnum animEnum = AnimationEnum.Mine;
+		if (_CurrentStateInfo.nameHash != Animations.Get(animEnum).Hash &&
+		    _NextStateInfo.nameHash != Animations.Get(animEnum).Hash)
 		{
-			PlayAnimation(AnimationEnum.Mine, _StateTimeline.GetCurrentKeyframeTime(Time.time));
+			PlayAnimation(animEnum, _StateTimeline.GetCurrentKeyframeTime(Time.time));
 		}
 	}
 

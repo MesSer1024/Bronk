@@ -5,8 +5,8 @@ namespace Bronk
 {
 	public class GameWorld
 	{
-		private const int SIZE_X = 100;
-		private const int SIZE_Z = 100;
+		public const int SIZE_X = 100;
+		public const int SIZE_Z = 100;
 
 		public enum BlockType
 		{
