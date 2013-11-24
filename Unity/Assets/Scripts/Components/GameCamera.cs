@@ -24,7 +24,7 @@ public class GameCamera : MonoBehaviour
 		public RaycastHit[] TapTargets;
 	}
 
-	public Vector3 Offset = new Vector3 (0, 15, 5);
+	public Vector3 Offset = new Vector3 (0, 15, -5);
 	public Vector2 Position2D;
 	public float StopTimer = 0.5f;
 	public float Sensitivity = 0.01f;
@@ -89,7 +89,7 @@ public class GameCamera : MonoBehaviour
 				if (finger1.phase == TouchPhase.Moved || finger2.phase == TouchPhase.Moved || finger1.phase == TouchPhase.Began || finger2.phase == TouchPhase.Began) {
 					Vector2 deltaPos = (finger1.deltaPosition + finger2.deltaPosition) / 2;
 					if (deltaPos.magnitude > 10)
-						data.Velocity = deltaPos / ((finger1.deltaTime + finger2.deltaTime) / 2);
+						data.Velocity = -deltaPos / ((finger1.deltaTime + finger2.deltaTime) / 2);
 					else
 						data.Velocity = Vector2.zero;
 				} else if (finger1.phase == TouchPhase.Stationary && finger2.phase == TouchPhase.Stationary) {

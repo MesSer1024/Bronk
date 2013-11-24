@@ -212,7 +212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74e0c82900fbf45e4abd76b4388ee21f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Offset: {x: 0, y: 15, z: 5}
+  Offset: {x: 0, y: 15, z: -5}
   Position2D: {x: 0, y: 0}
   StopTimer: .5
   Sensitivity: .00999999978
