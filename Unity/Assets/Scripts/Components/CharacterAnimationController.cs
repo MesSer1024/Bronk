@@ -8,7 +8,7 @@ public class CharacterAnimationController : MonoBehaviour
 	Animator _Animator;
 	Transform _Transform;
 
-	public DummyPlayer LogicCharacter;
+	public ITimelinedEntity LogicCharacter;
 
 	private Vector3 Velocity;
 
@@ -71,7 +71,7 @@ public class CharacterAnimationController : MonoBehaviour
 	{
 		float normalizedTime = (stateTime / Animations.Get(animationEnum).Lenght) % 1f;
 		_Animator.CrossFade(Animations.Get(animationEnum).Hash, Mathf.Max(0f, fadeTime - normalizedTime), 0, normalizedTime);
-		Debug.Log("startTime: " +stateTime + " normalized: " + normalizedTime + " fade: " + fadeTime + "  " + Time.time);
+        //Debug.Log("startTime: " +stateTime + " normalized: " + normalizedTime + " fade: " + fadeTime + "  " + Time.time);
 	}
 
 	void DoIdle()

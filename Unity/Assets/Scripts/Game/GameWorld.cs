@@ -5,6 +5,8 @@ namespace Bronk
 {
 	public class GameWorld
 	{
+        public WorldGameObject ViewComponent { get; set; }
+
 		public const int SIZE_X = 100;
 		public const int SIZE_Z = 100;
 
@@ -19,6 +21,7 @@ namespace Bronk
 		}
 
 		public List<CubeData> Cubes { get { return _data; } }
+        public Rect StartArea { get; private set; }
 
 		private List<CubeData> _data;
 
@@ -37,7 +40,13 @@ namespace Bronk
 			int startZ;
 			int endX;
 			int endZ;
+
+            
+
 			GenerateStartArea (out startX, out startZ, out endX, out endZ);
+
+            StartArea = new Rect(startX, startZ, endX - startX, endZ - startZ);
+
 			Vector2 startAreaPos = new Vector2((startX + endX) / 2, (startZ + endZ) / 2);
 			GameCamera gameCam = Camera.main.GetComponent<GameCamera> ();
 			if (gameCam != null)

@@ -19,16 +19,17 @@ namespace Bronk
         {
             public int x;
             public int y;
+            public Node parent;
             public int f_totalCost;
             public int g_costFromStart;
             public int h_heuristicToFinish;
-            public Node parent;
+            public CubeData cube;
             public bool inOpen;
             public bool finished;
+
             public bool isBlocked() {
                 return cube.Type != GameWorld.BlockType.DirtGround;
             }
-            public CubeData cube;
         }
 
         /// <summary>
@@ -53,7 +54,7 @@ namespace Bronk
                 {
                     _nodes[x, y] = new Node()
                     {
-                        cube = _cubes[i],
+                        cube = _cubes[i++],
                         x = x,
                         y = y,
                         finished = false,
@@ -125,7 +126,7 @@ namespace Bronk
                 addAdjacentNodes(ref openList, node);
             }
 
-            Console.WriteLine("Total Iterations {0}", totalIterations);
+            Logger.Log(String.Format("Total Iterations {0}", totalIterations));
             //build final path
             if (reachedEnd || endNode.parent != null)
             {

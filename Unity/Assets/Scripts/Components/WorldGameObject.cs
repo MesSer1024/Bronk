@@ -29,17 +29,23 @@ public class WorldGameObject : MonoBehaviour {
             var block = Game.World.Cubes[i];
 			var cube = Instantiate(GetTilePrefab(block.Type), new Vector3(i % VISIBLE_X, 0, i / VISIBLE_Z), Quaternion.identity) as GameObject;
             _cubes.Add(cube);
-			//var view = cube.GetComponent<CubeLogic>();
-			//view.setData(block);
-			//view.Index = i;
+            var view = cube.GetComponentInChildren<CubeLogic>();
+            view.setData(block);
+            view.Index = i;
         }
 
-        var go = Instantiate(Resources.Load<GameObject>("CharacterPrefabs/AntWorker")) as GameObject;
-        var c = go.GetComponent<CharacterAnimationController>();
-        if (c == null)
-            throw new Exception("Unable to create object from gameobject.getcomponent");
+        for (int i = 0; i < 4; i++)
+        {
+            var go = Instantiate(Resources.Load<GameObject>("CharacterPrefabs/AntWorker")) as GameObject;
+            var c = go.GetComponent<CharacterAnimationController>();
+            if (c == null)
+                throw new Exception("Unable to create object from gameobject.getcomponent");
 
-        Game.AI.addAntView(c);
+            //c.transform.position = new Vector3(Game.World.StartArea.x, 0, Game.World.StartArea.y);
+
+            Game.AI.addAntView(c);
+        }
+        Game.World.ViewComponent = this;
 	}
 
 	void LoadTilePrefabs ()

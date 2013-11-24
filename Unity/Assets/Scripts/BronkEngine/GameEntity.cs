@@ -21,23 +21,20 @@ namespace Bronk
 			Sleep
         }
 
-        public float Health
-        {
-            get { return _health; }
-            set { _health = value; }
-        }
-
-        public States State
+        public virtual States State
         {
             get { return _state; }
             set { _state = value; }
         }
 
-        public Vector3 Position { get; set; }
-        public Vector3 Velocity { get; set; }
+        public virtual Vector3 Position {
+            get { return _position; }
+            set { _position = value; }
+        }
 
         private float _health;
-        private States _state;
+        protected States _state;
+        protected Vector3 _position;
 
         public virtual void update(float deltatime) {}
 	}
