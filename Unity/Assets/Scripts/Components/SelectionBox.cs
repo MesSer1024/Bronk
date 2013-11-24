@@ -50,7 +50,7 @@ public class SelectionBox : MonoBehaviour {
 			orgPos = Input.mousePosition;
 			selecting = true;
 		}
-		
+		/*
 		if (Input.GetMouseButtonUp (0)) {
 			selecting = false;
 			if (selectionOverTreshold ()) {
@@ -72,6 +72,6 @@ public class SelectionBox : MonoBehaviour {
 				//one cube selected (do not use selection box)
 			}
 			
-		}
+		}*/
 	}
 }

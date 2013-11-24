@@ -1,25 +1,31 @@
 ﻿using System;
+using UnityEngine;
 
 namespace Bronk
 {
 	public class CubeData
 	{
-		internal GameWorld.BlockType Type { get { return _type; } }
+		internal BlockTypeTimeline TypeTimeline { get { return _type; } }
 
 		internal int Index { get { return _index; } }
 
+		internal SelectedTimeline SelectedTimeline { get { return _selected; }}
+
 		private int _index;
-		private GameWorld.BlockType _type;
+		private SelectedTimeline _selected;
+		private BlockTypeTimeline _type;
 
 		public CubeData (int index, GameWorld.BlockType type)
 		{
 			_index = index;
-			_type = type;
+			_type = BlockTypeTimeline.Create ();
+			_type.AddKeyframe (Time.time, type);
+			_selected = SelectedTimeline.Create ();
 		}
 
-		public bool IsGround ()
+		public bool IsGround (float time)
 		{
-			return _type == GameWorld.BlockType.DirtGround;
+			return _type.GetValue(time) == GameWorld.BlockType.DirtGround;
 		}
 	}
 }

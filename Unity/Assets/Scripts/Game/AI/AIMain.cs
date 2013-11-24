@@ -53,7 +53,7 @@ namespace Bronk
             if (message is CubeClickedMessage)
             {
                 var msg = message as CubeClickedMessage;
-                var cube = msg.getCube();
+				var cube = Game.World.Cubes [msg.getCubeIndex()];
                 foreach (var ant in _ants)
                 {
                     Debug.Log("Applying stuff to ant!");
@@ -75,7 +75,7 @@ namespace Bronk
                         foreach (var node in path)
                         {
                             
-                            Debug.Log(String.Format("\t using: ({0},{1})", node.x, node.y), Game.World.ViewComponent.getCubes()[node.cube.Index]);
+							Debug.Log(String.Format("\t using: ({0},{1})", node.x, node.y), Game.World.ViewComponent.getVisualCubeObject(node.cube.Index));
                         }
                     }
                     else

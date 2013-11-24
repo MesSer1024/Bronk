@@ -9,7 +9,7 @@ public class GameCamera : MonoBehaviour
 	public float StopTimer = 0.5f;
 	public float Sensitivity = 0.005f;
 	public float FingerDeltaThreshold = 600;
-	private CubeLogic _SemiHighlightEntity;
+	private IInteractable _SemiHighlightEntity;
 	private Vector2 _Velocity;
 	private float _TapStartTime;
 	private float _LastPanTime;
@@ -69,7 +69,7 @@ public class GameCamera : MonoBehaviour
 			int closestTarget = -1;
 			for (int i = 0; i < newHits.Length; i++) {
 				float distance = GetDistPointToLine (ray.origin, ray.direction, newHits [i].transform.position); 
-				if (newHits [i].collider.gameObject.GetComponent<CubeLogic> () != null) {
+				if (newHits [i].collider.gameObject.GetComponent(typeof(IInteractable)) != null) {
 					if (distance < closestDistance) {
 						closestTarget = i;
 						closestDistance = distance;
@@ -79,8 +79,8 @@ public class GameCamera : MonoBehaviour
 
 			if (closestTarget != -1) {
 
-				CubeLogic cube = newHits [closestTarget].collider.gameObject.GetComponent<CubeLogic> ();
-				MessageManager.ExecuteMessage (new CubeClickedMessage ("cube", cube));
+				IInteractable interactable = newHits [closestTarget].collider.gameObject.GetComponent(typeof(IInteractable)) as IInteractable;
+				interactable.Interact ();
 			}
 		}
 	}
@@ -90,7 +90,7 @@ public class GameCamera : MonoBehaviour
 		if (Input.touchCount == 2) {
 			_IsTapping = false;
 			if (_SemiHighlightEntity != null) {
-				MessageManager.ExecuteMessage (new CubeSemiSelectedMessage ("cube", _SemiHighlightEntity, false));
+				_SemiHighlightEntity.SemiSelect (false);
 				_SemiHighlightEntity = null;
 			}
 			Touch finger1 = Input.touches [0];
@@ -121,7 +121,7 @@ public class GameCamera : MonoBehaviour
 				float closestDistance = float.MaxValue;
 				int closestTarget = -1;
 				for (int i = 0; i < hits.Length; i++) {
-					if (hits [i].collider.gameObject.GetComponent<CubeLogic> () != null) {
+					if (hits [i].collider.gameObject.GetComponent (typeof(IInteractable)) != null) {
 						
 						float distance = GetDistPointToLine (ray.origin, ray.direction, hits [i].point);
 						if (distance < closestDistance) {
@@ -133,17 +133,18 @@ public class GameCamera : MonoBehaviour
 
 				if (closestTarget != -1) {
 					if (_SemiHighlightEntity != null) {
-						MessageManager.ExecuteMessage (new CubeSemiSelectedMessage ("cube", _SemiHighlightEntity, false));
+						_SemiHighlightEntity.SemiSelect (false);
 					} else {
 						_TapStartTime = Time.time;
 					}
-					_SemiHighlightEntity = hits [closestTarget].collider.gameObject.GetComponent<CubeLogic> ();
-					MessageManager.ExecuteMessage (new CubeSemiSelectedMessage ("cube", _SemiHighlightEntity, true));
+					_SemiHighlightEntity = hits [closestTarget].collider.gameObject.GetComponent (typeof(IInteractable)) as IInteractable;
+					_SemiHighlightEntity.SemiSelect (true);
+
 				}
 
 			} else if (_IsTapping && finger.phase == TouchPhase.Ended) {
 				if (_SemiHighlightEntity != null) {
-					MessageManager.ExecuteMessage (new CubeSemiSelectedMessage ("cube", _SemiHighlightEntity, false));
+					_SemiHighlightEntity.SemiSelect (false);
 					_SemiHighlightEntity = null;
 					if (Time.time - _TapStartTime > 0.003f) {
 						Ray ray = camera.ScreenPointToRay (finger.position);
@@ -153,7 +154,7 @@ public class GameCamera : MonoBehaviour
 						int closestTarget = -1;
 						for (int i = 0; i < hits.Length; i++) {
 
-							if (hits [i].collider.gameObject.GetComponent<CubeLogic> () != null) {
+							if (hits [i].collider.gameObject.GetComponent (typeof(IInteractable)) != null) {
 
 								float distance = GetDistPointToLine (ray.origin, ray.direction, hits [i].point);
 								if (distance < closestDistance) {
@@ -164,8 +165,8 @@ public class GameCamera : MonoBehaviour
 						}
 
 						if (closestTarget != -1) {
-							CubeLogic cube = hits [closestTarget].collider.gameObject.GetComponent<CubeLogic> ();
-							MessageManager.ExecuteMessage (new CubeClickedMessage ("cube", cube));
+							IInteractable interactable = hits [closestTarget].collider.gameObject.GetComponent (typeof(IInteractable)) as IInteractable;
+							interactable.Interact ();
 						}
 					}
 				}
@@ -173,7 +174,7 @@ public class GameCamera : MonoBehaviour
 		} else if (Input.touchCount == 0) {
 			_IsTapping = false;
 			if (_SemiHighlightEntity != null) {
-				MessageManager.ExecuteMessage (new CubeSemiSelectedMessage ("cube", _SemiHighlightEntity, false));
+				_SemiHighlightEntity.SemiSelect (false);
 				_SemiHighlightEntity = null;
 			}
 			if (_Velocity != Vector2.zero) {

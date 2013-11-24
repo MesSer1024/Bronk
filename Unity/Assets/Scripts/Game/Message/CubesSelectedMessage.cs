@@ -8,13 +8,13 @@ namespace Bronk
 	class CubesSelectedMessage : IMessage
 	{
         private string _id;
-        private List<CubeLogic> _cubes;
+		private List<int> _cubeIndices;
         private int _action;
 
-        public CubesSelectedMessage(string id, List<CubeLogic> cubes, int actionToPerformPlaceholder)
+		public CubesSelectedMessage(string id, List<int> cubeIndices, int actionToPerformPlaceholder)
         {
             _id = id;
-            _cubes = cubes;
+			_cubeIndices = cubeIndices;
             _action = actionToPerformPlaceholder;
         }
 
@@ -28,9 +28,9 @@ namespace Bronk
             return _id;
         }
 
-        public List<CubeLogic> getCubes()
+		public List<int> getCubeIndices()
         {
-            return _cubes;
+            return _cubeIndices;
         }
 
         /// <summary>
