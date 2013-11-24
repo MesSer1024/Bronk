@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Bronk
 {
@@ -34,7 +35,11 @@ namespace Bronk
             Game.World = new GameWorld();
             Game.World.init();
             AI = new AIMain();
-            var ant = AI.createAnt();
+            for (var i = 0; i < 4; ++i)
+            {
+                var ant = AI.createAnt();
+                ant.Position = new Vector3(World.StartArea.x + 3 + i, 0, World.StartArea.y + 2 + i);
+            }
         }
 
         public static void update(float delta)

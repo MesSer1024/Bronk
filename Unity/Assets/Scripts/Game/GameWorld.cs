@@ -5,6 +5,8 @@ namespace Bronk
 {
 	public class GameWorld
 	{
+        public WorldGameObject ViewComponent { get; set; }
+
 		public const int SIZE_X = 100;
 		public const int SIZE_Z = 100;
 
@@ -19,6 +21,7 @@ namespace Bronk
 		}
 
 		public List<CubeData> Cubes { get { return _data; } }
+        public Rect StartArea { get; private set; }
 
 		private List<CubeData> _data;
 
@@ -33,17 +36,23 @@ namespace Bronk
 
 			Random.seed = "L33T HAXXOR".GetHashCode ();
 
-			int startPosIndex = Random.Range (0, SIZE_X * SIZE_Z);
+			int startX;
+			int startZ;
+			int endX;
+			int endZ;
 
-			int startAreaSizeX = 8;
-			int startAreaSizeZ = 8;
+            
 
-			int startX = startPosIndex % SIZE_X;
-			int startZ = startPosIndex / SIZE_Z;
-			int endX = Mathf.Clamp (startX + startAreaSizeX, 0, SIZE_X - 1);
-			int endZ = Mathf.Clamp (startZ + startAreaSizeZ, 0, SIZE_Z - 1);
-			startX += (startAreaSizeX - (endX - startX));
-			startZ += (startAreaSizeZ - (endZ - startZ));
+			GenerateStartArea (out startX, out startZ, out endX, out endZ);
+
+            StartArea = new Rect(startX, startZ, endX - startX, endZ - startZ);
+
+			Vector2 startAreaPos = new Vector2((startX + endX) / 2, (startZ + endZ) / 2);
+			GameCamera gameCam = Camera.mainCamera.GetComponent<GameCamera> ();
+			if (gameCam != null)
+				gameCam.SetPosition (startAreaPos);
+
+
 
 			int lowResSizeX = (SIZE_X / 5);
 			int lowResSizeZ = (SIZE_Z / 5);
@@ -99,14 +108,75 @@ namespace Bronk
 
 		}
 
+		static void GenerateStartArea (out int startX, out int startZ, out int endX, out int endZ)
+		{
+			int startPosIndex = Random.Range (0, SIZE_X * SIZE_Z);
+			int startAreaSizeX = 8;
+			int startAreaSizeZ = 8;
+			startX = startPosIndex % SIZE_X;
+			startZ = startPosIndex / SIZE_Z;
+			endX = Mathf.Clamp (startX + startAreaSizeX, 0, SIZE_X - 1);
+			endZ = Mathf.Clamp (startZ + startAreaSizeZ, 0, SIZE_Z - 1);
+			startX += (startAreaSizeX - (endX - startX));
+			startZ += (startAreaSizeZ - (endZ - startZ));
+		}
+
+        public CubeData getCubeData(int index)
+        {
+            return _data[index];
+        }
+
 		public Vector3 getCubePosition (int index)
 		{
 			return new Vector3 (index % SIZE_X, 0, (int)(index / SIZE_Z));
 		}
 
-		public CubeData getCubeData (int index)
-		{
-			return _data [index];
-		}
+        public CubeData getCubeByPosition(Vector3 pos)
+        {
+            int index = (int)(pos.x) + (int)(pos.z) * SIZE_X;
+            if(index >= _data.Count || index < 0) 
+                throw new System.Exception("No cube found on " + pos);
+            return _data[index];
+        }
+
+        public CubeData getRightCube(CubeData node)
+        {
+            int tarId = node.Index + 1;
+            if (tarId % SIZE_X > 0)
+            {
+                return _data[tarId];
+            }
+            return null;
+        }
+
+        public CubeData getLeftCube(CubeData node)
+        {
+            var tarId = (node.Index % SIZE_X) - 1;
+            if (tarId < 0)
+            {
+                return null;
+            }
+            return _data[node.Index - 1];
+        }
+
+        public CubeData getTopCube(CubeData node)
+        {
+            var tarId = node.Index - SIZE_X;
+            if (tarId >= 0)
+            {
+                return _data[tarId];
+            }
+            return null;
+        }
+
+        public CubeData getBottomCube(CubeData node)
+        {
+            var tarId = node.Index + SIZE_X;
+            if (tarId < _data.Count)
+            {
+                return _data[tarId];
+            }
+            return null;
+        }
 	}
 }

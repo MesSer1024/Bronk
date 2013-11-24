@@ -190,6 +190,12 @@ public class GameCamera : MonoBehaviour
 		transform.LookAt (lookatPos);
 	}
 
+	public void SetPosition(Vector2 position)
+	{
+		Position2D = position;
+		UpdatePosition ();
+	}
+
 	static public float GetDistPointToLine (Vector3 origin, Vector3 direction, Vector3 point)
 	{
 
