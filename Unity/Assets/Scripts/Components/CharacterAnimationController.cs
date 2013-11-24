@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using Bronk;
 
 public enum AnimationEnum
 {
@@ -63,4 +64,17 @@ public class CharacterAnimationController : MonoBehaviour
 				return string.Empty;
 		}
 	}
+
+    internal void updateState(Bronk.Ant ant)
+    {
+        var timelines = ant.getActiveTimelines();
+        foreach (var item in timelines)
+        {
+            if (item is WalkTimeline)
+            {
+                var walktimeline = item as WalkTimeline;
+                transform.position = walktimeline.getPosition(Time.time);
+            }
+        }
+    }
 }
