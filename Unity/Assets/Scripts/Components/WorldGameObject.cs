@@ -22,13 +22,10 @@ public class WorldGameObject : MonoBehaviour
 
 		for (var i = 0; i < Game.World.Cubes.Count; ++i) {
 			var block = Game.World.Cubes [i];
-			var cube = Instantiate (GetTilePrefab (block.TypeTimeline.GetValue (Time.time)), new Vector3 (i % GameWorld.SIZE_X, 0, i / GameWorld.SIZE_Z), Quaternion.identity) as GameObject;
-			_cubes [i].ViewObject = cube;
-			_cubes [i].BlockTypeTimeline = BlockTypeTimeline.Create ();
-			_cubes [i].SelectedTimeline = SelectedTimeline.Create ();
-			var view = cube.GetComponentInChildren<BlockObject> ();
-			if (view != null)
-				view.Index = i;
+			BlockObject view = GetViewBlock (i, block.Type);
+			_cubes [i].BlockType = block.Type;
+			view.Index = i;
+			_cubes [i].ViewObject = view;
 		}
 
 		for (int i = 0; i < 4; i++) {
@@ -42,6 +39,20 @@ public class WorldGameObject : MonoBehaviour
 			Game.AI.addAntView (c);
 		}
 		Game.World.ViewComponent = this;
+	}
+
+	BlockObject GetViewBlock (int blockIndex, GameWorld.BlockType type)
+	{
+		GameObject obj = Instantiate (GetTilePrefab (type), new Vector3 (blockIndex % GameWorld.SIZE_X, 0, blockIndex / GameWorld.SIZE_Z), Quaternion.identity) as GameObject;
+		BlockObject blockObj = obj.GetComponentInChildren<BlockObject> ();
+		if (blockObj == null)
+			throw new Exception ("Failed to get BlockObject component when instantiating " + type + " block");
+		return blockObj;
+	}
+
+	void ReleaseViewBlock (BlockObject obj)
+	{
+		GameObject.Destroy (obj.gameObject);
 	}
 
 	void LoadTilePrefabs ()
@@ -70,28 +81,14 @@ public class WorldGameObject : MonoBehaviour
 
 	void Update ()
 	{
-		UpdateBlocks ();
-	}
 
-	void UpdateBlocks()
-	{
-		for (int i = 0; i < _cubes.Length; i++) {
-			ViewBlock block = _cubes [i];
-			GameObject viewObject = block.ViewObject;
-			if (viewObject != null) {
-				bool selected = _cubes [i].SelectedTimeline.GetValue (Time.time);
-				if (selected) {
-					viewObject.GetComponentInChildren<Renderer> ().sharedMaterial = null;
-				}
-			}
-		}
 	}
 
 	public GameObject getVisualCubeObject (int index)
 	{
 		if (index < 0 || index >= _cubes.Length)
 			throw new ArgumentOutOfRangeException ("index");
-		return _cubes [index].ViewObject;
+		return _cubes [index].ViewObject.gameObject;
 	}
 
 	public object getCubesBetween (int _item1Index, int _item2Index)
@@ -99,41 +96,36 @@ public class WorldGameObject : MonoBehaviour
 		return null;
 	}
 
-	public BlockTypeTimeline GetBlockTypeTimeline (int blockID)
+	public GameWorld.BlockType GetBlockType (int blockID)
 	{
 		if (blockID < 0 || blockID >= _cubes.Length)
 			throw new ArgumentOutOfRangeException ("index");
-		return _cubes [blockID].BlockTypeTimeline;
+		return _cubes [blockID].BlockType;
 	}
 
-	public void SetBlockSelected(int blockID, float time, bool selected)
-	{
-		SelectedTimeline selectCurve = Game.World.Cubes [blockID].SelectedTimeline;
-		selectCurve.AddKeyframe (time, selected);
-		UpdateBlockSelected (blockID, selectCurve);
-	}
-
-	public void SetBlockType(int blockID, float time, GameWorld.BlockType type)
-	{
-		BlockTypeTimeline blockCurve = Game.World.Cubes [blockID].TypeTimeline;
-		blockCurve.AddKeyframe (time, type); 
-		UpdateBlockType (blockID, blockCurve);
-	}
-
-	void UpdateBlockType (int blockID, BlockTypeTimeline timeline)
+	public void SetBlockSelected (int blockID, bool selected)
 	{
 		if (blockID < 0 || blockID >= _cubes.Length)
 			throw new ArgumentOutOfRangeException ("index");
 
-		_cubes [blockID].BlockTypeTimeline.CopyFrom (timeline);
+		ViewBlock viewBlock = _cubes [blockID];
+		viewBlock.Selected = selected;
+		if (viewBlock.ViewObject != null)
+			viewBlock.ViewObject.SetSelected (viewBlock.Selected);
 	}
 
-	void UpdateBlockSelected (int blockID, SelectedTimeline timeline)
+	public void SetBlockType (int blockID, GameWorld.BlockType type)
 	{
 		if (blockID < 0 || blockID >= _cubes.Length)
 			throw new ArgumentOutOfRangeException ("index");
 
-		_cubes [blockID].SelectedTimeline.CopyFrom (timeline);
+		ViewBlock viewBlock = _cubes [blockID];
+		if (viewBlock.BlockType != type && viewBlock.ViewObject != null) {
+			ReleaseViewBlock (viewBlock.ViewObject);
+		}
+		viewBlock.BlockType = type;
+		viewBlock.ViewObject = GetViewBlock (blockID, type);
+		viewBlock.ViewObject.SetSelected (viewBlock.Selected);
 	}
 
 	void SetTimeline (int objectID, TimelineType timelineType, ITimeline timeline)
@@ -161,6 +153,7 @@ public class WorldGameObject : MonoBehaviour
 
 	public void OnBlockInteract (int index)
 	{
+		SetBlockSelected (index, !_cubes [index].Selected); // simulate selection on view
 		MessageManager.ExecuteMessage (new CubeClickedMessage ("cube", index));
 	}
 }

@@ -26,9 +26,10 @@ public class Hud : MonoBehaviour, IMessageListener
 			int cubeIndex = msg.getCubeIndex ();
 			Logger.Info (String.Format ("onMessage CubeClickedMessage cubeIndex= {0}", cubeIndex));
 
-			bool selected = Game.World.Cubes [cubeIndex].SelectedTimeline.GetValue(Time.time);
+			var logicBlock = Game.World.Cubes [cubeIndex];
+			logicBlock.Selected = !logicBlock.Selected;
 			
-			Game.World.ViewComponent.SetBlockSelected (cubeIndex, Time.time, !selected);
+			Game.World.ViewComponent.SetBlockSelected (cubeIndex, logicBlock.Selected);
 		} 
 	}
 }

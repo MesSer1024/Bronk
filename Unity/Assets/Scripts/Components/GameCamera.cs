@@ -69,7 +69,7 @@ public class GameCamera : MonoBehaviour
 			int closestTarget = -1;
 			for (int i = 0; i < newHits.Length; i++) {
 				float distance = GetDistPointToLine (ray.origin, ray.direction, newHits [i].transform.position); 
-				if (newHits [i].collider.gameObject.GetComponent(typeof(IInteractable)) != null) {
+				if (newHits [i].collider.gameObject.GetComponent (typeof(IInteractable)) != null) {
 					if (distance < closestDistance) {
 						closestTarget = i;
 						closestDistance = distance;
@@ -79,7 +79,7 @@ public class GameCamera : MonoBehaviour
 
 			if (closestTarget != -1) {
 
-				IInteractable interactable = newHits [closestTarget].collider.gameObject.GetComponent(typeof(IInteractable)) as IInteractable;
+				IInteractable interactable = newHits [closestTarget].collider.gameObject.GetComponent (typeof(IInteractable)) as IInteractable;
 				interactable.Interact ();
 			}
 		}
@@ -116,14 +116,14 @@ public class GameCamera : MonoBehaviour
 				_Velocity = Vector2.zero;
 				Ray ray = camera.ScreenPointToRay (finger.position);
 
-				RaycastHit[] hits = Physics.SphereCastAll (ray, 0.5f);
+				RaycastHit[] hits = Physics.RaycastAll (ray);
 
 				float closestDistance = float.MaxValue;
 				int closestTarget = -1;
 				for (int i = 0; i < hits.Length; i++) {
 					if (hits [i].collider.gameObject.GetComponent (typeof(IInteractable)) != null) {
 						
-						float distance = GetDistPointToLine (ray.origin, ray.direction, hits [i].point);
+						float distance = hits [i].distance;
 						if (distance < closestDistance) {
 							closestTarget = i;
 							closestDistance = distance;
@@ -149,14 +149,14 @@ public class GameCamera : MonoBehaviour
 					if (Time.time - _TapStartTime > 0.003f) {
 						Ray ray = camera.ScreenPointToRay (finger.position);
 
-						RaycastHit[] hits = Physics.SphereCastAll (ray, 0.5f);
+						RaycastHit[] hits = Physics.RaycastAll (ray);
 						float closestDistance = float.MaxValue;
 						int closestTarget = -1;
 						for (int i = 0; i < hits.Length; i++) {
 
 							if (hits [i].collider.gameObject.GetComponent (typeof(IInteractable)) != null) {
 
-								float distance = GetDistPointToLine (ray.origin, ray.direction, hits [i].point);
+								float distance = hits [i].distance;
 								if (distance < closestDistance) {
 									closestTarget = i;
 									closestDistance = distance;
@@ -191,7 +191,7 @@ public class GameCamera : MonoBehaviour
 		transform.LookAt (lookatPos);
 	}
 
-	public void SetPosition(Vector2 position)
+	public void SetPosition (Vector2 position)
 	{
 		Position2D = position;
 		UpdatePosition ();

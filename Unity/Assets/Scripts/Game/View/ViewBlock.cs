@@ -4,7 +4,7 @@ using Bronk;
 
 public struct ViewBlock {
 
-	public BlockTypeTimeline BlockTypeTimeline;
-	public SelectedTimeline SelectedTimeline;
-	public GameObject ViewObject; 
+	public GameWorld.BlockType BlockType;
+	public bool Selected;
+	public BlockObject ViewObject; 
 }
