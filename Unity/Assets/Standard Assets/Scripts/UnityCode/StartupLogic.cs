@@ -7,12 +7,11 @@ public class StartupLogic : MonoBehaviour {
 	void Awake() {	
 		Translate.init();
 		Game.state = Game.States.Playing;
-        Game.World = new GameWorld();
-        Game.World.init();
+        Game.init();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+        Game.update(Time.deltaTime);
 	}
 }

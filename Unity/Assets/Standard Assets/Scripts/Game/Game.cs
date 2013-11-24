@@ -21,12 +21,25 @@ namespace Bronk
 			set;
 		}
 
-    public static List<CubeLogic> getCubesBetween(CubeLogic cube1, CubeLogic cube2) {
-        var items = new List<CubeLogic>();
+        public static List<CubeLogic> getCubesBetween(CubeLogic cube1, CubeLogic cube2) {
+            var items = new List<CubeLogic>();
 
-        return items;
-    }
+            return items;
+        }
 
+        public static void init()
+        {
+            Game.World = new GameWorld();
+            Game.World.init();
+        }
+
+        /**
+         * update loop for every model used in game
+         * */
+        public static void update(float delta)
+        {
+
+        }
 	}
 }
 
