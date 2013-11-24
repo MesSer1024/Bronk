@@ -7,7 +7,8 @@ namespace Bronk
 {
     public interface ITimeline
 	{
-        float StartTime { get; }
-        float EndTime { get; }
+		TimelineType Type { get;}
+		void CopyFrom(ITimeline timeline);
+
 	}
 }

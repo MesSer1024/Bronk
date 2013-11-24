@@ -27,8 +27,8 @@ namespace Bronk
             public bool inOpen;
             public bool finished;
 
-            public bool isBlocked() {
-                return cube.Type != GameWorld.BlockType.DirtGround;
+			public bool isBlocked() {
+				return cube.Type != GameWorld.BlockType.DirtGround;
             }
         }
 
@@ -77,7 +77,7 @@ namespace Bronk
             var startNode = _nodes[(int)start.x, (int)start.y];
             endNode = _nodes[(int)end.x, (int)end.y];
 
-            if (startNode.isBlocked() || endNode.isBlocked())
+			if (startNode.isBlocked() || endNode.isBlocked())
             {
                 throw new Exception("Seems like startNode or endNode is blocked!");
             }
@@ -151,7 +151,7 @@ namespace Bronk
         {
             if (node.finished)
                 return false;
-            if (node.isBlocked())
+			if (node.isBlocked())
                 return false;
             return true;
         }
@@ -262,7 +262,7 @@ namespace Bronk
                     for (int x = 0; x < _sizeX; x++)
                     {
                         var c = _nodes[x, y];
-                        sb.Append(c.isBlocked() ? "x" : "-");
+						sb.Append(c.isBlocked() ? "x" : "-");
                     }
                     sb.Append(Environment.NewLine);
                 }
@@ -280,7 +280,7 @@ namespace Bronk
                         }
                         else
                         {
-                            sb.Append(c.isBlocked() ? "x" : "-");
+							sb.Append(c.isBlocked() ? "x" : "-");
                         }
                     }
                     sb.Append(Environment.NewLine);

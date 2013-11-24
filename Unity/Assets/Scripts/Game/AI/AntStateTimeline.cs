@@ -4,6 +4,11 @@ using System.Collections;
 
 public class AntStateTimeline : Timeline<GameEntity.States, GameEntity.States>
 {
+	public override TimelineType Type {
+		get {
+			return TimelineType.AntState;
+		}
+	}
 	public static AntStateTimeline Create ()
 	{
 		return Create <AntStateTimeline, GameEntity.States, GameEntity.States>(Interpolate);

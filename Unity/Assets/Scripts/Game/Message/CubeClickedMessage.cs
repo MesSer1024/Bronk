@@ -5,25 +5,28 @@ namespace Bronk
 {
 	class CubeClickedMessage : IMessage
 	{
-        private string _id;
-        private CubeLogic _item;
-        private string p;
+		private string _id;
+		private int _index;
 
-        public CubeClickedMessage(string id, CubeLogic item) {
-            _id = id;
-            _item = item;
-        }
+		public CubeClickedMessage (string id, int cubeIndex)
+		{
+			_id = id;
+			_index = cubeIndex;
+		}
 
-        public string getGroup() {
-            return MessageManager.GameMessage;
-        }
+		public string getGroup ()
+		{
+			return MessageManager.GameMessage;
+		}
 
-        public string getId() {
-            return _id;
-        }
+		public string getId ()
+		{
+			return _id;
+		}
 
-        public CubeLogic getCube() {
-            return _item;
-        }
-    }
+		public int getCubeIndex ()
+		{
+			return _index;
+		}
+	}
 }
