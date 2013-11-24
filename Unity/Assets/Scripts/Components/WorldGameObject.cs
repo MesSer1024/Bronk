@@ -9,10 +9,18 @@ public class WorldGameObject : MonoBehaviour
 	private ViewBlock[] _cubes;
 	private List<CharacterAnimationController> _ants;
 	Dictionary<int, ITimelineObject> _Objects;
-	private GameObject _DirtFloorPrefab;
-	private GameObject _FoodWallPrefab;
-	private GameObject _DirtWallPrefab;
-	private GameObject _GoldWallPrefab;
+	
+	private GameObject _Side0;
+	private GameObject _Side1;
+	private GameObject _Side2;
+	private GameObject _Side3;
+	private GameObject _Side4;	
+	private GameObject _Corner2;
+	private GameObject _Floor;
+	
+	private Material _DirtMaterial;
+	private Material _FoodMaterial;
+	private Material _GoldMaterial;
 
 	void Start ()
 	{
@@ -43,8 +51,19 @@ public class WorldGameObject : MonoBehaviour
 
 	BlockObject GetViewBlock (int blockIndex, GameWorld.BlockType type)
 	{
-		GameObject obj = Instantiate (GetTilePrefab (type), new Vector3 (blockIndex % GameWorld.SIZE_X, 0, blockIndex / GameWorld.SIZE_Z), Quaternion.identity) as GameObject;
+		Quaternion rotation = Quaternion.identity;
+		GameObject prefab = GetTilePrefab (type, Game.World.getCubeData(blockIndex),ref rotation);
+		GameObject obj = Instantiate (prefab, new Vector3 (blockIndex % GameWorld.SIZE_X, 0, blockIndex / GameWorld.SIZE_Z), rotation) as GameObject;
 		BlockObject blockObj = obj.GetComponentInChildren<BlockObject> ();
+
+		if (type == GameWorld.BlockType.Gold)
+			blockObj.DefaultMaterial = _GoldMaterial;
+		else if (type == GameWorld.BlockType.Food)
+			blockObj.DefaultMaterial = _FoodMaterial;
+		else
+			blockObj.DefaultMaterial = _DirtMaterial;
+		blockObj.UpdateMaterial();
+
 		if (blockObj == null)
 			throw new Exception ("Failed to get BlockObject component when instantiating " + type + " block");
 		return blockObj;
@@ -57,26 +76,80 @@ public class WorldGameObject : MonoBehaviour
 
 	void LoadTilePrefabs ()
 	{
-		_DirtWallPrefab = Resources.Load<GameObject> ("Terrain/DirtWall") as GameObject;
-		_GoldWallPrefab = Resources.Load<GameObject> ("Terrain/GoldWall") as GameObject;
-		_FoodWallPrefab = Resources.Load<GameObject> ("Terrain/FoodWall") as GameObject;
-		_DirtFloorPrefab = Resources.Load<GameObject> ("Terrain/DirtFloor") as GameObject;
+		_Side0 = Resources.Load<GameObject> ("Terrain/Walls/Side0") as GameObject;
+		_Side1 = Resources.Load<GameObject> ("Terrain/Walls/Side1") as GameObject;
+		_Side2 = Resources.Load<GameObject> ("Terrain/Walls/Side2") as GameObject;
+		_Side3 = Resources.Load<GameObject> ("Terrain/Walls/Side3") as GameObject;
+		_Side4 = Resources.Load<GameObject> ("Terrain/Walls/Side4") as GameObject;
+		_Corner2 = Resources.Load<GameObject> ("Terrain/Walls/Corner2") as GameObject;
+		_Floor = Resources.Load<GameObject> ("Terrain/Walls/Floor") as GameObject;
+
+		_DirtMaterial = Resources.Load<Material> ("Materials/DirtMaterial") as Material;
+		_FoodMaterial = Resources.Load<Material> ("Materials/FoodMaterial") as Material;
+		_GoldMaterial = Resources.Load<Material> ("Materials/GoldMaterial") as Material;
 	}
 
-	GameObject GetTilePrefab (GameWorld.BlockType type)
+	GameObject GetTilePrefab(GameWorld.BlockType type, CubeData block, ref Quaternion rotation)
 	{
-		switch (type) {
-		case GameWorld.BlockType.Dirt:
-			return _DirtWallPrefab;
-		case GameWorld.BlockType.DirtGround:
-			return _DirtFloorPrefab;
-		case GameWorld.BlockType.Food:
-			return _FoodWallPrefab;
-		case GameWorld.BlockType.Gold:
-			return _GoldWallPrefab;
-		default:
-			throw new ArgumentException ("No prefab for " + type);
+		if (block.IsGround())
+			return _Floor;
+
+		CubeData leftBlock = Game.World.getLeftCube(block);
+		CubeData rightBlock = Game.World.getRightCube(block);
+		CubeData topBlock = Game.World.getTopCube(block);
+		CubeData bottomBlock = Game.World.getBottomCube(block);
+
+		bool left = leftBlock != null ? leftBlock.IsGround() : false;
+		bool right = rightBlock != null ? rightBlock.IsGround() : false;
+		bool top = topBlock != null ? topBlock.IsGround() : false;
+		bool bottom = bottomBlock != null ? bottomBlock.IsGround() : false;
+		
+		int freeSides = 0;
+		freeSides += left ? 1 : 0;
+		freeSides += right ? 1 : 0;
+		freeSides += top ? 1 : 0;
+		freeSides += bottom ? 1 : 0;
+		
+		GameObject go = _Side0;
+		if (freeSides == 1)
+		{
+			go = _Side1;
+			if (left) rotation = Quaternion.Euler(Vector3.up * 180);
+			if (right) rotation = Quaternion.Euler(Vector3.up * 0);
+			if (top) rotation = Quaternion.Euler(Vector3.up * 90);
+			if (bottom) rotation = Quaternion.Euler(Vector3.up * 270);
 		}
+		else if (freeSides == 2)
+		{
+			if (left && right || top && bottom)
+			{
+				go = _Side2;
+				if (left && right) rotation = Quaternion.Euler(Vector3.up * 0);
+				if (top && bottom) rotation = Quaternion.Euler(Vector3.up * 90);
+			}
+			else
+			{
+				go = _Corner2;
+				if (left && top) rotation = Quaternion.Euler(Vector3.up * 180);
+				if (top && right) rotation = Quaternion.Euler(Vector3.up * 90);
+				if (right && bottom) rotation = Quaternion.Euler(Vector3.up * 0);
+				if (bottom && left) rotation = Quaternion.Euler(Vector3.up * 270);
+			}
+		}
+		else if (freeSides == 3)
+		{
+			go = _Side3;
+			if (!left) rotation = Quaternion.Euler(Vector3.up * 270);
+			if (!right) rotation = Quaternion.Euler(Vector3.up * 90);
+			if (!top) rotation = Quaternion.Euler(Vector3.up * 180);
+			if (!bottom) rotation = Quaternion.Euler(Vector3.up * 0);
+		}
+		if (freeSides == 4)
+		{
+			go = _Side4;
+		}
+		
+		return go;
 	}
 
 	void Update ()

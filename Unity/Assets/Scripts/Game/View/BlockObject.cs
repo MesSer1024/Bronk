@@ -6,7 +6,7 @@ public class BlockObject : MonoBehaviour, IInteractable
 {
 	public static Material _SelectMaterial;
 	public static Material _SemiSelectMaterial;
-	private Material _originalMaterial;
+	public Material DefaultMaterial;
 	private Renderer _renderer;
 	private bool _semiSelected;
 	private bool _selected;
@@ -22,7 +22,7 @@ public class BlockObject : MonoBehaviour, IInteractable
 	void Awake ()
 	{
 		_renderer = GetComponentInChildren<Renderer> ();
-		_originalMaterial = _renderer.sharedMaterial;
+		DefaultMaterial = _renderer.sharedMaterial;
 	}
 
 	public void Interact ()
@@ -36,14 +36,14 @@ public class BlockObject : MonoBehaviour, IInteractable
 		UpdateMaterial ();
 	}
 
-	void UpdateMaterial ()
+	public void UpdateMaterial ()
 	{
 		if (_selected)
 			_renderer.sharedMaterial = _SelectMaterial;
 		else if (_semiSelected)
-			renderer.sharedMaterial = _SemiSelectMaterial;
+			_renderer.sharedMaterial = _SemiSelectMaterial;
 		else
-			_renderer.sharedMaterial = _originalMaterial;
+			_renderer.sharedMaterial = DefaultMaterial;
 	}
 
 	public void SetSelected (bool selected)
