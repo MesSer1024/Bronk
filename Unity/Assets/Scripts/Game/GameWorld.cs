@@ -121,14 +121,62 @@ namespace Bronk
 			startZ += (startAreaSizeZ - (endZ - startZ));
 		}
 
+        public CubeData getCubeData(int index)
+        {
+            return _data[index];
+        }
+
 		public Vector3 getCubePosition (int index)
 		{
 			return new Vector3 (index % SIZE_X, 0, (int)(index / SIZE_Z));
 		}
 
-		public CubeData getCubeData (int index)
-		{
-			return _data [index];
-		}
+        public CubeData getCubeByPosition(Vector3 pos)
+        {
+            int index = (int)(pos.x) + (int)(pos.z) * SIZE_X;
+            if(index >= _data.Count || index < 0) 
+                throw new System.Exception("No cube found on " + pos);
+            return _data[index];
+        }
+
+        public CubeData getRightCube(CubeData node)
+        {
+            int tarId = node.Index + 1;
+            if (tarId % SIZE_X > 0)
+            {
+                return _data[tarId];
+            }
+            return null;
+        }
+
+        public CubeData getLeftCube(CubeData node)
+        {
+            var tarId = (node.Index % SIZE_X) - 1;
+            if (tarId < 0)
+            {
+                return null;
+            }
+            return _data[node.Index - 1];
+        }
+
+        public CubeData getTopCube(CubeData node)
+        {
+            var tarId = node.Index - SIZE_X;
+            if (tarId >= 0)
+            {
+                return _data[tarId];
+            }
+            return null;
+        }
+
+        public CubeData getBottomCube(CubeData node)
+        {
+            var tarId = node.Index + SIZE_X;
+            if (tarId < _data.Count)
+            {
+                return _data[tarId];
+            }
+            return null;
+        }
 	}
 }
