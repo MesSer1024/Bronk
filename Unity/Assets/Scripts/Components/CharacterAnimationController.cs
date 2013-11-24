@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System;
 using Bronk;
 
 [RequireComponent(typeof(Animator))]
@@ -13,7 +12,7 @@ public class CharacterAnimationController : MonoBehaviour
 
 	private Vector3 Velocity;
 
-	private DummyTimeline _StateTimeline;
+	private AntStateTimeline _StateTimeline;
 	private AnimatorStateInfo _CurrentStateInfo;
 	private AnimatorStateInfo _NextStateInfo;
 
@@ -25,25 +24,44 @@ public class CharacterAnimationController : MonoBehaviour
 
 	void Update () 
 	{
+		_CurrentStateInfo = _Animator.GetCurrentAnimatorStateInfo(0);
+		_NextStateInfo = _Animator.GetNextAnimatorStateInfo(0);
+
 		if (LogicCharacter != null)
 		{
 			_StateTimeline = LogicCharacter.GetStateTimeline();
-			switch (_StateTimeline.DummyState)
+			GameEntity.States state = _StateTimeline.GetValue(Time.time);
+
+			switch (state) 
 			{
-			case DummyState.Idle: 
+			case GameEntity.States.Idle: 
 				DoIdle();
 				break;
-			case DummyState.Mining:
+			case GameEntity.States.Mine:
 				DoMining();
 				break;
-			case DummyState.Movement:
+			case GameEntity.States.Move:
 				DoMovement();
 				break;
 			}
-		}
 
-		_CurrentStateInfo = _Animator.GetCurrentAnimatorStateInfo(0);
-		_NextStateInfo = _Animator.GetNextAnimatorStateInfo(0);
+			PositionTimeline posTimeline = LogicCharacter.GetPositionTimeline();
+			float oldTime = Time.time - Time.deltaTime;
+			Vector3 oldPosition = posTimeline.GetValue(oldTime);
+			Vector3 newPosition = posTimeline.GetValue(Time.time);
+			transform.position = newPosition;
+			Velocity = (newPosition - oldPosition); 
+			if (Velocity != Vector3.zero)
+			{
+				Velocity /= Time.deltaTime;
+				_Transform.rotation = Quaternion.LookRotation(Velocity.normalized);
+			}
+			
+			// Animations are timed for scale = 1. // If we divide the speed by the scale we'll play run animations slower/faster if they are bigger/smaller.
+			float sizeScaleFactor = _Transform.localScale.x * _Animator.humanScale;
+			float velocityMagnitude = Velocity.magnitude / sizeScaleFactor;
+			_Animator.SetFloat("Speed", velocityMagnitude);
+		}
 
 		/*
 		if (Velocity != Vector3.zero)
@@ -56,35 +74,12 @@ public class CharacterAnimationController : MonoBehaviour
 		*/
 	}
 
-	public void PlayAnimation(AnimationEnum animationEnum)
+	public void PlayAnimation(AnimationEnum animationEnum, float stateTime, float fadeTime = 0.1f)
 	{
-		_Animator.Play(Animations.GetAnimationHash(animationEnum));
-		//Debug.Log("Play animation: " + animation.ToString() + "  " + Time.time);
+		float normalizedTime = (stateTime / Animations.Get(animationEnum).Lenght) % 1f;
+		_Animator.CrossFade(Animations.Get(animationEnum).Hash, Mathf.Max(0f, fadeTime - normalizedTime), 0, normalizedTime);
+		//Debug.Log("startTime: " +stateTime + " normalized: " + normalizedTime + " fade: " + fadeTime + "  " + Time.time);
 	}
-
-    internal void updateState(Bronk.Ant ant)
-    {
-        var timelines = ant.getActiveTimelines();
-
-        foreach (var item in timelines)
-        {
-            if (item is WalkTimeline)
-            {
-                var walktimeline = item as WalkTimeline;
-                Velocity = transform.position - walktimeline.getPosition(Time.time);
-                transform.position = walktimeline.getPosition(Time.time);
-            }
-            else if (item is MiningTimeline)
-            {
-                var miningtimeline = item as MiningTimeline;
-                PlayAnimation(AnimationEnum.Laugh);
-            }
-            else
-            {
-                PlayAnimation(AnimationEnum.Death);
-            }
-        }
-    }
 
 	void DoIdle()
 	{
@@ -93,17 +88,16 @@ public class CharacterAnimationController : MonoBehaviour
 
 	void DoMining()
 	{
-		if (_CurrentStateInfo.nameHash != Animations.GetAnimationHash(AnimationEnum.Laugh) ||
-		    _NextStateInfo.nameHash != Animations.GetAnimationHash(AnimationEnum.Laugh))
-			PlayAnimation(AnimationEnum.Laugh);
+		if (_CurrentStateInfo.nameHash != Animations.Get(AnimationEnum.Mine).Hash &&
+		    _NextStateInfo.nameHash != Animations.Get(AnimationEnum.Mine).Hash)
+		{
+			PlayAnimation(AnimationEnum.Mine, _StateTimeline.GetCurrentKeyframeTime(Time.time));
+		}
 	}
 
 	void DoMovement()
 	{
-		Debug.Log(_StateTimeline);
-		float lerp = (Time.time - _StateTimeline.StartTime) / (_StateTimeline.EndTime - _StateTimeline.StartTime);
-		Vector3 position = Vector3.Lerp(_StateTimeline.StartPos, _StateTimeline.EndPos, lerp);
-		_Transform.position = position;
+
 	}
 }
 

@@ -1,22 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Bronk;
 
-public enum DummyState
-{
-	Idle,
-	Movement,
-	Mining
-}
-
-public class DummyTimeline
-{
-	public DummyState DummyState;
-	public float StartTime;
-	public float EndTime;
-	public Vector3 StartPos;
-	public Vector3 EndPos;
-}
 
 public class DummyPlayer : MonoBehaviour 
 {
@@ -30,18 +16,19 @@ public class DummyPlayer : MonoBehaviour
 	public float CircleSize = 5;
 
 	public bool UseTimeline;
-	private bool _ReachedTarget;
-	private bool _PlayedAnimation;
 
-	public DummyState DummyState;
-
-	DummyTimeline _Timeline;
+	AntStateTimeline _AntStateTimeline;
+	PositionTimeline _PositionTimeline;
+	public GameEntity.States CurrentState;
 
 	void Awake()
 	{
 		_LastPosition = transform.position;
-		_Timeline = new DummyTimeline();
-		SetTimeline(DummyState.Idle);
+		_AntStateTimeline = AntStateTimeline.Create();
+		_PositionTimeline = PositionTimeline.Create();
+		_PositionTimeline.AddKeyframe(Time.time, transform.position);
+
+		AddKeyframe(GameEntity.States.Idle);
 	}
 
 	void Start()
@@ -49,42 +36,51 @@ public class DummyPlayer : MonoBehaviour
 		CharacterAnimationController controller = GetComponent<CharacterAnimationController>();
 		controller.LogicCharacter = this;
 	}
-
-	public DummyTimeline GetStateTimeline()
+	
+	public AntStateTimeline GetStateTimeline()
 	{
-		return _Timeline;
+		return _AntStateTimeline;
+	}
+	
+	public PositionTimeline GetPositionTimeline()
+	{
+		return _PositionTimeline;
 	}
 
-	void SetTimeline(DummyState state)
+	void AddKeyframe(GameEntity.States state)
 	{
-		_Timeline.DummyState = state;
-		_Timeline.StartTime = Time.time;
+		float startTime = Time.time + 2f;
+		_AntStateTimeline.AddKeyframe(startTime, state);
+		if (state == GameEntity.States.Move)
+		{
+			Vector3 currentPos = _PositionTimeline.GetValue(startTime);
+			Vector3 targetPos = new Vector3(Random.Range(-10, 10),0,Random.Range(-10, 10));
+			float duration = (targetPos - currentPos).magnitude / MoveSpeed;
+			float endTime = startTime + duration;
+			
+			_PositionTimeline.AddKeyframe(startTime, currentPos);
 
-		if (state == DummyState.Movement)
-		{
-			_Timeline.StartPos = transform.position;
-			_Timeline.EndPos = new Vector3(Random.Range(-10f, 10f), 0, Random.Range(-10f, 10f));
-			_Timeline.EndTime = Time.time + Vector3.Distance(_Timeline.StartPos, _Timeline.EndPos) * MoveSpeed;
-		}
-		if (state == DummyState.Idle)
-		{
-			_Timeline.EndTime = Time.time + 5f;
-		}
-		if (state == DummyState.Mining)
-		{
-			_Timeline.EndTime = Time.time + 3f;
+			_PositionTimeline.AddKeyframe(endTime, targetPos);
+			_AntStateTimeline.AddKeyframe(endTime, state);
 		}
 	}
 
-	DummyState GetRandomState()
+	[ContextMenu("prnt")]
+	void PrintStateTimeline()
+	{
+		Debug.Log("Current: " + _AntStateTimeline.GetValue(Time.time) + " Next: " + _AntStateTimeline.GetNextValue(Time.time) + " Time: " + Time.time);
+	}
+	
+
+	GameEntity.States GetRandomState()
 	{
 		int random = Random.Range(0, 3);
 		if (random == 0)
-			return DummyState.Idle;
+			return GameEntity.States.Idle;
 		else if (random == 1)
-			return DummyState.Movement;
+			return GameEntity.States.Move;
 		else 
-			return DummyState.Mining;
+			return GameEntity.States.Mine;
 	}
 
 	// Update is called once per frame
@@ -93,10 +89,10 @@ public class DummyPlayer : MonoBehaviour
 		if (UseTimeline)
 		{
 			// New timeline
-			if (Time.time > _Timeline.EndTime)
-				SetTimeline(GetRandomState());
+			if (_AntStateTimeline.GetNextKeyTime(Time.time) < Time.time)
+				AddKeyframe(GetRandomState());
 
-			DummyState = _Timeline.DummyState;
+			CurrentState = _AntStateTimeline.GetValue(Time.time);
 		}
 		else
 		{

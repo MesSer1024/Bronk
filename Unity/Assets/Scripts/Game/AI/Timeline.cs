@@ -7,6 +7,11 @@ public struct KeyframeItem<T>
 {
 	public T Value;
 	public float Time;
+	public KeyframeItem(T value, float time)
+	{
+		Value = value;
+		Time = time;
+	}
 }
 
 public class Timeline<Keyframe, Value>
@@ -41,7 +46,14 @@ public class Timeline<Keyframe, Value>
 				return _InterpolationFunc (value1, value2, t);
 			}
 		}
-		return _InterpolationFunc (_Keyframes [0].Value, default(Keyframe), 0);
+		return _InterpolationFunc (default(Keyframe), _Keyframes [_Keyframes.Count - 1].Value, 1);
+	}
+
+	public void AddKeyframe(float time, Keyframe frame)
+	{
+		if (_Keyframes.Count > 0 && _Keyframes[_Keyframes.Count - 1].Time > time)
+			throw new ArgumentException("time later than last keyframe");
+		_Keyframes.Add(new KeyframeItem<Keyframe>(frame, time));
 	}
 
 	public float GetNextKeyTime (float time)

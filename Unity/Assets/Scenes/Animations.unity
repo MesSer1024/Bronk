@@ -316,11 +316,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 5
+  MoveSpeed: 2.61999989
   CircleSpeed: 1
   CircleSize: 5
   UseTimeline: 1
-  DummyState: 0
+  CurrentState: 0
 --- !u!114 &455923543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -932,11 +932,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 10
+  MoveSpeed: 2.61999989
   CircleSpeed: 1.5
   CircleSize: 9
   UseTimeline: 1
-  DummyState: 0
+  CurrentState: 0
 --- !u!1 &1121047922
 GameObject:
   m_ObjectHideFlags: 0
@@ -1247,11 +1247,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 10
+  MoveSpeed: 2.61999989
   CircleSpeed: 2
   CircleSize: 7
   UseTimeline: 1
-  DummyState: 0
+  CurrentState: 0
 --- !u!1 &1289897751
 GameObject:
   m_ObjectHideFlags: 0
@@ -1434,11 +1434,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 10
+  MoveSpeed: 2.61999989
   CircleSpeed: .200000003
   CircleSize: 5
   UseTimeline: 1
-  DummyState: 0
+  CurrentState: 0
 --- !u!95 &1423086848
 Animator:
   serializedVersion: 2
@@ -1600,11 +1600,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 10
+  MoveSpeed: 2.61999989
   CircleSpeed: 2
   CircleSize: 7
   UseTimeline: 1
-  DummyState: 0
+  CurrentState: 0
 --- !u!1 &1686942019
 GameObject:
   m_ObjectHideFlags: 0

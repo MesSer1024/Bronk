@@ -283,7 +283,7 @@ State:
   m_ObjectHideFlags: 3
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: AttackSlash
+  m_Name: Mine
   m_Speed: 1
   m_CycleOffset: 0
   m_Motions:
@@ -358,11 +358,6 @@ StateMachine:
   - {x: 384, y: 108, z: 0}
   m_OrderedTransitions:
     data:
-      first: {fileID: 110233539}
-      second:
-      - {fileID: 110125308}
-      - {fileID: 110151651}
-    data:
       first: {fileID: 110281374}
       second:
       - {fileID: 110100000}
@@ -370,6 +365,11 @@ StateMachine:
       first: {fileID: 110200000}
       second:
       - {fileID: 110183656}
+    data:
+      first: {fileID: 110233539}
+      second:
+      - {fileID: 110125308}
+      - {fileID: 110151651}
     data:
       first: {fileID: 110200627}
       second:

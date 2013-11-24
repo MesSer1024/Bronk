@@ -1,20 +1,15 @@
 ﻿using UnityEngine;
+using Bronk;
 using System.Collections;
 
-public enum AntState
+public class AntStateTimeline : Timeline<GameEntity.States, GameEntity.States>
 {
-	Idle,
-	Walking,
-	Mining,
-}
-public class AntStateTimeline : Timeline<AntState, AntState>
-{
-	public AntStateTimeline Create ()
+	public static AntStateTimeline Create ()
 	{
-		return Create <AntStateTimeline, AntState, AntState>(Interpolate);
+		return Create <AntStateTimeline, GameEntity.States, GameEntity.States>(Interpolate);
 	}
 
-	private static AntState Interpolate (AntState v1, AntState v2, float t)
+	private static GameEntity.States Interpolate (GameEntity.States v1, GameEntity.States v2, float t)
 	{
 		if (t == 1)
 			return v2;
