@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿﻿using UnityEngine;
 using System.Collections.Generic;
 
 namespace Bronk
@@ -39,7 +39,7 @@ namespace Bronk
 			int endZ;
 			GenerateStartArea (out startX, out startZ, out endX, out endZ);
 			Vector2 startAreaPos = new Vector2((startX + endX) / 2, (startZ + endZ) / 2);
-			GameCamera gameCam = Camera.mainCamera.GetComponent<GameCamera> ();
+			GameCamera gameCam = Camera.main.GetComponent<GameCamera> ();
 			if (gameCam != null)
 				gameCam.SetPosition (startAreaPos);
 
