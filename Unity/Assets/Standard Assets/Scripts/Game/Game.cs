@@ -5,8 +5,8 @@ namespace Bronk
 {
 	public static class Game
 	{
-        internal static GameWorld World { get; private set; }
-        internal static AIMain AI { get; private set; }
+        public static GameWorld World { get; private set; }
+        public static AIMain AI { get; private set; }
 
 		public enum States 
 		{
@@ -20,13 +20,27 @@ namespace Bronk
 		public static States state {
 			get;
 			set;
-		}
+        }
 
+        public static List<CubeLogic> getCubesBetween(CubeLogic cube1, CubeLogic cube2)
+        {
             var items = new List<CubeLogic>();
 
-        return items;
-    }
+            return items;
+        }
 
-        }	}
+        public static void init()
+        {
+            Game.World = new GameWorld();
+            Game.World.init();
+            AI = new AIMain();
+            AI.createAnt();
+        }
+
+        public static void update(float delta)
+        {
+            AI.update(delta);
+        }
+    }
 }
 

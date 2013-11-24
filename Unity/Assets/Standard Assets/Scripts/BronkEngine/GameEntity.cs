@@ -6,9 +6,9 @@ using UnityEngine;
 
 namespace Bronk
 {
-	class GameEntity
+    public class GameEntity
 	{
-        internal enum States
+        public enum States
         {
             Removable,
             Idle,

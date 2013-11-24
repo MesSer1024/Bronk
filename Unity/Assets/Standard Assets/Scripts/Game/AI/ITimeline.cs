@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Bronk
 {
-	interface ITimeline
+    public interface ITimeline
 	{
         float StartTime { get; }
         float EndTime { get; }

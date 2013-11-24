@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Bronk
 {
-	class AIMain : IMessageListener
+    public class AIMain : IMessageListener
 	{
         private List<Ant> _ants = new List<Ant>();
         private Queue<MiningTimeline> _jobs = new Queue<MiningTimeline>();
