@@ -17,7 +17,6 @@ public class DummyPlayer : MonoBehaviour
 	public bool RandomActions;
 	private bool _ReachedTarget;
 	private bool _PlayedAnimation;
-	private int _Animation;
 
 	void Awake()
 	{
@@ -34,27 +33,36 @@ public class DummyPlayer : MonoBehaviour
 			if (_ActionTimer < 0)
 			{
 				_TargetPos = new Vector3(Random.Range(-10f, 10f), 0, Random.Range(-10f, 10f));
-				_ActionTimer = Random.Range(2f, 5f);
 				_ReachedTarget = false;
 				_PlayedAnimation = false;
+				_ActionTimer = 15f;
 			}
 			if (_ReachedTarget == false)
-			{				
+			{	
 				Vector3 newPosition = Vector3.MoveTowards(transform.position, _TargetPos, Time.deltaTime * MoveSpeed);
 				if (newPosition == _LastPosition)
 					_ReachedTarget = true;
 				_Controller.Velocity = (newPosition - _LastPosition) / Time.deltaTime;
 				_LastPosition = newPosition;
 				transform.position = newPosition;
-
-
 			}
 			else
 			{
 				if (_PlayedAnimation == false)
-				{
+				{					
+					AnimationEnum animEnum = AnimationEnum.Laugh;
+					int anim = Random.Range(0, 3);
+					if (anim == 0)
+						animEnum = AnimationEnum.Enraged;
+					if (anim == 1)
+						animEnum = AnimationEnum.Laugh;
+					if (anim == 2)
+						animEnum = AnimationEnum.AttackSlash;
+
+					_Controller.PlayAnimation(animEnum);
+					
+					_ActionTimer = Animations.GetAnimationData(animEnum).AnimationLenght;
 					_PlayedAnimation = true;
-					_Controller.PlayAnimation(AnimationEnum.Laugh);
 				}
 			}
 

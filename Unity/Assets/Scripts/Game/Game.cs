@@ -35,7 +35,6 @@ namespace Bronk
             Game.World.init();
             AI = new AIMain();
             var ant = AI.createAnt();
-            
         }
 
         public static void update(float delta)

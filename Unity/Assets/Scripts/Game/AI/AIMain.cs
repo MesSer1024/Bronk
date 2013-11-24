@@ -12,6 +12,11 @@ namespace Bronk
         private Queue<MiningTimeline> _jobs = new Queue<MiningTimeline>();
         private List<CharacterAnimationController> _antViews = new List<CharacterAnimationController>();
 
+        public AIMain()
+        {
+            MessageManager.AddListener(this);
+        }
+
         public Ant createAnt(int type = 1)
         {
             Ant ant;
@@ -51,6 +56,7 @@ namespace Bronk
                 var cube = msg.getCube();
                 foreach (var ant in _ants)
                 {
+                    Logger.Log("Applying stuff to ant!");
                     float dt = Time.time + 1.5f;
                     var walk = new WalkTimeline(ant.Position, Game.World.getCubePosition(cube.Index), Time.time, dt, ant);
                     var mine = new MiningTimeline(Game.World.getCubeData(cube.Index), dt, dt + 3);
