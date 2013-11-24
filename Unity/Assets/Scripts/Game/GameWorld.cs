@@ -15,6 +15,7 @@ namespace Bronk
 			Dirt,
 			Stone,
 			Food,
+			Gold,
 		}
 
 		public List<CubeData> Cubes { get { return _data; } }
@@ -29,6 +30,8 @@ namespace Bronk
 		public void init ()
 		{
 			_data.Clear ();
+
+			Random.seed = "L33T HAXXOR".GetHashCode ();
 
 			int startPosIndex = Random.Range (0, SIZE_X * SIZE_Z);
 
@@ -48,7 +51,7 @@ namespace Bronk
 			for (int i = 0; i < lowResValues.Length; i++) {
 				int x = i % lowResSizeX;
 				int y = i / lowResSizeZ;
-				lowResValues [i] = (SimplexNoise.Noise.Generate (x, y) + 1) * 0.5f;
+				lowResValues [i] = Random.Range (0, 1f);
 			}
 
 			for (int i = 0; i < SIZE_X * SIZE_Z; ++i) {
@@ -83,7 +86,7 @@ namespace Bronk
 					} else if (value < 0.75) {
 						t = BlockType.Dirt;
 					} else if (value < 0.90) {
-						t = BlockType.Stone;
+						t = BlockType.Gold;
 					} else {
 						t = BlockType.Food;
 					}

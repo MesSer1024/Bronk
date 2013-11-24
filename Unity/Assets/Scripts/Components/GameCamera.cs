@@ -4,16 +4,17 @@ using Bronk;
 
 public class GameCamera : MonoBehaviour
 {
-	public Vector3 Offset = new Vector3 (0, 15, -5);
+	public Vector3 Offset = new Vector3 (-3, 7.5f, -3);
 	public Vector2 Position2D;
 	public float StopTimer = 0.5f;
-	public float Sensitivity = 0.01f;
+	public float Sensitivity = 0.005f;
 	public float FingerDeltaThreshold = 600;
 	private CubeLogic _SemiHighlightEntity;
 	private Vector2 _Velocity;
 	private float _TapStartTime;
 	private float _LastPanTime;
 	private float _LastPanTimePCX;
+	private bool _IsTapping = false;
 
 	void Awake ()
 	{
@@ -29,7 +30,10 @@ public class GameCamera : MonoBehaviour
 		UpdatePCInput ();
 		#endif
 		if (_Velocity != Vector2.zero) {
-			Position2D += _Velocity * Sensitivity * Time.deltaTime;
+
+			Vector2 delta2D = _Velocity * Sensitivity * Time.deltaTime;
+			Vector3 transformedDelta = Quaternion.LookRotation (-new Vector3 (Offset.x, 0, Offset.z)) * new Vector3 (delta2D.x, 0, delta2D.y);
+			Position2D += new Vector2 (transformedDelta.x, transformedDelta.z);
 			UpdatePosition ();		
 		}
 	}
@@ -43,7 +47,7 @@ public class GameCamera : MonoBehaviour
 		if (Input.GetKey (KeyCode.RightArrow) || Input.GetKey (KeyCode.D)) {
 			_LastPanTimePCX = Time.time;
 			_Velocity.x = Screen.width / Sensitivity / 30;
-		} else if (_Velocity.y != 0) {
+		} else if (_Velocity.x != 0) {
 			_Velocity.x = Mathf.Lerp (_Velocity.x, 0, Mathf.Clamp01 ((Time.time - _LastPanTimePCX) / StopTimer));
 		}
 
@@ -84,6 +88,7 @@ public class GameCamera : MonoBehaviour
 	void UpdatePadInput ()
 	{
 		if (Input.touchCount == 2) {
+			_IsTapping = false;
 			if (_SemiHighlightEntity != null) {
 				MessageManager.ExecuteMessage (new CubeSemiSelectedMessage ("cube", _SemiHighlightEntity, false));
 				_SemiHighlightEntity = null;
@@ -105,7 +110,9 @@ public class GameCamera : MonoBehaviour
 			}
 		} else if (Input.touchCount == 1) {
 			Touch finger = Input.touches [0];
-			if (finger.phase == TouchPhase.Began || finger.phase == TouchPhase.Moved) {
+			if (finger.phase == TouchPhase.Began)
+				_IsTapping = true;
+			if (_IsTapping && (finger.phase == TouchPhase.Began || finger.phase == TouchPhase.Moved)) {
 				_Velocity = Vector2.zero;
 				Ray ray = camera.ScreenPointToRay (finger.position);
 
@@ -134,11 +141,11 @@ public class GameCamera : MonoBehaviour
 					MessageManager.ExecuteMessage (new CubeSemiSelectedMessage ("cube", _SemiHighlightEntity, true));
 				}
 
-			} else if (finger.phase == TouchPhase.Ended) {
+			} else if (_IsTapping && finger.phase == TouchPhase.Ended) {
 				if (_SemiHighlightEntity != null) {
 					MessageManager.ExecuteMessage (new CubeSemiSelectedMessage ("cube", _SemiHighlightEntity, false));
 					_SemiHighlightEntity = null;
-					if (Time.time - _TapStartTime > 0.07f) {
+					if (Time.time - _TapStartTime > 0.003f) {
 						Ray ray = camera.ScreenPointToRay (finger.position);
 
 						RaycastHit[] hits = Physics.SphereCastAll (ray, 0.5f);
@@ -164,6 +171,7 @@ public class GameCamera : MonoBehaviour
 				}
 			}
 		} else if (Input.touchCount == 0) {
+			_IsTapping = false;
 			if (_SemiHighlightEntity != null) {
 				MessageManager.ExecuteMessage (new CubeSemiSelectedMessage ("cube", _SemiHighlightEntity, false));
 				_SemiHighlightEntity = null;
