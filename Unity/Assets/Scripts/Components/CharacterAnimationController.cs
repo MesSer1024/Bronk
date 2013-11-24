@@ -16,6 +16,8 @@ public class CharacterAnimationController : MonoBehaviour
 	private AnimatorStateInfo _CurrentStateInfo;
 	private AnimatorStateInfo _NextStateInfo;
 
+	private static ParticleSystem _MiningParticleSystem;
+
 	void Awake () 
 	{
 		_Animator = GetComponent<Animator>();
@@ -72,6 +74,17 @@ public class CharacterAnimationController : MonoBehaviour
 		float normalizedTime = (stateTime / Animations.Get(animationEnum).Lenght) % 1f;
 		_Animator.CrossFade(Animations.Get(animationEnum).Hash, Mathf.Max(0f, fadeTime - normalizedTime), 0, normalizedTime);
         //Debug.Log("startTime: " +stateTime + " normalized: " + normalizedTime + " fade: " + fadeTime + "  " + Time.time);
+	}
+
+	void DoEffect(int id)
+	{
+		if (_MiningParticleSystem == null)
+			_MiningParticleSystem = Instantiate(Resources.Load<ParticleSystem>("ParticleEffects/MineImpact")) as ParticleSystem;
+
+		_MiningParticleSystem.transform.position = transform.position + Vector3.up * 2;
+		_MiningParticleSystem.Emit(15);
+		Debug.Log("Do Effect! " + id);
+		
 	}
 
 	void DoIdle()
