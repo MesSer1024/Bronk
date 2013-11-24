@@ -44,5 +44,15 @@ namespace Bronk {
                 _data.Add(cube);
             }
         }
+
+        public Vector3 getCubePosition(int index)
+        {
+            return new Vector3(index % SIZE_X, 0, (int)(index / SIZE_Z));
+        }
+
+        public CubeData getCubeData(int index)
+        {
+            return _data[index];
+        }
     }
 }

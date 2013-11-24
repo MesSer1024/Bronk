@@ -5,7 +5,8 @@ namespace Bronk
 {
 	public static class Game
 	{
-        internal static GameWorld World { get; set; }
+        internal static GameWorld World { get; private set; }
+        internal static AIMain AI { get; private set; }
 
 		public enum States 
 		{
@@ -31,14 +32,13 @@ namespace Bronk
         {
             Game.World = new GameWorld();
             Game.World.init();
+            AI = new AIMain();
+            AI.createAnt();
         }
 
-        /**
-         * update loop for every model used in game
-         * */
         public static void update(float delta)
         {
-
+            AI.update(delta);
         }
 	}
 }
