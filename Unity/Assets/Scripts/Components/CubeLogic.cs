@@ -24,12 +24,9 @@ public class CubeLogic : MonoBehaviour
 			_InitializedMaterials = true;
 
 			_DefaultMaterial = defaultMaterial;
-			_DirtMaterial = new Material (defaultMaterial);
-			_DirtMaterial.color = new Color (0.545f, 0.271f, 0.075f);
-			_StoneMaterial = new Material (defaultMaterial);
-			_StoneMaterial.color = new Color (0.827f, 0.827f, 0.827f);
-			_FoodMaterial = new Material (defaultMaterial);
-			_FoodMaterial.color = new Color (0.827f, 0.0f, 0.2f);
+			_DirtMaterial = Resources.Load<Material>("Materials/DirtMaterial") as Material;
+			_StoneMaterial = Resources.Load<Material>("Materials/GoldMaterial") as Material;
+			_FoodMaterial = Resources.Load<Material>("Materials/FoodMaterial") as Material;
 			_SelectedMaterial = new Material (defaultMaterial);
 			_SelectedMaterial.color = Color.green;
 			_SemiSelectedMaterial = new Material (defaultMaterial);
@@ -58,19 +55,19 @@ public class CubeLogic : MonoBehaviour
 		} else {
 			switch (_data.Type) {
 			case GameWorld.BlockType.DirtGround:
-				gameObject.renderer.enabled = false;
+				gameObject.renderer.sharedMaterial = _DirtMaterial;
 				break;
 			case GameWorld.BlockType.Dirt:
 				gameObject.renderer.sharedMaterial = _DirtMaterial;
 				break;
-			case GameWorld.BlockType.Stone:
+			case GameWorld.BlockType.Gold:
 				gameObject.renderer.sharedMaterial = _StoneMaterial;
 				break;
 			case GameWorld.BlockType.Food:
 				gameObject.renderer.sharedMaterial = _FoodMaterial;
 				break;
 			default: 
-				gameObject.renderer.sharedMaterial = _DefaultMaterial;
+				gameObject.renderer.sharedMaterial = _DirtMaterial;
 				break;
 			}
 		}
