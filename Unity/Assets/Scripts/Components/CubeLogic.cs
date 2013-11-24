@@ -7,6 +7,7 @@ public class CubeLogic : MonoBehaviour
 	private static bool _InitializedMaterials;
 	private static Material _DirtMaterial;
 	private static Material _StoneMaterial;
+	private static Material _FoodMaterial;
 	private static Material _DefaultMaterial;
 	private static Material _SelectedMaterial;
 	private static Material _SemiSelectedMaterial;
@@ -27,6 +28,8 @@ public class CubeLogic : MonoBehaviour
 			_DirtMaterial.color = new Color (0.545f, 0.271f, 0.075f);
 			_StoneMaterial = new Material (defaultMaterial);
 			_StoneMaterial.color = new Color (0.827f, 0.827f, 0.827f);
+			_FoodMaterial = new Material (defaultMaterial);
+			_FoodMaterial.color = new Color (0.827f, 0.0f, 0.2f);
 			_SelectedMaterial = new Material (defaultMaterial);
 			_SelectedMaterial.color = Color.green;
 			_SemiSelectedMaterial = new Material (defaultMaterial);
@@ -48,13 +51,13 @@ public class CubeLogic : MonoBehaviour
 	void UpdateMaterial ()
 	{
 		gameObject.renderer.enabled = true;
-		if (selected && _data.Type != GameWorld.BlockType.None) {
+		if (selected && _data.IsGround() == false) {
 			gameObject.renderer.sharedMaterial = _SelectedMaterial;
-		} else if (_semiSelected && _data.Type != GameWorld.BlockType.None) {
+		} else if (_semiSelected && _data.IsGround() == false) {
 			gameObject.renderer.sharedMaterial = _SemiSelectedMaterial;
 		} else {
 			switch (_data.Type) {
-			case GameWorld.BlockType.None:
+			case GameWorld.BlockType.DirtGround:
 				gameObject.renderer.enabled = false;
 				break;
 			case GameWorld.BlockType.Dirt:
@@ -62,6 +65,9 @@ public class CubeLogic : MonoBehaviour
 				break;
 			case GameWorld.BlockType.Stone:
 				gameObject.renderer.sharedMaterial = _StoneMaterial;
+				break;
+			case GameWorld.BlockType.Food:
+				gameObject.renderer.sharedMaterial = _FoodMaterial;
 				break;
 			default: 
 				gameObject.renderer.sharedMaterial = _DefaultMaterial;

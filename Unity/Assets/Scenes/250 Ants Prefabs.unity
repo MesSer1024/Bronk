@@ -144,6 +144,7 @@ GameObject:
   - 4: {fileID: 21709317}
   - 95: {fileID: 21709316}
   - 114: {fileID: 21709315}
+  - 114: {fileID: 21709318}
   m_Layer: 0
   m_Name: AntWorker
   m_TagString: Untagged
@@ -192,6 +193,22 @@ Transform:
   - {fileID: 496893177}
   - {fileID: 1086029381}
   m_Father: {fileID: 0}
+--- !u!114 &21709318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 21709314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &25554263
 GameObject:
   m_ObjectHideFlags: 0
@@ -202,6 +219,7 @@ GameObject:
   - 4: {fileID: 25554264}
   - 95: {fileID: 25554266}
   - 114: {fileID: 25554265}
+  - 114: {fileID: 25554267}
   m_Layer: 0
   m_Name: AntKing
   m_TagString: Untagged
@@ -253,6 +271,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &25554267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 25554263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &33742286
 GameObject:
   m_ObjectHideFlags: 0
@@ -263,6 +297,7 @@ GameObject:
   - 4: {fileID: 33742287}
   - 95: {fileID: 33742289}
   - 114: {fileID: 33742288}
+  - 114: {fileID: 33742290}
   m_Layer: 0
   m_Name: AntMage
   m_TagString: Untagged
@@ -313,6 +348,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &33742290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 33742286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1001 &39062271
 Prefab:
   m_ObjectHideFlags: 0
@@ -539,6 +590,7 @@ GameObject:
   - 4: {fileID: 50236182}
   - 95: {fileID: 50236184}
   - 114: {fileID: 50236183}
+  - 114: {fileID: 50236185}
   m_Layer: 0
   m_Name: AntWorker
   m_TagString: Untagged
@@ -587,6 +639,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &50236185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 50236181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1001 &54311001
 Prefab:
   m_ObjectHideFlags: 0
@@ -1317,6 +1385,7 @@ GameObject:
   - 4: {fileID: 105992836}
   - 95: {fileID: 105992838}
   - 114: {fileID: 105992837}
+  - 114: {fileID: 105992839}
   m_Layer: 0
   m_Name: AntArcher
   m_TagString: Untagged
@@ -1366,6 +1435,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &105992839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 105992835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &107369108
 GameObject:
   m_ObjectHideFlags: 0
@@ -1636,6 +1721,7 @@ GameObject:
   - 4: {fileID: 115947800}
   - 95: {fileID: 115947802}
   - 114: {fileID: 115947801}
+  - 114: {fileID: 115947803}
   m_Layer: 0
   m_Name: AntMage
   m_TagString: Untagged
@@ -1686,6 +1772,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &115947803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 115947799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &116712561
 GameObject:
   m_ObjectHideFlags: 0
@@ -2274,6 +2376,7 @@ GameObject:
   - 4: {fileID: 144487076}
   - 95: {fileID: 144487078}
   - 114: {fileID: 144487077}
+  - 114: {fileID: 144487079}
   m_Layer: 0
   m_Name: AntMage
   m_TagString: Untagged
@@ -2324,6 +2427,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &144487079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 144487075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &145001498
 GameObject:
   m_ObjectHideFlags: 0
@@ -2634,6 +2753,7 @@ GameObject:
   - 4: {fileID: 158653778}
   - 95: {fileID: 158653780}
   - 114: {fileID: 158653779}
+  - 114: {fileID: 158653781}
   m_Layer: 0
   m_Name: AntWorker
   m_TagString: Untagged
@@ -2682,6 +2802,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &158653781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 158653777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &159567336
 GameObject:
   m_ObjectHideFlags: 0
@@ -2990,6 +3126,7 @@ GameObject:
   - 4: {fileID: 179438951}
   - 95: {fileID: 179438953}
   - 114: {fileID: 179438952}
+  - 114: {fileID: 179438954}
   m_Layer: 0
   m_Name: AntWarrior
   m_TagString: Untagged
@@ -3042,6 +3179,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &179438954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 179438950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &179545410
 GameObject:
   m_ObjectHideFlags: 0
@@ -3110,6 +3263,7 @@ GameObject:
   - 4: {fileID: 181552146}
   - 95: {fileID: 181552148}
   - 114: {fileID: 181552147}
+  - 114: {fileID: 181552149}
   m_Layer: 0
   m_Name: AntArcher
   m_TagString: Untagged
@@ -3159,6 +3313,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &181552149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 181552145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &181650316
 GameObject:
   m_ObjectHideFlags: 0
@@ -3229,6 +3399,7 @@ GameObject:
   - 4: {fileID: 183864150}
   - 95: {fileID: 183864149}
   - 114: {fileID: 183864148}
+  - 114: {fileID: 183864151}
   m_Layer: 0
   m_Name: AntKing
   m_TagString: Untagged
@@ -3280,6 +3451,22 @@ Transform:
   - {fileID: 544124319}
   - {fileID: 2088060510}
   m_Father: {fileID: 0}
+--- !u!114 &183864151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 183864147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &188385068
 GameObject:
   m_ObjectHideFlags: 0
@@ -3950,6 +4137,7 @@ GameObject:
   - 4: {fileID: 203834817}
   - 95: {fileID: 203834819}
   - 114: {fileID: 203834818}
+  - 114: {fileID: 203834820}
   m_Layer: 0
   m_Name: AntWarrior
   m_TagString: Untagged
@@ -4002,6 +4190,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &203834820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 203834816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &216302549
 GameObject:
   m_ObjectHideFlags: 0
@@ -4170,6 +4374,7 @@ GameObject:
   - 4: {fileID: 224082418}
   - 95: {fileID: 224082417}
   - 114: {fileID: 224082416}
+  - 114: {fileID: 224082419}
   m_Layer: 0
   m_Name: AntWorker
   m_TagString: Untagged
@@ -4218,6 +4423,22 @@ Transform:
   - {fileID: 1931535330}
   - {fileID: 2057795863}
   m_Father: {fileID: 0}
+--- !u!114 &224082419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 224082415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &232469960
 GameObject:
   m_ObjectHideFlags: 0
@@ -4528,6 +4749,7 @@ GameObject:
   - 4: {fileID: 241504657}
   - 95: {fileID: 241504659}
   - 114: {fileID: 241504658}
+  - 114: {fileID: 241504660}
   m_Layer: 0
   m_Name: AntMage
   m_TagString: Untagged
@@ -4578,6 +4800,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &241504660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 241504656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &246007643
 GameObject:
   m_ObjectHideFlags: 0
@@ -5046,6 +5284,7 @@ GameObject:
   - 4: {fileID: 269768153}
   - 95: {fileID: 269768152}
   - 114: {fileID: 269768151}
+  - 114: {fileID: 269768154}
   m_Layer: 0
   m_Name: AntWarrior
   m_TagString: Untagged
@@ -5098,6 +5337,22 @@ Transform:
   - {fileID: 246007644}
   - {fileID: 1045676159}
   m_Father: {fileID: 0}
+--- !u!114 &269768154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 269768150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &271101284
 GameObject:
   m_ObjectHideFlags: 0
@@ -5348,6 +5603,7 @@ GameObject:
   - 4: {fileID: 286443790}
   - 95: {fileID: 286443792}
   - 114: {fileID: 286443791}
+  - 114: {fileID: 286443793}
   m_Layer: 0
   m_Name: AntMage
   m_TagString: Untagged
@@ -5398,6 +5654,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &286443793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 286443789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &287822739
 GameObject:
   m_ObjectHideFlags: 0
@@ -5568,6 +5840,7 @@ GameObject:
   - 4: {fileID: 297057262}
   - 95: {fileID: 297057264}
   - 114: {fileID: 297057263}
+  - 114: {fileID: 297057265}
   m_Layer: 0
   m_Name: AntArcher
   m_TagString: Untagged
@@ -5617,6 +5890,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &297057265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 297057261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &302467833
 GameObject:
   m_ObjectHideFlags: 0
@@ -5943,6 +6232,7 @@ GameObject:
   - 4: {fileID: 320730212}
   - 95: {fileID: 320730211}
   - 114: {fileID: 320730210}
+  - 114: {fileID: 320730213}
   m_Layer: 0
   m_Name: AntKing
   m_TagString: Untagged
@@ -5994,6 +6284,22 @@ Transform:
   - {fileID: 2147006392}
   - {fileID: 2008959829}
   m_Father: {fileID: 0}
+--- !u!114 &320730213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 320730209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &321030740
 GameObject:
   m_ObjectHideFlags: 0
@@ -7636,6 +7942,7 @@ GameObject:
   - 4: {fileID: 390761849}
   - 95: {fileID: 390761851}
   - 114: {fileID: 390761850}
+  - 114: {fileID: 390761852}
   m_Layer: 0
   m_Name: AntArcher
   m_TagString: Untagged
@@ -7685,6 +7992,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &390761852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 390761848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &391042998
 GameObject:
   m_ObjectHideFlags: 0
@@ -8133,6 +8456,7 @@ GameObject:
   - 4: {fileID: 415845653}
   - 95: {fileID: 415845655}
   - 114: {fileID: 415845654}
+  - 114: {fileID: 415845656}
   m_Layer: 0
   m_Name: AntArcher
   m_TagString: Untagged
@@ -8182,6 +8506,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &415845656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 415845652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &418360118
 GameObject:
   m_ObjectHideFlags: 0
@@ -8728,6 +9068,7 @@ GameObject:
   - 4: {fileID: 438393007}
   - 95: {fileID: 438393006}
   - 114: {fileID: 438393005}
+  - 114: {fileID: 438393008}
   m_Layer: 0
   m_Name: AntWorker
   m_TagString: Untagged
@@ -8776,6 +9117,22 @@ Transform:
   - {fileID: 513508786}
   - {fileID: 2103506781}
   m_Father: {fileID: 0}
+--- !u!114 &438393008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 438393004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1001 &442348472
 Prefab:
   m_ObjectHideFlags: 0
@@ -8926,6 +9283,7 @@ GameObject:
   - 4: {fileID: 458776535}
   - 95: {fileID: 458776537}
   - 114: {fileID: 458776536}
+  - 114: {fileID: 458776538}
   m_Layer: 0
   m_Name: AntArcher
   m_TagString: Untagged
@@ -8975,6 +9333,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &458776538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 458776534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &459592634
 GameObject:
   m_ObjectHideFlags: 0
@@ -9899,6 +10273,7 @@ GameObject:
   - 4: {fileID: 509690827}
   - 95: {fileID: 509690829}
   - 114: {fileID: 509690828}
+  - 114: {fileID: 509690830}
   m_Layer: 0
   m_Name: AntKing
   m_TagString: Untagged
@@ -9950,6 +10325,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &509690830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 509690826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &510549726
 GameObject:
   m_ObjectHideFlags: 0
@@ -10020,6 +10411,7 @@ GameObject:
   - 4: {fileID: 510712409}
   - 95: {fileID: 510712408}
   - 114: {fileID: 510712407}
+  - 114: {fileID: 510712410}
   m_Layer: 0
   m_Name: AntArcher
   m_TagString: Untagged
@@ -10069,6 +10461,22 @@ Transform:
   - {fileID: 88604574}
   - {fileID: 1752494863}
   m_Father: {fileID: 0}
+--- !u!114 &510712410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 510712406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &511177350
 GameObject:
   m_ObjectHideFlags: 0
@@ -10197,6 +10605,7 @@ GameObject:
   - 4: {fileID: 514387432}
   - 95: {fileID: 514387434}
   - 114: {fileID: 514387433}
+  - 114: {fileID: 514387435}
   m_Layer: 0
   m_Name: AntKing
   m_TagString: Untagged
@@ -10248,6 +10657,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &514387435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 514387431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &514529166
 GameObject:
   m_ObjectHideFlags: 0
@@ -10258,6 +10683,7 @@ GameObject:
   - 4: {fileID: 514529167}
   - 95: {fileID: 514529169}
   - 114: {fileID: 514529168}
+  - 114: {fileID: 514529170}
   m_Layer: 0
   m_Name: AntKing
   m_TagString: Untagged
@@ -10309,6 +10735,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &514529170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 514529166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &516386215
 GameObject:
   m_ObjectHideFlags: 0
@@ -10319,6 +10761,7 @@ GameObject:
   - 4: {fileID: 516386216}
   - 95: {fileID: 516386218}
   - 114: {fileID: 516386217}
+  - 114: {fileID: 516386219}
   m_Layer: 0
   m_Name: AntArcher
   m_TagString: Untagged
@@ -10368,6 +10811,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &516386219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 516386215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &517004702
 GameObject:
   m_ObjectHideFlags: 0
@@ -10378,6 +10837,7 @@ GameObject:
   - 4: {fileID: 517004705}
   - 95: {fileID: 517004704}
   - 114: {fileID: 517004703}
+  - 114: {fileID: 517004706}
   m_Layer: 0
   m_Name: AntArcher
   m_TagString: Untagged
@@ -10427,6 +10887,22 @@ Transform:
   - {fileID: 1384067506}
   - {fileID: 1619443049}
   m_Father: {fileID: 0}
+--- !u!114 &517004706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 517004702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &517735580
 GameObject:
   m_ObjectHideFlags: 0
@@ -11077,6 +11553,7 @@ GameObject:
   - 4: {fileID: 548227909}
   - 95: {fileID: 548227911}
   - 114: {fileID: 548227910}
+  - 114: {fileID: 548227912}
   m_Layer: 0
   m_Name: AntWorker
   m_TagString: Untagged
@@ -11125,6 +11602,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &548227912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 548227908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &550216877
 GameObject:
   m_ObjectHideFlags: 0
@@ -11535,6 +12028,7 @@ GameObject:
   - 4: {fileID: 570552501}
   - 95: {fileID: 570552503}
   - 114: {fileID: 570552502}
+  - 114: {fileID: 570552504}
   m_Layer: 0
   m_Name: AntMage
   m_TagString: Untagged
@@ -11585,6 +12079,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &570552504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 570552500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1001 &574448831
 Prefab:
   m_ObjectHideFlags: 0
@@ -11635,6 +12145,7 @@ GameObject:
   - 4: {fileID: 575234608}
   - 95: {fileID: 575234610}
   - 114: {fileID: 575234609}
+  - 114: {fileID: 575234611}
   m_Layer: 0
   m_Name: AntWarrior
   m_TagString: Untagged
@@ -11687,6 +12198,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &575234611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 575234607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &582391100
 GameObject:
   m_ObjectHideFlags: 0
@@ -11977,6 +12504,7 @@ GameObject:
   - 4: {fileID: 603188803}
   - 95: {fileID: 603188805}
   - 114: {fileID: 603188804}
+  - 114: {fileID: 603188806}
   m_Layer: 0
   m_Name: AntArcher
   m_TagString: Untagged
@@ -12026,6 +12554,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &603188806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 603188802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &608005209
 GameObject:
   m_ObjectHideFlags: 0
@@ -12314,6 +12858,7 @@ GameObject:
   - 4: {fileID: 625530009}
   - 95: {fileID: 625530008}
   - 114: {fileID: 625530007}
+  - 114: {fileID: 625530010}
   m_Layer: 0
   m_Name: AntArcher
   m_TagString: Untagged
@@ -12363,6 +12908,22 @@ Transform:
   - {fileID: 1803425129}
   - {fileID: 1840880183}
   m_Father: {fileID: 0}
+--- !u!114 &625530010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 625530006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &628547958
 GameObject:
   m_ObjectHideFlags: 0
@@ -12433,6 +12994,7 @@ GameObject:
   - 4: {fileID: 629257424}
   - 95: {fileID: 629257426}
   - 114: {fileID: 629257425}
+  - 114: {fileID: 629257427}
   m_Layer: 0
   m_Name: AntWarrior
   m_TagString: Untagged
@@ -12485,6 +13047,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &629257427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 629257423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1001 &630765037
 Prefab:
   m_ObjectHideFlags: 0
@@ -12595,6 +13173,7 @@ GameObject:
   - 4: {fileID: 634700616}
   - 95: {fileID: 634700618}
   - 114: {fileID: 634700617}
+  - 114: {fileID: 634700619}
   m_Layer: 0
   m_Name: AntMage
   m_TagString: Untagged
@@ -12645,6 +13224,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &634700619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 634700615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &638555713
 GameObject:
   m_ObjectHideFlags: 0
@@ -12655,6 +13250,7 @@ GameObject:
   - 4: {fileID: 638555716}
   - 95: {fileID: 638555715}
   - 114: {fileID: 638555714}
+  - 114: {fileID: 638555717}
   m_Layer: 0
   m_Name: AntWarrior
   m_TagString: Untagged
@@ -12707,6 +13303,22 @@ Transform:
   - {fileID: 838861252}
   - {fileID: 2083562565}
   m_Father: {fileID: 0}
+--- !u!114 &638555717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 638555713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1001 &639470392
 Prefab:
   m_ObjectHideFlags: 0
@@ -12915,6 +13527,7 @@ GameObject:
   - 4: {fileID: 650595020}
   - 95: {fileID: 650595019}
   - 114: {fileID: 650595018}
+  - 114: {fileID: 650595021}
   m_Layer: 0
   m_Name: AntWorker
   m_TagString: Untagged
@@ -12963,6 +13576,22 @@ Transform:
   - {fileID: 287822740}
   - {fileID: 1541801591}
   m_Father: {fileID: 0}
+--- !u!114 &650595021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 650595017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &655791683
 GameObject:
   m_ObjectHideFlags: 0
@@ -12973,6 +13602,7 @@ GameObject:
   - 4: {fileID: 655791684}
   - 95: {fileID: 655791686}
   - 114: {fileID: 655791685}
+  - 114: {fileID: 655791687}
   m_Layer: 0
   m_Name: AntWarrior
   m_TagString: Untagged
@@ -13025,6 +13655,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &655791687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 655791683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &659109259
 GameObject:
   m_ObjectHideFlags: 0
@@ -13213,6 +13859,7 @@ GameObject:
   - 4: {fileID: 664890818}
   - 95: {fileID: 664890820}
   - 114: {fileID: 664890819}
+  - 114: {fileID: 664890821}
   m_Layer: 0
   m_Name: AntArcher
   m_TagString: Untagged
@@ -13262,6 +13909,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &664890821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 664890817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &665258115
 GameObject:
   m_ObjectHideFlags: 0
@@ -13272,6 +13935,7 @@ GameObject:
   - 4: {fileID: 665258116}
   - 95: {fileID: 665258118}
   - 114: {fileID: 665258117}
+  - 114: {fileID: 665258119}
   m_Layer: 0
   m_Name: AntArcher
   m_TagString: Untagged
@@ -13321,6 +13985,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &665258119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 665258115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &672449062
 GameObject:
   m_ObjectHideFlags: 0
@@ -13633,6 +14313,8 @@ GameObject:
   - 92: {fileID: 688182712}
   - 124: {fileID: 688182711}
   - 81: {fileID: 688182710}
+  - 114: {fileID: 688182716}
+  - 114: {fileID: 688182715}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -13701,6 +14383,33 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+--- !u!114 &688182715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 688182709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88f2328e588924a78bb9bbed5bc775b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &688182716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 688182709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74e0c82900fbf45e4abd76b4388ee21f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Offset: {x: 0, y: 30, z: -5}
+  Position2D: {x: 0, y: 0}
+  StopTimer: .5
+  Sensitivity: .00999999978
+  FingerDeltaThreshold: 600
 --- !u!1 &689131412
 GameObject:
   m_ObjectHideFlags: 0
@@ -14383,6 +15092,7 @@ GameObject:
   - 4: {fileID: 728845790}
   - 95: {fileID: 728845792}
   - 114: {fileID: 728845791}
+  - 114: {fileID: 728845793}
   m_Layer: 0
   m_Name: AntKing
   m_TagString: Untagged
@@ -14434,6 +15144,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &728845793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 728845789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &730261544
 GameObject:
   m_ObjectHideFlags: 0
@@ -14662,6 +15388,7 @@ GameObject:
   - 4: {fileID: 739420836}
   - 95: {fileID: 739420838}
   - 114: {fileID: 739420837}
+  - 114: {fileID: 739420839}
   m_Layer: 0
   m_Name: AntArcher
   m_TagString: Untagged
@@ -14711,6 +15438,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &739420839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 739420835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1001 &740606857
 Prefab:
   m_ObjectHideFlags: 0
@@ -15039,6 +15782,7 @@ GameObject:
   - 4: {fileID: 758744569}
   - 95: {fileID: 758744571}
   - 114: {fileID: 758744570}
+  - 114: {fileID: 758744572}
   m_Layer: 0
   m_Name: AntKing
   m_TagString: Untagged
@@ -15090,6 +15834,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &758744572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 758744568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1001 &759376576
 Prefab:
   m_ObjectHideFlags: 0
@@ -15140,6 +15900,7 @@ GameObject:
   - 4: {fileID: 761531461}
   - 95: {fileID: 761531463}
   - 114: {fileID: 761531462}
+  - 114: {fileID: 761531464}
   m_Layer: 0
   m_Name: AntWorker
   m_TagString: Untagged
@@ -15188,6 +15949,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &761531464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 761531460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &764231092
 GameObject:
   m_ObjectHideFlags: 0
@@ -15198,6 +15975,7 @@ GameObject:
   - 4: {fileID: 764231093}
   - 95: {fileID: 764231095}
   - 114: {fileID: 764231094}
+  - 114: {fileID: 764231096}
   m_Layer: 0
   m_Name: AntMage
   m_TagString: Untagged
@@ -15248,6 +16026,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &764231096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 764231092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &765516664
 GameObject:
   m_ObjectHideFlags: 0
@@ -15756,6 +16550,7 @@ GameObject:
   - 4: {fileID: 794629797}
   - 95: {fileID: 794629799}
   - 114: {fileID: 794629798}
+  - 114: {fileID: 794629800}
   m_Layer: 0
   m_Name: AntKing
   m_TagString: Untagged
@@ -15807,6 +16602,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &794629800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 794629796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &800810753
 GameObject:
   m_ObjectHideFlags: 0
@@ -15877,6 +16688,7 @@ GameObject:
   - 4: {fileID: 800987560}
   - 95: {fileID: 800987562}
   - 114: {fileID: 800987561}
+  - 114: {fileID: 800987563}
   m_Layer: 0
   m_Name: AntArcher
   m_TagString: Untagged
@@ -15926,6 +16738,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &800987563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 800987559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1001 &810579017
 Prefab:
   m_ObjectHideFlags: 0
@@ -15976,6 +16804,7 @@ GameObject:
   - 4: {fileID: 820736316}
   - 95: {fileID: 820736315}
   - 114: {fileID: 820736314}
+  - 114: {fileID: 820736317}
   m_Layer: 0
   m_Name: AntWorker
   m_TagString: Untagged
@@ -16024,6 +16853,22 @@ Transform:
   - {fileID: 1091278317}
   - {fileID: 10257175}
   m_Father: {fileID: 0}
+--- !u!114 &820736317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 820736313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &827059233
 GameObject:
   m_ObjectHideFlags: 0
@@ -16392,6 +17237,7 @@ GameObject:
   - 4: {fileID: 839949691}
   - 95: {fileID: 839949693}
   - 114: {fileID: 839949692}
+  - 114: {fileID: 839949694}
   m_Layer: 0
   m_Name: AntArcher
   m_TagString: Untagged
@@ -16441,6 +17287,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &839949694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 839949690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &843131565
 GameObject:
   m_ObjectHideFlags: 0
@@ -16631,6 +17493,7 @@ GameObject:
   - 4: {fileID: 866762829}
   - 95: {fileID: 866762831}
   - 114: {fileID: 866762830}
+  - 114: {fileID: 866762832}
   m_Layer: 0
   m_Name: AntKing
   m_TagString: Untagged
@@ -16682,6 +17545,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &866762832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 866762828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &868407083
 GameObject:
   m_ObjectHideFlags: 0
@@ -17410,6 +18289,7 @@ GameObject:
   - 4: {fileID: 913100346}
   - 95: {fileID: 913100348}
   - 114: {fileID: 913100347}
+  - 114: {fileID: 913100349}
   m_Layer: 0
   m_Name: AntMage
   m_TagString: Untagged
@@ -17460,6 +18340,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &913100349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 913100345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1001 &917608154
 Prefab:
   m_ObjectHideFlags: 0
@@ -17630,6 +18526,7 @@ GameObject:
   - 4: {fileID: 923278640}
   - 95: {fileID: 923278642}
   - 114: {fileID: 923278641}
+  - 114: {fileID: 923278643}
   m_Layer: 0
   m_Name: AntWorker
   m_TagString: Untagged
@@ -17678,6 +18575,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &923278643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 923278639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1001 &923327649
 Prefab:
   m_ObjectHideFlags: 0
@@ -18208,6 +19121,7 @@ GameObject:
   - 4: {fileID: 940688739}
   - 95: {fileID: 940688741}
   - 114: {fileID: 940688740}
+  - 114: {fileID: 940688742}
   m_Layer: 0
   m_Name: AntWarrior
   m_TagString: Untagged
@@ -18260,6 +19174,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &940688742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 940688738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &942589644
 GameObject:
   m_ObjectHideFlags: 0
@@ -18908,6 +19838,7 @@ GameObject:
   - 4: {fileID: 963871598}
   - 95: {fileID: 963871600}
   - 114: {fileID: 963871599}
+  - 114: {fileID: 963871601}
   m_Layer: 0
   m_Name: AntKing
   m_TagString: Untagged
@@ -18959,6 +19890,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &963871601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 963871597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &965694125
 GameObject:
   m_ObjectHideFlags: 0
@@ -18969,6 +19916,7 @@ GameObject:
   - 4: {fileID: 965694128}
   - 95: {fileID: 965694127}
   - 114: {fileID: 965694126}
+  - 114: {fileID: 965694129}
   m_Layer: 0
   m_Name: AntWorker
   m_TagString: Untagged
@@ -19017,6 +19965,22 @@ Transform:
   - {fileID: 1794072434}
   - {fileID: 1818110656}
   m_Father: {fileID: 0}
+--- !u!114 &965694129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 965694125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &968150330
 GameObject:
   m_ObjectHideFlags: 0
@@ -19087,6 +20051,7 @@ GameObject:
   - 4: {fileID: 971475389}
   - 95: {fileID: 971475391}
   - 114: {fileID: 971475390}
+  - 114: {fileID: 971475392}
   m_Layer: 0
   m_Name: AntWorker
   m_TagString: Untagged
@@ -19135,6 +20100,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &971475392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 971475388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1001 &971544268
 Prefab:
   m_ObjectHideFlags: 0
@@ -19245,6 +20226,7 @@ GameObject:
   - 4: {fileID: 975963309}
   - 95: {fileID: 975963311}
   - 114: {fileID: 975963310}
+  - 114: {fileID: 975963312}
   m_Layer: 0
   m_Name: AntKing
   m_TagString: Untagged
@@ -19296,6 +20278,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &975963312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 975963308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &982836804
 GameObject:
   m_ObjectHideFlags: 0
@@ -19664,6 +20662,7 @@ GameObject:
   - 4: {fileID: 991726893}
   - 95: {fileID: 991726895}
   - 114: {fileID: 991726894}
+  - 114: {fileID: 991726896}
   m_Layer: 0
   m_Name: AntWarrior
   m_TagString: Untagged
@@ -19716,6 +20715,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &991726896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 991726892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &991997984
 GameObject:
   m_ObjectHideFlags: 0
@@ -20024,6 +21039,7 @@ GameObject:
   - 4: {fileID: 1016130113}
   - 95: {fileID: 1016130112}
   - 114: {fileID: 1016130111}
+  - 114: {fileID: 1016130114}
   m_Layer: 0
   m_Name: AntKing
   m_TagString: Untagged
@@ -20075,6 +21091,22 @@ Transform:
   - {fileID: 1981458595}
   - {fileID: 1390028378}
   m_Father: {fileID: 0}
+--- !u!114 &1016130114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1016130110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1021036067
 GameObject:
   m_ObjectHideFlags: 0
@@ -20085,6 +21117,7 @@ GameObject:
   - 4: {fileID: 1021036068}
   - 95: {fileID: 1021036070}
   - 114: {fileID: 1021036069}
+  - 114: {fileID: 1021036071}
   m_Layer: 0
   m_Name: AntMage
   m_TagString: Untagged
@@ -20135,6 +21168,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1021036071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1021036067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1021070352
 GameObject:
   m_ObjectHideFlags: 0
@@ -20265,6 +21314,7 @@ GameObject:
   - 4: {fileID: 1022395004}
   - 95: {fileID: 1022395003}
   - 114: {fileID: 1022395002}
+  - 114: {fileID: 1022395005}
   m_Layer: 0
   m_Name: AntKing
   m_TagString: Untagged
@@ -20316,6 +21366,22 @@ Transform:
   - {fileID: 168537438}
   - {fileID: 1845934517}
   m_Father: {fileID: 0}
+--- !u!114 &1022395005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1022395001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1024225620
 GameObject:
   m_ObjectHideFlags: 0
@@ -20784,6 +21850,7 @@ GameObject:
   - 4: {fileID: 1045932166}
   - 95: {fileID: 1045932165}
   - 114: {fileID: 1045932164}
+  - 114: {fileID: 1045932167}
   m_Layer: 0
   m_Name: AntArcher
   m_TagString: Untagged
@@ -20833,6 +21900,22 @@ Transform:
   - {fileID: 1944481483}
   - {fileID: 938117376}
   m_Father: {fileID: 0}
+--- !u!114 &1045932167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1045932163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1049069999
 GameObject:
   m_ObjectHideFlags: 0
@@ -21081,6 +22164,7 @@ GameObject:
   - 4: {fileID: 1055235706}
   - 95: {fileID: 1055235705}
   - 114: {fileID: 1055235704}
+  - 114: {fileID: 1055235707}
   m_Layer: 0
   m_Name: AntWarrior
   m_TagString: Untagged
@@ -21133,6 +22217,22 @@ Transform:
   - {fileID: 1803944683}
   - {fileID: 2141084087}
   m_Father: {fileID: 0}
+--- !u!114 &1055235707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1055235703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1055394963
 GameObject:
   m_ObjectHideFlags: 0
@@ -21899,6 +22999,7 @@ GameObject:
   - 4: {fileID: 1100258020}
   - 95: {fileID: 1100258019}
   - 114: {fileID: 1100258018}
+  - 114: {fileID: 1100258021}
   m_Layer: 0
   m_Name: AntWarrior
   m_TagString: Untagged
@@ -21951,6 +23052,22 @@ Transform:
   - {fileID: 1581887372}
   - {fileID: 459592635}
   m_Father: {fileID: 0}
+--- !u!114 &1100258021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1100258017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1101832883
 GameObject:
   m_ObjectHideFlags: 0
@@ -22401,6 +23518,7 @@ GameObject:
   - 4: {fileID: 1117628022}
   - 95: {fileID: 1117628024}
   - 114: {fileID: 1117628023}
+  - 114: {fileID: 1117628025}
   m_Layer: 0
   m_Name: AntMage
   m_TagString: Untagged
@@ -22451,6 +23569,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1117628025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1117628021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1118654947
 GameObject:
   m_ObjectHideFlags: 0
@@ -23101,6 +24235,7 @@ GameObject:
   - 4: {fileID: 1155381243}
   - 95: {fileID: 1155381245}
   - 114: {fileID: 1155381244}
+  - 114: {fileID: 1155381246}
   m_Layer: 0
   m_Name: AntWarrior
   m_TagString: Untagged
@@ -23153,6 +24288,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1155381246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1155381242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1157820067
 GameObject:
   m_ObjectHideFlags: 0
@@ -23661,6 +24812,7 @@ GameObject:
   - 4: {fileID: 1188245969}
   - 95: {fileID: 1188245971}
   - 114: {fileID: 1188245970}
+  - 114: {fileID: 1188245972}
   m_Layer: 0
   m_Name: AntMage
   m_TagString: Untagged
@@ -23711,6 +24863,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1188245972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1188245968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1190704856
 GameObject:
   m_ObjectHideFlags: 0
@@ -23781,6 +24949,7 @@ GameObject:
   - 4: {fileID: 1193097693}
   - 95: {fileID: 1193097695}
   - 114: {fileID: 1193097694}
+  - 114: {fileID: 1193097696}
   m_Layer: 0
   m_Name: AntWarrior
   m_TagString: Untagged
@@ -23833,6 +25002,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1193097696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1193097692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1193323499
 GameObject:
   m_ObjectHideFlags: 0
@@ -24119,6 +25304,7 @@ GameObject:
   - 4: {fileID: 1208287214}
   - 95: {fileID: 1208287216}
   - 114: {fileID: 1208287215}
+  - 114: {fileID: 1208287217}
   m_Layer: 0
   m_Name: AntWorker
   m_TagString: Untagged
@@ -24167,6 +25353,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1208287217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1208287213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1212286326
 GameObject:
   m_ObjectHideFlags: 0
@@ -24177,6 +25379,7 @@ GameObject:
   - 4: {fileID: 1212286327}
   - 95: {fileID: 1212286329}
   - 114: {fileID: 1212286328}
+  - 114: {fileID: 1212286330}
   m_Layer: 0
   m_Name: AntMage
   m_TagString: Untagged
@@ -24227,6 +25430,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1212286330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1212286326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1212581674
 GameObject:
   m_ObjectHideFlags: 0
@@ -24513,6 +25732,7 @@ GameObject:
   - 4: {fileID: 1231918538}
   - 95: {fileID: 1231918540}
   - 114: {fileID: 1231918539}
+  - 114: {fileID: 1231918541}
   m_Layer: 0
   m_Name: AntMage
   m_TagString: Untagged
@@ -24563,6 +25783,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1231918541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1231918537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1001 &1252608728
 Prefab:
   m_ObjectHideFlags: 0
@@ -24793,6 +26029,7 @@ GameObject:
   - 4: {fileID: 1258703340}
   - 95: {fileID: 1258703342}
   - 114: {fileID: 1258703341}
+  - 114: {fileID: 1258703343}
   m_Layer: 0
   m_Name: AntArcher
   m_TagString: Untagged
@@ -24842,6 +26079,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1258703343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1258703339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1260369149
 GameObject:
   m_ObjectHideFlags: 0
@@ -24910,6 +26163,7 @@ GameObject:
   - 4: {fileID: 1260790664}
   - 95: {fileID: 1260790663}
   - 114: {fileID: 1260790662}
+  - 114: {fileID: 1260790665}
   m_Layer: 0
   m_Name: AntWorker
   m_TagString: Untagged
@@ -24958,6 +26212,22 @@ Transform:
   - {fileID: 1677830568}
   - {fileID: 800810754}
   m_Father: {fileID: 0}
+--- !u!114 &1260790665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1260790661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1261264692
 GameObject:
   m_ObjectHideFlags: 0
@@ -25204,6 +26474,7 @@ GameObject:
   - 4: {fileID: 1271045420}
   - 95: {fileID: 1271045422}
   - 114: {fileID: 1271045421}
+  - 114: {fileID: 1271045423}
   m_Layer: 0
   m_Name: AntWarrior
   m_TagString: Untagged
@@ -25256,6 +26527,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1271045423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1271045419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1001 &1276984376
 Prefab:
   m_ObjectHideFlags: 0
@@ -25366,6 +26653,7 @@ GameObject:
   - 4: {fileID: 1282461095}
   - 95: {fileID: 1282461097}
   - 114: {fileID: 1282461096}
+  - 114: {fileID: 1282461098}
   m_Layer: 0
   m_Name: AntKing
   m_TagString: Untagged
@@ -25417,6 +26705,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1282461098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1282461094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1290760834
 GameObject:
   m_ObjectHideFlags: 0
@@ -25545,6 +26849,7 @@ GameObject:
   - 4: {fileID: 1305314238}
   - 95: {fileID: 1305314240}
   - 114: {fileID: 1305314239}
+  - 114: {fileID: 1305314241}
   m_Layer: 0
   m_Name: AntWarrior
   m_TagString: Untagged
@@ -25597,6 +26902,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1305314241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1305314237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1305411405
 GameObject:
   m_ObjectHideFlags: 0
@@ -25607,6 +26928,7 @@ GameObject:
   - 4: {fileID: 1305411406}
   - 95: {fileID: 1305411408}
   - 114: {fileID: 1305411407}
+  - 114: {fileID: 1305411409}
   m_Layer: 0
   m_Name: AntWorker
   m_TagString: Untagged
@@ -25655,6 +26977,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1305411409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1305411405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1309959453
 GameObject:
   m_ObjectHideFlags: 0
@@ -25941,6 +27279,7 @@ GameObject:
   - 4: {fileID: 1323756171}
   - 95: {fileID: 1323756170}
   - 114: {fileID: 1323756169}
+  - 114: {fileID: 1323756172}
   m_Layer: 0
   m_Name: AntWorker
   m_TagString: Untagged
@@ -25989,6 +27328,22 @@ Transform:
   - {fileID: 482011916}
   - {fileID: 232469961}
   m_Father: {fileID: 0}
+--- !u!114 &1323756172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1323756168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1001 &1339916589
 Prefab:
   m_ObjectHideFlags: 0
@@ -26179,6 +27534,7 @@ GameObject:
   - 4: {fileID: 1351842901}
   - 95: {fileID: 1351842903}
   - 114: {fileID: 1351842902}
+  - 114: {fileID: 1351842904}
   m_Layer: 0
   m_Name: AntMage
   m_TagString: Untagged
@@ -26229,6 +27585,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1351842904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1351842900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1001 &1354168275
 Prefab:
   m_ObjectHideFlags: 0
@@ -26279,6 +27651,7 @@ GameObject:
   - 4: {fileID: 1355773888}
   - 95: {fileID: 1355773890}
   - 114: {fileID: 1355773889}
+  - 114: {fileID: 1355773891}
   m_Layer: 0
   m_Name: AntArcher
   m_TagString: Untagged
@@ -26328,6 +27701,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1355773891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1355773887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1001 &1356836869
 Prefab:
   m_ObjectHideFlags: 0
@@ -27248,6 +28637,7 @@ GameObject:
   - 4: {fileID: 1407798411}
   - 95: {fileID: 1407798410}
   - 114: {fileID: 1407798409}
+  - 114: {fileID: 1407798412}
   m_Layer: 0
   m_Name: AntMage
   m_TagString: Untagged
@@ -27298,6 +28688,22 @@ Transform:
   - {fileID: 1576668220}
   - {fileID: 1659626867}
   m_Father: {fileID: 0}
+--- !u!114 &1407798412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1407798408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1407866748
 GameObject:
   m_ObjectHideFlags: 0
@@ -27308,6 +28714,7 @@ GameObject:
   - 4: {fileID: 1407866749}
   - 95: {fileID: 1407866751}
   - 114: {fileID: 1407866750}
+  - 114: {fileID: 1407866752}
   m_Layer: 0
   m_Name: AntKing
   m_TagString: Untagged
@@ -27359,6 +28766,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1407866752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1407866748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1408374288
 GameObject:
   m_ObjectHideFlags: 0
@@ -27827,6 +29250,7 @@ GameObject:
   - 4: {fileID: 1434575318}
   - 95: {fileID: 1434575320}
   - 114: {fileID: 1434575319}
+  - 114: {fileID: 1434575321}
   m_Layer: 0
   m_Name: AntWarrior
   m_TagString: Untagged
@@ -27879,6 +29303,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1434575321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1434575317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1435275149
 GameObject:
   m_ObjectHideFlags: 0
@@ -27889,6 +29329,7 @@ GameObject:
   - 4: {fileID: 1435275150}
   - 95: {fileID: 1435275152}
   - 114: {fileID: 1435275151}
+  - 114: {fileID: 1435275153}
   m_Layer: 0
   m_Name: AntWorker
   m_TagString: Untagged
@@ -27937,6 +29378,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1435275153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1435275149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1437083064
 GameObject:
   m_ObjectHideFlags: 0
@@ -27947,6 +29404,7 @@ GameObject:
   - 4: {fileID: 1437083067}
   - 95: {fileID: 1437083066}
   - 114: {fileID: 1437083065}
+  - 114: {fileID: 1437083068}
   m_Layer: 0
   m_Name: AntArcher
   m_TagString: Untagged
@@ -27996,6 +29454,22 @@ Transform:
   - {fileID: 64694594}
   - {fileID: 1118654948}
   m_Father: {fileID: 0}
+--- !u!114 &1437083068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1437083064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1438527807
 GameObject:
   m_ObjectHideFlags: 0
@@ -28066,6 +29540,7 @@ GameObject:
   - 4: {fileID: 1442909329}
   - 95: {fileID: 1442909331}
   - 114: {fileID: 1442909330}
+  - 114: {fileID: 1442909332}
   m_Layer: 0
   m_Name: AntArcher
   m_TagString: Untagged
@@ -28115,6 +29590,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1442909332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1442909328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1446225866
 GameObject:
   m_ObjectHideFlags: 0
@@ -28343,6 +29834,7 @@ GameObject:
   - 4: {fileID: 1460315398}
   - 95: {fileID: 1460315400}
   - 114: {fileID: 1460315399}
+  - 114: {fileID: 1460315401}
   m_Layer: 0
   m_Name: AntArcher
   m_TagString: Untagged
@@ -28392,6 +29884,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1460315401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1460315397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1464402489
 GameObject:
   m_ObjectHideFlags: 0
@@ -28600,6 +30108,7 @@ GameObject:
   - 4: {fileID: 1477659396}
   - 95: {fileID: 1477659398}
   - 114: {fileID: 1477659397}
+  - 114: {fileID: 1477659399}
   m_Layer: 0
   m_Name: AntMage
   m_TagString: Untagged
@@ -28650,6 +30159,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1477659399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1477659395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1486337162
 GameObject:
   m_ObjectHideFlags: 0
@@ -28660,6 +30185,7 @@ GameObject:
   - 4: {fileID: 1486337163}
   - 95: {fileID: 1486337165}
   - 114: {fileID: 1486337164}
+  - 114: {fileID: 1486337166}
   m_Layer: 0
   m_Name: AntMage
   m_TagString: Untagged
@@ -28710,6 +30236,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1486337166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1486337162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1489459621
 GameObject:
   m_ObjectHideFlags: 0
@@ -28958,6 +30500,7 @@ GameObject:
   - 4: {fileID: 1496181208}
   - 95: {fileID: 1496181207}
   - 114: {fileID: 1496181206}
+  - 114: {fileID: 1496181209}
   m_Layer: 0
   m_Name: AntWorker
   m_TagString: Untagged
@@ -29006,6 +30549,22 @@ Transform:
   - {fileID: 130218583}
   - {fileID: 1854848805}
   m_Father: {fileID: 0}
+--- !u!114 &1496181209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1496181205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1496332761
 GameObject:
   m_ObjectHideFlags: 0
@@ -29534,6 +31093,7 @@ GameObject:
   - 4: {fileID: 1512798216}
   - 95: {fileID: 1512798215}
   - 114: {fileID: 1512798214}
+  - 114: {fileID: 1512798217}
   m_Layer: 0
   m_Name: AntWarrior
   m_TagString: Untagged
@@ -29586,6 +31146,22 @@ Transform:
   - {fileID: 1388969335}
   - {fileID: 1054831090}
   m_Father: {fileID: 0}
+--- !u!114 &1512798217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1512798213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1514451785
 GameObject:
   m_ObjectHideFlags: 0
@@ -29596,6 +31172,7 @@ GameObject:
   - 4: {fileID: 1514451788}
   - 95: {fileID: 1514451787}
   - 114: {fileID: 1514451786}
+  - 114: {fileID: 1514451789}
   m_Layer: 0
   m_Name: AntArcher
   m_TagString: Untagged
@@ -29645,6 +31222,22 @@ Transform:
   - {fileID: 1501627926}
   - {fileID: 1145956469}
   m_Father: {fileID: 0}
+--- !u!114 &1514451789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1514451785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1001 &1514795553
 Prefab:
   m_ObjectHideFlags: 0
@@ -29795,6 +31388,7 @@ GameObject:
   - 4: {fileID: 1522770963}
   - 95: {fileID: 1522770965}
   - 114: {fileID: 1522770964}
+  - 114: {fileID: 1522770966}
   m_Layer: 0
   m_Name: AntMage
   m_TagString: Untagged
@@ -29845,6 +31439,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1522770966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1522770962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1001 &1526218625
 Prefab:
   m_ObjectHideFlags: 0
@@ -30015,6 +31625,7 @@ GameObject:
   - 4: {fileID: 1534881598}
   - 95: {fileID: 1534881600}
   - 114: {fileID: 1534881599}
+  - 114: {fileID: 1534881601}
   m_Layer: 0
   m_Name: AntKing
   m_TagString: Untagged
@@ -30066,6 +31677,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1534881601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1534881597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1538281804
 GameObject:
   m_ObjectHideFlags: 0
@@ -30194,6 +31821,7 @@ GameObject:
   - 4: {fileID: 1540569531}
   - 95: {fileID: 1540569533}
   - 114: {fileID: 1540569532}
+  - 114: {fileID: 1540569534}
   m_Layer: 0
   m_Name: AntMage
   m_TagString: Untagged
@@ -30244,6 +31872,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1540569534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1540569530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1541801590
 GameObject:
   m_ObjectHideFlags: 0
@@ -31348,6 +32992,7 @@ GameObject:
   - 4: {fileID: 1591022308}
   - 95: {fileID: 1591022310}
   - 114: {fileID: 1591022309}
+  - 114: {fileID: 1591022311}
   m_Layer: 0
   m_Name: AntArcher
   m_TagString: Untagged
@@ -31397,6 +33042,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1591022311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1591022307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1591778954
 GameObject:
   m_ObjectHideFlags: 0
@@ -31407,6 +33068,7 @@ GameObject:
   - 4: {fileID: 1591778955}
   - 95: {fileID: 1591778957}
   - 114: {fileID: 1591778956}
+  - 114: {fileID: 1591778958}
   m_Layer: 0
   m_Name: AntKing
   m_TagString: Untagged
@@ -31458,6 +33120,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1591778958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1591778954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1592390193
 GameObject:
   m_ObjectHideFlags: 0
@@ -31706,6 +33384,7 @@ GameObject:
   - 4: {fileID: 1606264280}
   - 95: {fileID: 1606264279}
   - 114: {fileID: 1606264278}
+  - 114: {fileID: 1606264281}
   m_Layer: 0
   m_Name: AntMage
   m_TagString: Untagged
@@ -31756,6 +33435,22 @@ Transform:
   - {fileID: 770978232}
   - {fileID: 2116267712}
   m_Father: {fileID: 0}
+--- !u!114 &1606264281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1606264277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1610337466
 GameObject:
   m_ObjectHideFlags: 0
@@ -31884,6 +33579,7 @@ GameObject:
   - 4: {fileID: 1614087585}
   - 95: {fileID: 1614087587}
   - 114: {fileID: 1614087586}
+  - 114: {fileID: 1614087588}
   m_Layer: 0
   m_Name: AntWorker
   m_TagString: Untagged
@@ -31932,6 +33628,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1614087588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1614087584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1618139931
 GameObject:
   m_ObjectHideFlags: 0
@@ -32062,6 +33774,7 @@ GameObject:
   - 4: {fileID: 1620139628}
   - 95: {fileID: 1620139630}
   - 114: {fileID: 1620139629}
+  - 114: {fileID: 1620139631}
   m_Layer: 0
   m_Name: AntMage
   m_TagString: Untagged
@@ -32112,6 +33825,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1620139631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1620139627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1620729628
 GameObject:
   m_ObjectHideFlags: 0
@@ -32180,6 +33909,7 @@ GameObject:
   - 4: {fileID: 1622348458}
   - 95: {fileID: 1622348460}
   - 114: {fileID: 1622348459}
+  - 114: {fileID: 1622348461}
   m_Layer: 0
   m_Name: AntKing
   m_TagString: Untagged
@@ -32231,6 +33961,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1622348461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1622348457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1001 &1624826775
 Prefab:
   m_ObjectHideFlags: 0
@@ -32321,6 +34067,7 @@ GameObject:
   - 4: {fileID: 1631697214}
   - 95: {fileID: 1631697213}
   - 114: {fileID: 1631697212}
+  - 114: {fileID: 1631697215}
   m_Layer: 0
   m_Name: AntWarrior
   m_TagString: Untagged
@@ -32373,6 +34120,22 @@ Transform:
   - {fileID: 285929635}
   - {fileID: 1260369150}
   m_Father: {fileID: 0}
+--- !u!114 &1631697215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1631697211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1634306068
 GameObject:
   m_ObjectHideFlags: 0
@@ -32719,6 +34482,7 @@ GameObject:
   - 4: {fileID: 1656295008}
   - 95: {fileID: 1656295007}
   - 114: {fileID: 1656295006}
+  - 114: {fileID: 1656295009}
   m_Layer: 0
   m_Name: AntKing
   m_TagString: Untagged
@@ -32770,6 +34534,22 @@ Transform:
   - {fileID: 860635358}
   - {fileID: 1842458410}
   m_Father: {fileID: 0}
+--- !u!114 &1656295009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1656295005}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1657096451
 GameObject:
   m_ObjectHideFlags: 0
@@ -33116,6 +34896,7 @@ GameObject:
   - 4: {fileID: 1691166489}
   - 95: {fileID: 1691166491}
   - 114: {fileID: 1691166490}
+  - 114: {fileID: 1691166492}
   m_Layer: 0
   m_Name: AntWarrior
   m_TagString: Untagged
@@ -33168,6 +34949,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1691166492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1691166488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1692059305
 GameObject:
   m_ObjectHideFlags: 0
@@ -34070,6 +35867,7 @@ GameObject:
   - 4: {fileID: 1750086299}
   - 95: {fileID: 1750086301}
   - 114: {fileID: 1750086300}
+  - 114: {fileID: 1750086302}
   m_Layer: 0
   m_Name: AntKing
   m_TagString: Untagged
@@ -34121,6 +35919,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1750086302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1750086298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1751980368
 GameObject:
   m_ObjectHideFlags: 0
@@ -34251,6 +36065,7 @@ GameObject:
   - 4: {fileID: 1755173026}
   - 95: {fileID: 1755173025}
   - 114: {fileID: 1755173024}
+  - 114: {fileID: 1755173027}
   m_Layer: 0
   m_Name: AntMage
   m_TagString: Untagged
@@ -34301,6 +36116,22 @@ Transform:
   - {fileID: 2024270253}
   - {fileID: 1293217136}
   m_Father: {fileID: 0}
+--- !u!114 &1755173027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1755173023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1760434844
 GameObject:
   m_ObjectHideFlags: 0
@@ -34691,6 +36522,7 @@ GameObject:
   - 4: {fileID: 1781108834}
   - 95: {fileID: 1781108836}
   - 114: {fileID: 1781108835}
+  - 114: {fileID: 1781108837}
   m_Layer: 0
   m_Name: AntWarrior
   m_TagString: Untagged
@@ -34743,6 +36575,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1781108837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1781108833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1782866383
 GameObject:
   m_ObjectHideFlags: 0
@@ -34813,6 +36661,7 @@ GameObject:
   - 4: {fileID: 1788090307}
   - 95: {fileID: 1788090309}
   - 114: {fileID: 1788090308}
+  - 114: {fileID: 1788090310}
   m_Layer: 0
   m_Name: AntMage
   m_TagString: Untagged
@@ -34863,6 +36712,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1788090310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1788090306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1001 &1791857035
 Prefab:
   m_ObjectHideFlags: 0
@@ -35329,6 +37194,7 @@ GameObject:
   - 4: {fileID: 1803235806}
   - 95: {fileID: 1803235808}
   - 114: {fileID: 1803235807}
+  - 114: {fileID: 1803235809}
   m_Layer: 0
   m_Name: AntKing
   m_TagString: Untagged
@@ -35380,6 +37246,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1803235809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1803235805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1803425128
 GameObject:
   m_ObjectHideFlags: 0
@@ -36622,6 +38504,7 @@ GameObject:
   - 4: {fileID: 1858556715}
   - 95: {fileID: 1858556717}
   - 114: {fileID: 1858556716}
+  - 114: {fileID: 1858556718}
   m_Layer: 0
   m_Name: AntArcher
   m_TagString: Untagged
@@ -36671,6 +38554,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1858556718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1858556714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1863960221
 GameObject:
   m_ObjectHideFlags: 0
@@ -36681,6 +38580,7 @@ GameObject:
   - 4: {fileID: 1863960222}
   - 95: {fileID: 1863960224}
   - 114: {fileID: 1863960223}
+  - 114: {fileID: 1863960225}
   m_Layer: 0
   m_Name: AntWarrior
   m_TagString: Untagged
@@ -36733,6 +38633,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1863960225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1863960221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1866907860
 GameObject:
   m_ObjectHideFlags: 0
@@ -37061,6 +38977,7 @@ GameObject:
   - 4: {fileID: 1896457551}
   - 95: {fileID: 1896457553}
   - 114: {fileID: 1896457552}
+  - 114: {fileID: 1896457554}
   m_Layer: 0
   m_Name: AntKing
   m_TagString: Untagged
@@ -37112,6 +39029,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1896457554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1896457550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1896803734
 GameObject:
   m_ObjectHideFlags: 0
@@ -37300,6 +39233,7 @@ GameObject:
   - 4: {fileID: 1911545835}
   - 95: {fileID: 1911545837}
   - 114: {fileID: 1911545836}
+  - 114: {fileID: 1911545838}
   m_Layer: 0
   m_Name: AntWarrior
   m_TagString: Untagged
@@ -37352,6 +39286,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1911545838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1911545834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &1911974942
 GameObject:
   m_ObjectHideFlags: 0
@@ -37600,6 +39550,7 @@ GameObject:
   - 4: {fileID: 1928300010}
   - 95: {fileID: 1928300012}
   - 114: {fileID: 1928300011}
+  - 114: {fileID: 1928300013}
   m_Layer: 0
   m_Name: AntWorker
   m_TagString: Untagged
@@ -37648,6 +39599,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1928300013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1928300009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1001 &1929836806
 Prefab:
   m_ObjectHideFlags: 0
@@ -37936,6 +39903,7 @@ GameObject:
   - 4: {fileID: 1942400543}
   - 95: {fileID: 1942400545}
   - 114: {fileID: 1942400544}
+  - 114: {fileID: 1942400546}
   m_Layer: 0
   m_Name: AntWarrior
   m_TagString: Untagged
@@ -37988,6 +39956,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1942400546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1942400542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1001 &1943100910
 Prefab:
   m_ObjectHideFlags: 0
@@ -38736,6 +40720,7 @@ GameObject:
   - 4: {fileID: 1987080743}
   - 95: {fileID: 1987080745}
   - 114: {fileID: 1987080744}
+  - 114: {fileID: 1987080746}
   m_Layer: 0
   m_Name: AntWorker
   m_TagString: Untagged
@@ -38784,6 +40769,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1987080746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1987080742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1001 &1987974183
 Prefab:
   m_ObjectHideFlags: 0
@@ -39072,6 +41073,7 @@ GameObject:
   - 4: {fileID: 1992223961}
   - 95: {fileID: 1992223963}
   - 114: {fileID: 1992223962}
+  - 114: {fileID: 1992223964}
   m_Layer: 0
   m_Name: AntWarrior
   m_TagString: Untagged
@@ -39124,6 +41126,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &1992223964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1992223960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1001 &1994232971
 Prefab:
   m_ObjectHideFlags: 0
@@ -39570,6 +41588,7 @@ GameObject:
   - 4: {fileID: 2015366566}
   - 95: {fileID: 2015366565}
   - 114: {fileID: 2015366564}
+  - 114: {fileID: 2015366567}
   m_Layer: 0
   m_Name: AntWorker
   m_TagString: Untagged
@@ -39618,6 +41637,22 @@ Transform:
   - {fileID: 1545816554}
   - {fileID: 1518362940}
   m_Father: {fileID: 0}
+--- !u!114 &2015366567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2015366563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &2017687470
 GameObject:
   m_ObjectHideFlags: 0
@@ -39768,6 +41803,7 @@ GameObject:
   - 4: {fileID: 2022283830}
   - 95: {fileID: 2022283829}
   - 114: {fileID: 2022283828}
+  - 114: {fileID: 2022283831}
   m_Layer: 0
   m_Name: AntWorker
   m_TagString: Untagged
@@ -39816,6 +41852,22 @@ Transform:
   - {fileID: 765516665}
   - {fileID: 1212581675}
   m_Father: {fileID: 0}
+--- !u!114 &2022283831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2022283827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &2024270252
 GameObject:
   m_ObjectHideFlags: 0
@@ -39886,6 +41938,7 @@ GameObject:
   - 4: {fileID: 2025683781}
   - 95: {fileID: 2025683783}
   - 114: {fileID: 2025683782}
+  - 114: {fileID: 2025683784}
   m_Layer: 0
   m_Name: AntKing
   m_TagString: Untagged
@@ -39937,6 +41990,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &2025683784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2025683780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1001 &2026726405
 Prefab:
   m_ObjectHideFlags: 0
@@ -40661,6 +42730,7 @@ GameObject:
   - 4: {fileID: 2056872467}
   - 95: {fileID: 2056872466}
   - 114: {fileID: 2056872465}
+  - 114: {fileID: 2056872468}
   m_Layer: 0
   m_Name: AntWorker
   m_TagString: Untagged
@@ -40709,6 +42779,22 @@ Transform:
   - {fileID: 1958124723}
   - {fileID: 946840084}
   m_Father: {fileID: 0}
+--- !u!114 &2056872468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2056872464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1001 &2057310657
 Prefab:
   m_ObjectHideFlags: 0
@@ -40999,6 +43085,7 @@ GameObject:
   - 4: {fileID: 2076390467}
   - 95: {fileID: 2076390469}
   - 114: {fileID: 2076390468}
+  - 114: {fileID: 2076390470}
   m_Layer: 0
   m_Name: AntWorker
   m_TagString: Untagged
@@ -41047,6 +43134,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &2076390470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2076390466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &2083562564
 GameObject:
   m_ObjectHideFlags: 0
@@ -41627,6 +43730,7 @@ GameObject:
   - 4: {fileID: 2118262423}
   - 95: {fileID: 2118262425}
   - 114: {fileID: 2118262424}
+  - 114: {fileID: 2118262426}
   m_Layer: 0
   m_Name: AntKing
   m_TagString: Untagged
@@ -41678,6 +43782,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &2118262426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2118262422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &2123598950
 GameObject:
   m_ObjectHideFlags: 0
@@ -41986,6 +44106,7 @@ GameObject:
   - 4: {fileID: 2134111625}
   - 95: {fileID: 2134111627}
   - 114: {fileID: 2134111626}
+  - 114: {fileID: 2134111628}
   m_Layer: 0
   m_Name: AntMage
   m_TagString: Untagged
@@ -42036,6 +44157,22 @@ Animator:
   m_ApplyRootMotion: 0
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 0
+--- !u!114 &2134111628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2134111624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &2134489103
 GameObject:
   m_ObjectHideFlags: 0
@@ -42342,6 +44479,7 @@ GameObject:
   - 4: {fileID: 2146474853}
   - 95: {fileID: 2146474852}
   - 114: {fileID: 2146474851}
+  - 114: {fileID: 2146474854}
   m_Layer: 0
   m_Name: AntWarrior
   m_TagString: Untagged
@@ -42394,6 +44532,22 @@ Transform:
   - {fileID: 1655831990}
   - {fileID: 166473819}
   m_Father: {fileID: 0}
+--- !u!114 &2146474854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2146474850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8447a62550f9f47aa57e79d4d6efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 4
+  CircleSpeed: 1
+  CircleSize: 5
+  UseTimeline: 1
+  CurrentState: 0
 --- !u!1 &2147006391
 GameObject:
   m_ObjectHideFlags: 0

@@ -5010,6 +5010,8 @@ GameObject:
   - 92: {fileID: 688182712}
   - 124: {fileID: 688182711}
   - 81: {fileID: 688182710}
+  - 114: {fileID: 688182716}
+  - 114: {fileID: 688182715}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -5078,6 +5080,33 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+--- !u!114 &688182715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 688182709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88f2328e588924a78bb9bbed5bc775b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &688182716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 688182709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74e0c82900fbf45e4abd76b4388ee21f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Offset: {x: 0, y: 30, z: -5}
+  Position2D: {x: 0, y: 0}
+  StopTimer: .5
+  Sensitivity: .00999999978
+  FingerDeltaThreshold: 600
 --- !u!1 &691347043
 GameObject:
   m_ObjectHideFlags: 0
