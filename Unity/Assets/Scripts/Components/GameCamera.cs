@@ -15,6 +15,8 @@ public class GameCamera : MonoBehaviour
 	private float _LastPanTime;
 	private float _LastPanTimePCX;
 	private bool _IsTapping = false;
+	private bool _IsPanning = false;
+	private bool _TouchInProgress = false;
 
 	void Awake ()
 	{
@@ -64,11 +66,11 @@ public class GameCamera : MonoBehaviour
 		if (Input.GetMouseButtonDown (0)) {
 			Ray ray = camera.ScreenPointToRay (Input.mousePosition);
 
-			RaycastHit[] newHits = Physics.SphereCastAll (ray, 0.5f);
+			RaycastHit[] newHits = Physics.RaycastAll (ray);
 			float closestDistance = float.MaxValue;
 			int closestTarget = -1;
 			for (int i = 0; i < newHits.Length; i++) {
-				float distance = GetDistPointToLine (ray.origin, ray.direction, newHits [i].transform.position); 
+				float distance = newHits [i].distance; 
 				if (newHits [i].collider.gameObject.GetComponent (typeof(IInteractable)) != null) {
 					if (distance < closestDistance) {
 						closestTarget = i;
@@ -87,32 +89,11 @@ public class GameCamera : MonoBehaviour
 
 	void UpdatePadInput ()
 	{
-		if (Input.touchCount == 2) {
-			_IsTapping = false;
-			if (_SemiHighlightEntity != null) {
-				_SemiHighlightEntity.SemiSelect (false);
-				_SemiHighlightEntity = null;
-			}
-			Touch finger1 = Input.touches [0];
-			Touch finger2 = Input.touches [1];
-			float distance = Vector2.Distance (finger1.position, finger2.position);
-			if (distance < FingerDeltaThreshold) {
-				_LastPanTime = Time.time;
-				if (finger1.phase == TouchPhase.Moved || finger2.phase == TouchPhase.Moved || finger1.phase == TouchPhase.Began || finger2.phase == TouchPhase.Began) {
-					Vector2 deltaPos = (finger1.deltaPosition + finger2.deltaPosition) / 2;
-					if (deltaPos.magnitude > 10)
-						_Velocity = -deltaPos / ((finger1.deltaTime + finger2.deltaTime) / 2);
-					else
-						_Velocity = Vector2.zero;
-				} else if (finger1.phase == TouchPhase.Stationary && finger2.phase == TouchPhase.Stationary) {
-					_Velocity = Vector2.zero;
-				}
-			}
-		} else if (Input.touchCount == 1) {
+		if (Input.touchCount == 1) {
 			Touch finger = Input.touches [0];
-			if (finger.phase == TouchPhase.Began)
+			if (finger.phase == TouchPhase.Began && !_TouchInProgress)
 				_IsTapping = true;
-			if (_IsTapping && (finger.phase == TouchPhase.Began || finger.phase == TouchPhase.Moved)) {
+			if (_IsTapping && (finger.phase == TouchPhase.Moved || finger.phase == TouchPhase.Stationary)) {
 				_Velocity = Vector2.zero;
 				Ray ray = camera.ScreenPointToRay (finger.position);
 
@@ -141,37 +122,58 @@ public class GameCamera : MonoBehaviour
 					_SemiHighlightEntity.SemiSelect (true);
 
 				}
-
+				_TouchInProgress = true;
 			} else if (_IsTapping && finger.phase == TouchPhase.Ended) {
 				if (_SemiHighlightEntity != null) {
 					_SemiHighlightEntity.SemiSelect (false);
 					_SemiHighlightEntity = null;
-					if (Time.time - _TapStartTime > 0.003f) {
-						Ray ray = camera.ScreenPointToRay (finger.position);
+				}
+				if (Time.time - _TapStartTime > 0.003f) {
+					Ray ray = camera.ScreenPointToRay (finger.position);
 
-						RaycastHit[] hits = Physics.RaycastAll (ray);
-						float closestDistance = float.MaxValue;
-						int closestTarget = -1;
-						for (int i = 0; i < hits.Length; i++) {
+					RaycastHit[] hits = Physics.RaycastAll (ray);
+					float closestDistance = float.MaxValue;
+					int closestTarget = -1;
+					for (int i = 0; i < hits.Length; i++) {
 
-							if (hits [i].collider.gameObject.GetComponent (typeof(IInteractable)) != null) {
+						if (hits [i].collider.gameObject.GetComponent (typeof(IInteractable)) != null) {
 
-								float distance = hits [i].distance;
-								if (distance < closestDistance) {
-									closestTarget = i;
-									closestDistance = distance;
-								}
+							float distance = hits [i].distance;
+							if (distance < closestDistance) {
+								closestTarget = i;
+								closestDistance = distance;
 							}
 						}
+					}
 
-						if (closestTarget != -1) {
-							IInteractable interactable = hits [closestTarget].collider.gameObject.GetComponent (typeof(IInteractable)) as IInteractable;
-							interactable.Interact ();
-						}
+					if (closestTarget != -1) {
+						IInteractable interactable = hits [closestTarget].collider.gameObject.GetComponent (typeof(IInteractable)) as IInteractable;
+						interactable.Interact ();
 					}
 				}
 			}
-		} else if (Input.touchCount == 0) {
+
+			if (finger.phase == TouchPhase.Moved || finger.phase == TouchPhase.Began) {
+				Vector2 deltaPos = finger.deltaPosition;
+				if (deltaPos.magnitude > 15 || _IsPanning) {
+
+					_LastPanTime = Time.time;
+					if (_SemiHighlightEntity != null) {
+						_SemiHighlightEntity.SemiSelect (false);
+						_SemiHighlightEntity = null; 
+					}
+					_IsPanning = true;
+					_Velocity = -deltaPos / finger.deltaTime;
+					_IsTapping = false;
+				} else {
+					_Velocity = Vector2.zero;
+				}
+			} else if (finger.phase == TouchPhase.Stationary) {
+				_Velocity = Vector2.zero;
+			}
+		} else {
+			_IsPanning = false;
+			_TouchInProgress = false;
 			_IsTapping = false;
 			if (_SemiHighlightEntity != null) {
 				_SemiHighlightEntity.SemiSelect (false);

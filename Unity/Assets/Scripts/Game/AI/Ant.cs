@@ -49,38 +49,32 @@ namespace Bronk
 
         }
 
-        public void changeStateFuture(float time, GameEntity.States state) {
-            //TODO remove any possible future since that is no longer valid...
+        public void resetStateFuture()
+        {
+            //var oldState = _stateTimeline.GetValue(Time.time);
+            _stateTimeline.removeKeyframesInFuture();
+            //_stateTimeline.AddKeyframe(Time.time, oldState);
+        }
+
+        public void resetPositionFuture()
+        {
+            var oldPos = _positionTimeline.GetValue(Time.time);
+            _positionTimeline.removeKeyframesInFuture();
+            _positionTimeline.AddKeyframe(Time.time, oldPos);
+        }
+
+        public void addStateKeyframe(float time, GameEntity.States state) {
             _stateTimeline.AddKeyframe(time, state);
         }
 
-        public void changePositionFuture(float time, Vector3 v)
+        public void addPositionKeyframe(float time, Vector3 v)
         {
-            _positionTimeline.AddKeyframe(Time.time, Position);
-            //TODO remove any possible future since that is no longer valid...
             _positionTimeline.AddKeyframe(time, v);
         }
 
         public override void update(float delta)
         {
-            
-
-            //_activeTimelines.Clear();
-            //State = States.Idle;
-
-            //foreach (var i in _timelines)
-            //{
-            //    var t = Time.time;
-            //    if (t >= i.StartTime && t <= i.EndTime)
-            //    {
-            //        _activeTimelines.Add(i);
-
-            //        if (i is MiningTimeline)
-            //            State = States.Mine;
-            //        else if (i is WalkTimeline)
-            //            State = States.Move;
-            //    }
-            //}
+            //unknown if this is needed
         }
 
         public AntStateTimeline GetStateTimeline()

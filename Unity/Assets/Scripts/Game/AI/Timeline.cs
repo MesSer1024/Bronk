@@ -59,6 +59,23 @@ public abstract class Timeline<Keyframe, Value> : Bronk.ITimeline
 		_Keyframes.Add (new KeyframeItem<Keyframe> (frame, time));
 	}
 
+    public void removeKeyframesInFuture()
+    {
+        int lastIndex = _Keyframes.Count;
+        for (int i = 0; i < _Keyframes.Count; i++)
+        {
+            if (Time.time > _Keyframes[i].Time)
+            {
+                lastIndex = i;
+            }
+        }
+
+        if (lastIndex < _Keyframes.Count)
+        {
+            _Keyframes.RemoveRange(lastIndex, _Keyframes.Count - lastIndex);
+        }
+    }
+
 	public float GetNextKeyTime (float time)
 	{
 		if (_Keyframes.Count == 0)

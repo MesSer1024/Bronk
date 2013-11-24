@@ -67,7 +67,7 @@ namespace Bronk
         }
 
         /// <summary>
-        /// Expecting a vector containing x & y-values, z does not matter...
+        /// Expecting a vector containing x & y-values, z does not matter... Will include final node in response if a path is found, no matter if it is blocked or not
         /// </summary>
         /// <param name="start"></param>
         /// <param name="end"></param>
@@ -77,9 +77,9 @@ namespace Bronk
             var startNode = _nodes[(int)start.x, (int)start.y];
             endNode = _nodes[(int)end.x, (int)end.y];
 
-			if (startNode.isBlocked() || endNode.isBlocked())
+            if (startNode.isBlocked())
             {
-                throw new Exception("Seems like startNode or endNode is blocked!");
+                throw new Exception("Seems like startNode is blocked!");
             }
 
             bool reachedEnd = false;
@@ -123,7 +123,7 @@ namespace Bronk
                     reachedEnd = true;
                     break;
                 }
-                addAdjacentNodes(ref openList, node);
+                addAdjacentNodes(ref openList, node, endNode);
             }
 
             Logger.Log(String.Format("Total Iterations {0}", totalIterations));
@@ -184,13 +184,13 @@ namespace Bronk
             }
         }
 
-        private void addAdjacentNodes(ref List<Node> openList, Node node)
+        private void addAdjacentNodes(ref List<Node> openList, Node node, Node targetNode)
         {
             //right
             if (node.x + 1 < _sizeX)
             {
                 var tar = _nodes[node.x + 1, node.y];
-                if (isValid(tar))
+                if (tar == targetNode || isValid(tar))
                 {
                     //1
                     tryUpdateNodeWith(tar, node);
@@ -206,7 +206,7 @@ namespace Bronk
             if (node.x - 1 >= 0)
             {
                 var tar = _nodes[node.x - 1, node.y];
-                if (isValid(tar))
+                if (tar == targetNode || isValid(tar))
                 {
                     //1
                     tryUpdateNodeWith(tar, node);
@@ -222,7 +222,7 @@ namespace Bronk
             if (node.y - 1 >= 0)
             {
                 var tar = _nodes[node.x, node.y - 1];
-                if (isValid(tar))
+                if (tar == targetNode || isValid(tar))
                 {
                     //1
                     tryUpdateNodeWith(tar, node);
@@ -238,7 +238,7 @@ namespace Bronk
             if (node.y + 1 < _sizeY)
             {
                 var tar = _nodes[node.x, node.y + 1];
-                if (isValid(tar))
+                if (tar == targetNode || isValid(tar))
                 {
                     //1
                     tryUpdateNodeWith(tar, node);
