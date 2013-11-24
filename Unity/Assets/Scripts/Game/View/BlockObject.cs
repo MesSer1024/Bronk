@@ -14,7 +14,7 @@ public class BlockObject : MonoBehaviour, IInteractable
 	static BlockObject ()
 	{
 		_SelectMaterial = Resources.Load<Material> ("Terrain/select_mat");
-		_SemiSelectMaterial = Resources.Load<Material> ("Terrain/semi_select_mat");
+		_SemiSelectMaterial = Resources.Load<Material> ("Terrain/semiselect_mat");
 	}
 
 	public int Index;
