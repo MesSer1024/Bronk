@@ -33,17 +33,17 @@ namespace Bronk
 
 			Random.seed = "L33T HAXXOR".GetHashCode ();
 
-			int startPosIndex = Random.Range (0, SIZE_X * SIZE_Z);
+			int startX;
+			int startZ;
+			int endX;
+			int endZ;
+			GenerateStartArea (out startX, out startZ, out endX, out endZ);
+			Vector2 startAreaPos = new Vector2((startX + endX) / 2, (startZ + endZ) / 2);
+			GameCamera gameCam = Camera.mainCamera.GetComponent<GameCamera> ();
+			if (gameCam != null)
+				gameCam.SetPosition (startAreaPos);
 
-			int startAreaSizeX = 8;
-			int startAreaSizeZ = 8;
 
-			int startX = startPosIndex % SIZE_X;
-			int startZ = startPosIndex / SIZE_Z;
-			int endX = Mathf.Clamp (startX + startAreaSizeX, 0, SIZE_X - 1);
-			int endZ = Mathf.Clamp (startZ + startAreaSizeZ, 0, SIZE_Z - 1);
-			startX += (startAreaSizeX - (endX - startX));
-			startZ += (startAreaSizeZ - (endZ - startZ));
 
 			int lowResSizeX = (SIZE_X / 5);
 			int lowResSizeZ = (SIZE_Z / 5);
@@ -97,6 +97,19 @@ namespace Bronk
 			}
 
 
+		}
+
+		static void GenerateStartArea (out int startX, out int startZ, out int endX, out int endZ)
+		{
+			int startPosIndex = Random.Range (0, SIZE_X * SIZE_Z);
+			int startAreaSizeX = 8;
+			int startAreaSizeZ = 8;
+			startX = startPosIndex % SIZE_X;
+			startZ = startPosIndex / SIZE_Z;
+			endX = Mathf.Clamp (startX + startAreaSizeX, 0, SIZE_X - 1);
+			endZ = Mathf.Clamp (startZ + startAreaSizeZ, 0, SIZE_Z - 1);
+			startX += (startAreaSizeX - (endX - startX));
+			startZ += (startAreaSizeZ - (endZ - startZ));
 		}
 
 		public Vector3 getCubePosition (int index)
