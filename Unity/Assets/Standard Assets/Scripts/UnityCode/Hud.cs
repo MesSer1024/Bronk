@@ -70,7 +70,7 @@ public class Hud : MonoBehaviour, IMessageListener {
                 _firstItemIndex = cube.Index;
             } else {
                 //mark all items in this range...
-                //var cubes = World.getCubesBetween(_firstItemIndex, cube.Index);
+                var cubes = World.getCubesBetween(_firstItemIndex, cube.Index);
             }
         }
     }
