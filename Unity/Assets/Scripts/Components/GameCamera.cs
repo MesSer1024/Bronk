@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using Bronk;
 
@@ -11,7 +11,9 @@ public class GameCamera : MonoBehaviour
 	public float FingerDeltaThreshold = 600;
 	private CubeLogic _SemiHighlightEntity;
 	private Vector2 _Velocity;
+	private float _TapStartTime;
 	private float _LastPanTime;
+	private float _LastPanTimePCX;
 
 	void Awake ()
 	{
@@ -35,24 +37,24 @@ public class GameCamera : MonoBehaviour
 	void UpdatePCInput ()
 	{
 		if (Input.GetKey (KeyCode.LeftArrow) || Input.GetKey (KeyCode.A)) {
-			_LastPanTime = Time.time;
+			_LastPanTimePCX = Time.time;
 			_Velocity.x = -Screen.width / Sensitivity / 30;
 		}
 		if (Input.GetKey (KeyCode.RightArrow) || Input.GetKey (KeyCode.D)) {
-			_LastPanTime = Time.time;
+			_LastPanTimePCX = Time.time;
 			_Velocity.x = Screen.width / Sensitivity / 30;
+		} else if (_Velocity.y != 0) {
+			_Velocity.x = Mathf.Lerp (_Velocity.x, 0, Mathf.Clamp01 ((Time.time - _LastPanTimePCX) / StopTimer));
 		}
+
 		if (Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W)) {
 			_LastPanTime = Time.time;
 			_Velocity.y = Screen.height / Sensitivity / 30;
-		}
-		if (Input.GetKey (KeyCode.DownArrow) || Input.GetKey (KeyCode.S)) {
+		} else if (Input.GetKey (KeyCode.DownArrow) || Input.GetKey (KeyCode.S)) {
 			_LastPanTime = Time.time;
 			_Velocity.y = -Screen.height / Sensitivity / 30;
-		}
-
-		if (_Velocity != Vector2.zero) {
-			_Velocity = Vector2.Lerp (_Velocity, Vector2.zero, Mathf.Clamp01 ((Time.time - _LastPanTime) / StopTimer));
+		} else if (_Velocity.y != 0) {
+			_Velocity.y = Mathf.Lerp (_Velocity.y, 0, Mathf.Clamp01 ((Time.time - _LastPanTime) / StopTimer));
 		}
 
 		if (Input.GetMouseButtonDown (0)) {
@@ -125,6 +127,8 @@ public class GameCamera : MonoBehaviour
 				if (closestTarget != -1) {
 					if (_SemiHighlightEntity != null) {
 						MessageManager.ExecuteMessage (new CubeSemiSelectedMessage ("cube", _SemiHighlightEntity, false));
+					} else {
+						_TapStartTime = Time.time;
 					}
 					_SemiHighlightEntity = hits [closestTarget].collider.gameObject.GetComponent<CubeLogic> ();
 					MessageManager.ExecuteMessage (new CubeSemiSelectedMessage ("cube", _SemiHighlightEntity, true));
@@ -134,26 +138,28 @@ public class GameCamera : MonoBehaviour
 				if (_SemiHighlightEntity != null) {
 					MessageManager.ExecuteMessage (new CubeSemiSelectedMessage ("cube", _SemiHighlightEntity, false));
 					_SemiHighlightEntity = null;
-					Ray ray = camera.ScreenPointToRay (finger.position);
+					if (Time.time - _TapStartTime > 0.07f) {
+						Ray ray = camera.ScreenPointToRay (finger.position);
 
-					RaycastHit[] hits = Physics.SphereCastAll (ray, 0.5f);
-					float closestDistance = float.MaxValue;
-					int closestTarget = -1;
-					for (int i = 0; i < hits.Length; i++) {
+						RaycastHit[] hits = Physics.SphereCastAll (ray, 0.5f);
+						float closestDistance = float.MaxValue;
+						int closestTarget = -1;
+						for (int i = 0; i < hits.Length; i++) {
 
-						if (hits [i].collider.gameObject.GetComponent<CubeLogic> () != null) {
+							if (hits [i].collider.gameObject.GetComponent<CubeLogic> () != null) {
 
-							float distance = GetDistPointToLine (ray.origin, ray.direction, hits [i].point);
-							if (distance < closestDistance) {
-								closestTarget = i;
-								closestDistance = distance;
+								float distance = GetDistPointToLine (ray.origin, ray.direction, hits [i].point);
+								if (distance < closestDistance) {
+									closestTarget = i;
+									closestDistance = distance;
+								}
 							}
 						}
-					}
 
-					if (closestTarget != -1) {
-						CubeLogic cube = hits [closestTarget].collider.gameObject.GetComponent<CubeLogic> ();
-						MessageManager.ExecuteMessage (new CubeClickedMessage ("cube", cube));
+						if (closestTarget != -1) {
+							CubeLogic cube = hits [closestTarget].collider.gameObject.GetComponent<CubeLogic> ();
+							MessageManager.ExecuteMessage (new CubeClickedMessage ("cube", cube));
+						}
 					}
 				}
 			}
