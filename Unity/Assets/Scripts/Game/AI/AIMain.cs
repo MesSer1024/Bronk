@@ -1,4 +1,4 @@
-﻿#define VERBOSE_PATHFINDING
+﻿//#define VERBOSE_PATHFINDING
 
 using System;
 using System.Collections.Generic;
