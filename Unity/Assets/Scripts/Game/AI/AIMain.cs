@@ -44,7 +44,8 @@ namespace Bronk
 
             foreach (var ant in _antViews)
             {
-                ant.updateState(_ants[0]);
+                //ant.updateState(_ants[0]);
+                //ant.updateState(_ants[0]);
             }
         }
 

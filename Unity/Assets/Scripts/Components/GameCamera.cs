@@ -1,37 +1,20 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
+using Bronk;
 
 public class GameCamera : MonoBehaviour
 {
-	enum CameraState
-	{
-		Neutral,
-		Select,
-	}
-
-	struct SelectStateData
-	{
-		public int StartXIndex;
-		public int StartYIndex;
-		public int EndXIndex;
-		public int EndYIndex;
-	}
-
-	struct NeutralStateData
-	{
-		public Vector2 Velocity;
-		public float LastPanTime;
-		public RaycastHit[] TapTargets;
-	}
-
-	public Vector3 Offset = new Vector3 (0, 15, -5);
+	public Vector3 Offset = new Vector3 (-3, 7.5f, -3);
 	public Vector2 Position2D;
 	public float StopTimer = 0.5f;
-	public float Sensitivity = 0.01f;
+	public float Sensitivity = 0.005f;
 	public float FingerDeltaThreshold = 600;
-	private CameraState _State;
-	private NeutralStateData _NeutralData;
-	private SelectStateData _SelectData;
+	private CubeLogic _SemiHighlightEntity;
+	private Vector2 _Velocity;
+	private float _TapStartTime;
+	private float _LastPanTime;
+	private float _LastPanTimePCX;
+	private bool _IsTapping = false;
 
 	void Awake ()
 	{
@@ -41,124 +24,161 @@ public class GameCamera : MonoBehaviour
 
 	void LateUpdate ()
 	{
-		switch (_State) {
-		case CameraState.Neutral:
-			UpdateNeutralState (ref _NeutralData);
-			break;
-		case CameraState.Select:
-			UpdateSelectState (ref _SelectData);
-			break;
+		#if UNITY_IPHONE && !UNITY_EDITOR
+		UpdatePadInput ();
+		#else
+		UpdatePCInput ();
+		#endif
+		if (_Velocity != Vector2.zero) {
+
+			Vector2 delta2D = _Velocity * Sensitivity * Time.deltaTime;
+			Vector3 transformedDelta = Quaternion.LookRotation (-new Vector3 (Offset.x, 0, Offset.z)) * new Vector3 (delta2D.x, 0, delta2D.y);
+			Position2D += new Vector2 (transformedDelta.x, transformedDelta.z);
+			UpdatePosition ();		
 		}
 	}
 
-	void UpdateSelectState (ref SelectStateData data)
+	void UpdatePCInput ()
 	{
-		if (Input.touchCount == 1) {
-			Touch finger = Input.touches [0];
+		if (Input.GetKey (KeyCode.LeftArrow) || Input.GetKey (KeyCode.A)) {
+			_LastPanTimePCX = Time.time;
+			_Velocity.x = -Screen.width / Sensitivity / 30;
+		}
+		if (Input.GetKey (KeyCode.RightArrow) || Input.GetKey (KeyCode.D)) {
+			_LastPanTimePCX = Time.time;
+			_Velocity.x = Screen.width / Sensitivity / 30;
+		} else if (_Velocity.x != 0) {
+			_Velocity.x = Mathf.Lerp (_Velocity.x, 0, Mathf.Clamp01 ((Time.time - _LastPanTimePCX) / StopTimer));
+		}
 
-			Ray ray = camera.ScreenPointToRay (finger.position);
+		if (Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W)) {
+			_LastPanTime = Time.time;
+			_Velocity.y = Screen.height / Sensitivity / 30;
+		} else if (Input.GetKey (KeyCode.DownArrow) || Input.GetKey (KeyCode.S)) {
+			_LastPanTime = Time.time;
+			_Velocity.y = -Screen.height / Sensitivity / 30;
+		} else if (_Velocity.y != 0) {
+			_Velocity.y = Mathf.Lerp (_Velocity.y, 0, Mathf.Clamp01 ((Time.time - _LastPanTime) / StopTimer));
+		}
 
-			GetTileIndices (ray, out data.EndXIndex, out data.EndYIndex);
+		if (Input.GetMouseButtonDown (0)) {
+			Ray ray = camera.ScreenPointToRay (Input.mousePosition);
+
+			RaycastHit[] newHits = Physics.SphereCastAll (ray, 0.5f);
+			float closestDistance = float.MaxValue;
+			int closestTarget = -1;
+			for (int i = 0; i < newHits.Length; i++) {
+				float distance = GetDistPointToLine (ray.origin, ray.direction, newHits [i].transform.position); 
+				if (newHits [i].collider.gameObject.GetComponent<CubeLogic> () != null) {
+					if (distance < closestDistance) {
+						closestTarget = i;
+						closestDistance = distance;
+					}
+				}
+			}
+
+			if (closestTarget != -1) {
+
+				CubeLogic cube = newHits [closestTarget].collider.gameObject.GetComponent<CubeLogic> ();
+				MessageManager.ExecuteMessage (new CubeClickedMessage ("cube", cube));
+			}
 		}
 	}
 
-	void EnterSelectState (int xIndexStart, int yIndexStart)
-	{
-		_SelectData = default(SelectStateData);
-		_SelectData.StartXIndex = xIndexStart;
-		_SelectData.StartYIndex = yIndexStart;
-		_SelectData.EndXIndex = xIndexStart;
-		_SelectData.EndYIndex = yIndexStart;
-		_State = CameraState.Select;
-	}
-
-	void EnterNeutralState ()
-	{
-		_NeutralData = default(NeutralStateData);
-		_State = CameraState.Neutral;
-	}
-
-	void UpdateNeutralState (ref NeutralStateData data)
+	void UpdatePadInput ()
 	{
 		if (Input.touchCount == 2) {
+			_IsTapping = false;
+			if (_SemiHighlightEntity != null) {
+				MessageManager.ExecuteMessage (new CubeSemiSelectedMessage ("cube", _SemiHighlightEntity, false));
+				_SemiHighlightEntity = null;
+			}
 			Touch finger1 = Input.touches [0];
 			Touch finger2 = Input.touches [1];
 			float distance = Vector2.Distance (finger1.position, finger2.position);
 			if (distance < FingerDeltaThreshold) {
-				data.LastPanTime = Time.time;
+				_LastPanTime = Time.time;
 				if (finger1.phase == TouchPhase.Moved || finger2.phase == TouchPhase.Moved || finger1.phase == TouchPhase.Began || finger2.phase == TouchPhase.Began) {
 					Vector2 deltaPos = (finger1.deltaPosition + finger2.deltaPosition) / 2;
 					if (deltaPos.magnitude > 10)
-						data.Velocity = -deltaPos / ((finger1.deltaTime + finger2.deltaTime) / 2);
+						_Velocity = -deltaPos / ((finger1.deltaTime + finger2.deltaTime) / 2);
 					else
-						data.Velocity = Vector2.zero;
+						_Velocity = Vector2.zero;
 				} else if (finger1.phase == TouchPhase.Stationary && finger2.phase == TouchPhase.Stationary) {
-					data.Velocity = Vector2.zero;
+					_Velocity = Vector2.zero;
 				}
 			}
 		} else if (Input.touchCount == 1) {
 			Touch finger = Input.touches [0];
-			if (finger.phase == TouchPhase.Began) {
-				data.Velocity = Vector2.zero;
+			if (finger.phase == TouchPhase.Began)
+				_IsTapping = true;
+			if (_IsTapping && (finger.phase == TouchPhase.Began || finger.phase == TouchPhase.Moved)) {
+				_Velocity = Vector2.zero;
 				Ray ray = camera.ScreenPointToRay (finger.position);
 
-				data.TapTargets = Physics.SphereCastAll (ray, 0.5f);
+				RaycastHit[] hits = Physics.SphereCastAll (ray, 0.5f);
 
-			} else if (finger.phase == TouchPhase.Ended) {
-				Ray ray = camera.ScreenPointToRay (finger.position);
-
-				if (data.TapTargets != null && data.TapTargets.Length > 0) {
-					RaycastHit[] newHits = Physics.SphereCastAll (ray, 0.5f);
-					float closestDistance = float.MaxValue;
-					int closestTarget = -1;
-					for (int i = 0; i < newHits.Length; i++) {
-						bool hitFirst = false;
-						for (int j = 0; j < data.TapTargets.Length; j++) {
-							if (data.TapTargets [j].collider == newHits [j].collider) {
-								hitFirst = true;
-								break;
-							}
+				float closestDistance = float.MaxValue;
+				int closestTarget = -1;
+				for (int i = 0; i < hits.Length; i++) {
+					if (hits [i].collider.gameObject.GetComponent<CubeLogic> () != null) {
+						
+						float distance = GetDistPointToLine (ray.origin, ray.direction, hits [i].point);
+						if (distance < closestDistance) {
+							closestTarget = i;
+							closestDistance = distance;
 						}
-						if (hitFirst) {
-							float distance = GetDistPointToLine (ray.origin, ray.direction, newHits [i].point);
-							if (distance < closestDistance) {
-								closestTarget = i;
-								closestDistance = distance;
-							}
-						}
-					}
-
-					if (closestTarget != -1) {
-						Debug.Log ("hit " + newHits [closestTarget].collider.gameObject, newHits [closestTarget].collider.gameObject);
 					}
 				}
-				data.TapTargets = null;
+
+				if (closestTarget != -1) {
+					if (_SemiHighlightEntity != null) {
+						MessageManager.ExecuteMessage (new CubeSemiSelectedMessage ("cube", _SemiHighlightEntity, false));
+					} else {
+						_TapStartTime = Time.time;
+					}
+					_SemiHighlightEntity = hits [closestTarget].collider.gameObject.GetComponent<CubeLogic> ();
+					MessageManager.ExecuteMessage (new CubeSemiSelectedMessage ("cube", _SemiHighlightEntity, true));
+				}
+
+			} else if (_IsTapping && finger.phase == TouchPhase.Ended) {
+				if (_SemiHighlightEntity != null) {
+					MessageManager.ExecuteMessage (new CubeSemiSelectedMessage ("cube", _SemiHighlightEntity, false));
+					_SemiHighlightEntity = null;
+					if (Time.time - _TapStartTime > 0.003f) {
+						Ray ray = camera.ScreenPointToRay (finger.position);
+
+						RaycastHit[] hits = Physics.SphereCastAll (ray, 0.5f);
+						float closestDistance = float.MaxValue;
+						int closestTarget = -1;
+						for (int i = 0; i < hits.Length; i++) {
+
+							if (hits [i].collider.gameObject.GetComponent<CubeLogic> () != null) {
+
+								float distance = GetDistPointToLine (ray.origin, ray.direction, hits [i].point);
+								if (distance < closestDistance) {
+									closestTarget = i;
+									closestDistance = distance;
+								}
+							}
+						}
+
+						if (closestTarget != -1) {
+							CubeLogic cube = hits [closestTarget].collider.gameObject.GetComponent<CubeLogic> ();
+							MessageManager.ExecuteMessage (new CubeClickedMessage ("cube", cube));
+						}
+					}
+				}
 			}
 		} else if (Input.touchCount == 0) {
-			if (data.Velocity != Vector2.zero) {
-				data.Velocity = Vector2.Lerp (data.Velocity, Vector2.zero, Mathf.Clamp01 ((Time.time - data.LastPanTime) / StopTimer));
+			_IsTapping = false;
+			if (_SemiHighlightEntity != null) {
+				MessageManager.ExecuteMessage (new CubeSemiSelectedMessage ("cube", _SemiHighlightEntity, false));
+				_SemiHighlightEntity = null;
 			}
-			data.TapTargets = null;
-		}
-		if (Input.GetKey (KeyCode.LeftArrow)) {
-			data.LastPanTime = Time.time;
-			data.Velocity.x = -Screen.width / Sensitivity / 30;
-		}
-		if (Input.GetKey (KeyCode.RightArrow)) {
-			data.LastPanTime = Time.time;
-			data.Velocity.x = Screen.width / Sensitivity / 30;
-		}
-		if (Input.GetKey (KeyCode.UpArrow)) {
-			data.LastPanTime = Time.time;
-			data.Velocity.y = Screen.height / Sensitivity / 30;
-		}
-		if (Input.GetKey (KeyCode.DownArrow)) {
-			data.LastPanTime = Time.time;
-			data.Velocity.y = -Screen.height / Sensitivity / 30;
-		}
-		if (data.Velocity != Vector2.zero) {
-			Position2D += data.Velocity * Sensitivity * Time.deltaTime;
-			UpdatePosition ();		
+			if (_Velocity != Vector2.zero) {
+				_Velocity = Vector2.Lerp (_Velocity, Vector2.zero, Mathf.Clamp01 ((Time.time - _LastPanTime) / StopTimer));
+			}
 		}
 	}
 

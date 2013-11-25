@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System;
 using Bronk;
 
 [RequireComponent(typeof(Animator))]
@@ -9,8 +8,13 @@ public class CharacterAnimationController : MonoBehaviour
 	Animator _Animator;
 	Transform _Transform;
 
-	[NonSerialized]
-	public Vector3 Velocity;
+	public DummyPlayer LogicCharacter;
+
+	private Vector3 Velocity;
+
+	private AntStateTimeline _StateTimeline;
+	private AnimatorStateInfo _CurrentStateInfo;
+	private AnimatorStateInfo _NextStateInfo;
 
 	void Awake () 
 	{
@@ -20,6 +24,46 @@ public class CharacterAnimationController : MonoBehaviour
 
 	void Update () 
 	{
+		_CurrentStateInfo = _Animator.GetCurrentAnimatorStateInfo(0);
+		_NextStateInfo = _Animator.GetNextAnimatorStateInfo(0);
+
+		if (LogicCharacter != null)
+		{
+			_StateTimeline = LogicCharacter.GetStateTimeline();
+			GameEntity.States state = _StateTimeline.GetValue(Time.time);
+
+			switch (state) 
+			{
+			case GameEntity.States.Idle: 
+				DoIdle();
+				break;
+			case GameEntity.States.Mine:
+				DoMining();
+				break;
+			case GameEntity.States.Move:
+				DoMovement();
+				break;
+			}
+
+			PositionTimeline posTimeline = LogicCharacter.GetPositionTimeline();
+			float oldTime = Time.time - Time.deltaTime;
+			Vector3 oldPosition = posTimeline.GetValue(oldTime);
+			Vector3 newPosition = posTimeline.GetValue(Time.time);
+			transform.position = newPosition;
+			Velocity = (newPosition - oldPosition); 
+			if (Velocity != Vector3.zero)
+			{
+				Velocity /= Time.deltaTime;
+				_Transform.rotation = Quaternion.LookRotation(Velocity.normalized);
+			}
+			
+			// Animations are timed for scale = 1. // If we divide the speed by the scale we'll play run animations slower/faster if they are bigger/smaller.
+			float sizeScaleFactor = _Transform.localScale.x * _Animator.humanScale;
+			float velocityMagnitude = Velocity.magnitude / sizeScaleFactor;
+			_Animator.SetFloat("Speed", velocityMagnitude);
+		}
+
+		/*
 		if (Velocity != Vector3.zero)
 			_Transform.rotation = Quaternion.LookRotation(Velocity.normalized);
 
@@ -27,35 +71,41 @@ public class CharacterAnimationController : MonoBehaviour
 		float sizeScaleFactor = _Transform.localScale.x * _Animator.humanScale;
 		float velocityMagnitude = Velocity.magnitude / sizeScaleFactor;
 		_Animator.SetFloat("Speed", velocityMagnitude);
+		*/
 	}
 
-	public void PlayAnimation(AnimationEnum animationEnum)
+	public void PlayAnimation(AnimationEnum animationEnum, float stateTime, float fadeTime = 0.1f)
 	{
-		_Animator.Play(Animations.GetAnimationHash(animationEnum));
-        Debug.Log("Play animation: " + animationEnum.ToString() + "  " + Time.time);
+		float normalizedTime = (stateTime / Animations.Get(animationEnum).Lenght) % 1f;
+		_Animator.CrossFade(Animations.Get(animationEnum).Hash, Mathf.Max(0f, fadeTime - normalizedTime), 0, normalizedTime);
+		//Debug.Log("startTime: " +stateTime + " normalized: " + normalizedTime + " fade: " + fadeTime + "  " + Time.time);
 	}
 
-    internal void updateState(Bronk.Ant ant)
-    {
-        var timelines = ant.getActiveTimelines();
+	void DoIdle()
+	{
+		
+	}
 
-        foreach (var item in timelines)
-        {
-            if (item is WalkTimeline)
-            {
-                var walktimeline = item as WalkTimeline;
-                Velocity = transform.position - walktimeline.getPosition(Time.time);
-                transform.position = walktimeline.getPosition(Time.time);
-            }
-            else if (item is MiningTimeline)
-            {
-                var miningtimeline = item as MiningTimeline;
-                PlayAnimation(AnimationEnum.Laugh);
-            }
-            else
-            {
-                PlayAnimation(AnimationEnum.Death);
-            }
-        }
-    }
+	void DoMining()
+	{
+		if (_CurrentStateInfo.nameHash != Animations.Get(AnimationEnum.Mine).Hash &&
+		    _NextStateInfo.nameHash != Animations.Get(AnimationEnum.Mine).Hash)
+		{
+			PlayAnimation(AnimationEnum.Mine, _StateTimeline.GetCurrentKeyframeTime(Time.time));
+		}
+	}
+
+	void DoMovement()
+	{
+
+	}
 }
+
+
+
+
+
+
+
+
+
