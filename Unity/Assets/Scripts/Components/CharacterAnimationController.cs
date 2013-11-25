@@ -32,7 +32,7 @@ public class CharacterAnimationController : MonoBehaviour
 	public void PlayAnimation(AnimationEnum animationEnum)
 	{
 		_Animator.Play(Animations.GetAnimationHash(animationEnum));
-		//Debug.Log("Play animation: " + animation.ToString() + "  " + Time.time);
+        Debug.Log("Play animation: " + animationEnum.ToString() + "  " + Time.time);
 	}
 
     internal void updateState(Bronk.Ant ant)

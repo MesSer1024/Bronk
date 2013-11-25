@@ -5,13 +5,13 @@ namespace Bronk
 {
     public class GameWorld
     {
-        private const int SIZE_X = 100;
-        private const int SIZE_Z = 100;
+        public const int SIZE_X = 100;
+        public const int SIZE_Z = 100;
 
         public enum BlockType
         {
             None,
-            Unknown,
+            Unknown, //object? walkable or non-walkable?
             Dirt,
             Stone
         }
@@ -61,6 +61,11 @@ namespace Bronk
         public Vector3 getCubePosition(int index)
         {
             return new Vector3(index % SIZE_X, 0, (int)(index / SIZE_Z));
+        }
+
+        public CubeData getCubeFromWorldPos(Vector3 pos)
+        {
+            return getCubeData((int)(pos.z * SIZE_X) + (int)pos.x);
         }
 
         public CubeData getCubeData(int index)
