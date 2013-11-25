@@ -96,7 +96,7 @@ namespace Bronk
                         Debug.Log(String.Format("Trimmed path between {0} and {1}", ant.Position, Game.World.getCubePosition(cube.Index)));
                         foreach (var node in path)
                         {   
-                            Debug.Log(String.Format("\t using: ({0},{1})", node.x, node.y), Game.World.ViewComponent.getCubes()[node.cube.Index]);
+                            Debug.Log(String.Format("\t using: ({0},{1})", node.x, node.y), Game.World.ViewComponent.getVisualCubeObject(node.cube.Index));
                         }
                         #endif
 
