@@ -48,7 +48,7 @@ namespace Bronk
             StartArea = new Rect(startX, startZ, endX - startX, endZ - startZ);
 
 			Vector2 startAreaPos = new Vector2((startX + endX) / 2, (startZ + endZ) / 2);
-			GameCamera gameCam = Camera.mainCamera.GetComponent<GameCamera> ();
+			GameCamera gameCam = Camera.main.GetComponent<GameCamera> ();
 			if (gameCam != null)
 				gameCam.SetPosition (startAreaPos);
 

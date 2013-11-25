@@ -10,7 +10,6 @@ public class DummyPlayer : MonoBehaviour, ITimelinedEntity
 	Vector3 _TargetPos;
 
 	public float MoveSpeed = 10;
-	private Vector3 _LastPosition;
 
 	public float CircleSpeed = 1;
 	public float CircleSize = 5;
@@ -23,7 +22,6 @@ public class DummyPlayer : MonoBehaviour, ITimelinedEntity
 
 	void Awake()
 	{
-		_LastPosition = transform.position;
 		_AntStateTimeline = AntStateTimeline.Create();
 		_PositionTimeline = PositionTimeline.Create();
 		_PositionTimeline.AddKeyframe(Time.time, transform.position);
@@ -132,7 +130,6 @@ public class DummyPlayer : MonoBehaviour, ITimelinedEntity
 			float z = Mathf.Sin(Time.time * CircleSpeed) * CircleSize;
 
 			_TargetPos = new Vector3(x, 0, z);
-			_LastPosition = transform.position;
 			transform.position = _TargetPos;
 		}
 	}

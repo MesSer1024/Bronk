@@ -3,6 +3,11 @@ using System.Collections;
 
 public class PositionTimeline : Timeline<Vector3, Vector3>
 {
+	public override TimelineType Type {
+		get {
+			return TimelineType.Position;
+		}
+	}
 	public static PositionTimeline Create ()
 	{
 		return Create <PositionTimeline, Vector3, Vector3>(Interpolate);

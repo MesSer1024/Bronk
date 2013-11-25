@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: DirtMaterial
+  m_Shader: {fileID: 4800000, guid: da7e87e984520b74a9c19a1e8f4d1284, type: 3}
+  m_ShaderKeywords: []
+  m_CustomRenderQueue: -1
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+      data:
+        first:
+          name: _MainTex
+        second:
+          m_Texture: {fileID: 2800000, guid: 73c941a2a7a271b4ebb57a3c2441570e, type: 3}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+    m_Floats: {}
+    m_Colors:
+      data:
+        first:
+          name: _Color
+        second: {r: .786764741, g: .786764741, b: .786764741, a: 1}
+      data:
+        first:
+          name: _TopColor
+        second: {r: .00516724307, g: .0132486429, b: .0235294122, a: .501960814}
+      data:
+        first:
+          name: _BottomColor
+        second: {r: .241937712, g: .373636127, b: .541176498, a: .482352942}

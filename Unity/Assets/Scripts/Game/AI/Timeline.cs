@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,25 +7,28 @@ public struct KeyframeItem<T>
 {
 	public T Value;
 	public float Time;
-	public KeyframeItem(T value, float time)
+
+	public KeyframeItem (T value, float time)
 	{
 		Value = value;
 		Time = time;
 	}
 }
 
-public class Timeline<Keyframe, Value>
+public abstract class Timeline<Keyframe, Value> : Bronk.ITimeline
 {
 	private List<KeyframeItem<Keyframe>> _Keyframes = new List<KeyframeItem<Keyframe>> ();
 	protected Func<Keyframe, Keyframe, float, Value> _InterpolationFunc;
 
+	public abstract TimelineType Type { get; }
 
-	protected static T Create<T, Keyframe,Value>(Func<Keyframe, Keyframe, float, Value> func) where T : Timeline<Keyframe, Value>, new()
+	protected static T Create<T, Keyframe,Value> (Func<Keyframe, Keyframe, float, Value> func) where T : Timeline<Keyframe, Value>, new()
 	{
 		T timeline = new T ();
 		timeline._InterpolationFunc = func;
 		return timeline;
 	}
+
 	public Value GetValue (float time)
 	{
 		if (_Keyframes.Count == 0)
@@ -49,11 +52,11 @@ public class Timeline<Keyframe, Value>
 		return _InterpolationFunc (default(Keyframe), _Keyframes [_Keyframes.Count - 1].Value, 1);
 	}
 
-	public void AddKeyframe(float time, Keyframe frame)
+	public void AddKeyframe (float time, Keyframe frame)
 	{
-		if (_Keyframes.Count > 0 && _Keyframes[_Keyframes.Count - 1].Time > time)
-			throw new ArgumentException("time later than last keyframe");
-		_Keyframes.Add(new KeyframeItem<Keyframe>(frame, time));
+		if (_Keyframes.Count > 0 && _Keyframes [_Keyframes.Count - 1].Time > time)
+			throw new ArgumentException ("time later than last keyframe");
+		_Keyframes.Add (new KeyframeItem<Keyframe> (frame, time));
 	}
 
     public void removeKeyframesInFuture()
@@ -97,7 +100,7 @@ public class Timeline<Keyframe, Value>
 		return _InterpolationFunc (default(Keyframe), _Keyframes [_Keyframes.Count - 1].Value, 1);
 	}
 
-	public float GetCurrentKeyframeTime(float time)
+	public float GetCurrentKeyframeTime (float time)
 	{
 		if (_Keyframes.Count == 0)
 			return 0;
@@ -106,6 +109,30 @@ public class Timeline<Keyframe, Value>
 				return time - _Keyframes [i - 1].Time;
 			}
 		}
-		return Mathf.Max(0, time - _Keyframes [_Keyframes.Count - 1].Time);
+		return Mathf.Max (0, time - _Keyframes [_Keyframes.Count - 1].Time);
+	}
+
+	public bool HasNewValue(float prevTime, float currentTime)
+	{
+		if (_Keyframes.Count == 0)
+			return false;
+		for (int i = 0; i < _Keyframes.Count; i++) {
+			if (prevTime < _Keyframes [i].Time && _Keyframes[i].Time <= currentTime) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public void CopyFrom (Bronk.ITimeline timeline)
+	{
+		if (timeline.Type == this.Type)
+			CopyFrom (timeline as Timeline<Keyframe,Value>);
+	}
+
+	public void CopyFrom (Timeline<Keyframe, Value> timeline)
+	{
+		_Keyframes.Clear ();
+		_Keyframes.AddRange (timeline._Keyframes);
 	}
 }

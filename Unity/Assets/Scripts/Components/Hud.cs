@@ -23,17 +23,13 @@ public class Hud : MonoBehaviour, IMessageListener
 	{
 		if (message is CubeClickedMessage) {
 			var msg = message as CubeClickedMessage;
-			CubeLogic cube = msg.getCube ();
-			Logger.Info (String.Format ("onMessage CubeClickedMessage cubeIndex= {0}", cube.Index));
+			int cubeIndex = msg.getCubeIndex ();
+			Logger.Info (String.Format ("onMessage CubeClickedMessage cubeIndex= {0}", cubeIndex));
 
-
-			//mark all items in this range...
-			cube.setSelected (!cube.selected);
-		} else if (message is CubeSemiSelectedMessage) {
-
-			var msg = message as CubeSemiSelectedMessage;
-			CubeLogic cube = msg.getCube ();
-			cube.setSemiSelected (msg.getSemiSelected());
-		}
+			var logicBlock = Game.World.Cubes [cubeIndex];
+			logicBlock.Selected = !logicBlock.Selected;
+			
+			Game.World.ViewComponent.SetBlockSelected (cubeIndex, logicBlock.Selected);
+		} 
 	}
 }

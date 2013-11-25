@@ -23,12 +23,6 @@ namespace Bronk
 			set;
         }
 
-        public static List<CubeLogic> getCubesBetween(CubeLogic cube1, CubeLogic cube2)
-        {
-            var items = new List<CubeLogic>();
-
-            return items;
-        }
 
         public static void init()
         {
