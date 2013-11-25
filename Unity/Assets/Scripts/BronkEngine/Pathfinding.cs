@@ -26,7 +26,7 @@ namespace Bronk
             public bool inOpen;
             public bool finished;
             public bool isBlocked() {
-                return cube.Type != GameWorld.BlockType.None;
+                return cube.Type != GameWorld.BlockType.DirtGround;
             }
             public CubeData cube;
         }
