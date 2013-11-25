@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Bronk;
 
 
-public class DummyPlayer : MonoBehaviour 
+public class DummyPlayer : MonoBehaviour, ITimelinedEntity
 {
 	float _ActionTimer;
 	Vector3 _TargetPos;

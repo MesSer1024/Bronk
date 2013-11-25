@@ -9,7 +9,6 @@ namespace Bronk
     public class AIMain : IMessageListener
 	{
         private List<Ant> _ants = new List<Ant>();
-        private Queue<MiningTimeline> _jobs = new Queue<MiningTimeline>();
         private List<CharacterAnimationController> _antViews = new List<CharacterAnimationController>();
 
         public AIMain()
@@ -37,6 +36,7 @@ namespace Bronk
         {
             //iterate through all available jobs
 
+            int i = 0;
             foreach (var ant in _ants)
             {
                 ant.update(delta);
@@ -44,8 +44,7 @@ namespace Bronk
 
             foreach (var ant in _antViews)
             {
-                //ant.updateState(_ants[0]);
-                //ant.updateState(_ants[0]);
+                ant.LogicCharacter = _ants[i++];
             }
         }
 
@@ -57,7 +56,7 @@ namespace Bronk
                 var cube = msg.getCube();
                 foreach (var ant in _ants)
                 {
-                    Logger.Log("Applying stuff to ant!");
+                    Debug.Log("Applying stuff to ant!");
 
                     Func<Vector3, Vector3> convertTo2dAlignedVector = (Vector3 v) =>
                     {
@@ -72,10 +71,11 @@ namespace Bronk
                     var path = p.findPath(convertTo2dAlignedVector(ant.Position), convertTo2dAlignedVector(Game.World.getCubePosition(cube.Index)));
                     if (path != null && path.Count > 0)
                     {
-                        Logger.Log(String.Format("Moving between {0} and {1}", ant.Position, Game.World.getCubePosition(cube.Index)));
+                        Debug.Log(String.Format("Moving between {0} and {1}", ant.Position, Game.World.getCubePosition(cube.Index)));
                         foreach (var node in path)
                         {
-                            Logger.Log(String.Format("\t using: ({0},{1})", node.x, node.y));
+                            
+                            Debug.Log(String.Format("\t using: ({0},{1})", node.x, node.y), Game.World.ViewComponent.getCubes()[node.cube.Index]);
                         }
                     }
                     else
@@ -83,11 +83,10 @@ namespace Bronk
                         Logger.Log(String.Format("Could not find path between {0} and {1}", ant.Position, Game.World.getCubePosition(cube.Index)));
                     }
 
-                    float dt = Time.time + 1.5f;
-                    var walk = new WalkTimeline(ant.Position, Game.World.getCubePosition(cube.Index), Time.time, dt, ant);
-                    var mine = new MiningTimeline(Game.World.getCubeData(cube.Index), dt, dt + 3);
-                    ant.addTimeline(walk);
-                    ant.addTimeline(mine);
+                    ant.changePositionFuture(Time.time + 1.5f, Game.World.getCubePosition(cube.Index));
+                    ant.changeStateFuture(Time.time, GameEntity.States.Move);
+                    ant.changeStateFuture(Time.time + 1.5f, GameEntity.States.Mine);
+                    ant.changeStateFuture(Time.time + 4, GameEntity.States.Idle);
                 }
             }
         }
