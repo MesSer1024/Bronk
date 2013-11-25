@@ -31,7 +31,7 @@ public class WorldGameObject : MonoBehaviour {
             _cubes.Add(cube);
             var view = cube.GetComponentInChildren<CubeLogic>();
             view.setData(block);
-            view.Index = i;
+            view.Index = block.Index;
         }
 
         for (int i = 0; i < 4; i++)
