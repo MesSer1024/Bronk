@@ -6,8 +6,8 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: DirtMaterial
-  m_Shader: {fileID: 4800000, guid: da7e87e984520b74a9c19a1e8f4d1284, type: 3}
+  m_Name: DecoratorMaterial
+  m_Shader: {fileID: 4800000, guid: c415939aa17274ad7a8968ce6de4d7ae, type: 3}
   m_ShaderKeywords: []
   m_CustomRenderQueue: -1
   m_SavedProperties:
@@ -25,12 +25,4 @@ Material:
       data:
         first:
           name: _Color
-        second: {r: .0627451017, g: .0980392173, b: .13333334, a: 1}
-      data:
-        first:
-          name: _TopColor
-        second: {r: .0627451017, g: .0980392173, b: .13333334, a: .501960814}
-      data:
-        first:
-          name: _BottomColor
-        second: {r: .230049759, g: .233816087, b: .272058845, a: .482352942}
+        second: {r: 1, g: 1, b: 1, a: 1}

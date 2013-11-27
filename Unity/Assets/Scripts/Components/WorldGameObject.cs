@@ -9,25 +9,32 @@ public class WorldGameObject : MonoBehaviour
 	private ViewBlock[] _cubes;
 	private List<CharacterAnimationController> _ants;
 	Dictionary<int, ITimelineObject> _Objects;
-	
 	private GameObject _Side0;
 	private GameObject _Side1;
 	private GameObject _Side2;
 	private GameObject _Side3;
-	private GameObject _Side4;	
+	private GameObject _Side4;
 	private GameObject _Corner2;
 	private GameObject _Floor;
-	
+	private GameObject _CirclePrefab;
+
+
 	private Material _DirtMaterial;
 	private Material _FoodMaterial;
 	private Material _GoldMaterial;
+	private Material _FloorMaterial;
+	private Material _CircleTestMaterial;
+
+	private Vector3[] _DecoratorVertexBuffer;
+	private Color[] _DecoratorColorBuffer;
 
 	void Start ()
 	{
+		BlockDecorators.Initialize ();
 		_ants = new List<CharacterAnimationController> ();
 		LoadTilePrefabs ();
 		_cubes = new ViewBlock[Game.World.Cubes.Count];
-
+		UnityEngine.Random.seed = "WAT".GetHashCode ();
 		for (var i = 0; i < Game.World.Cubes.Count; ++i) {
 			var block = Game.World.Cubes [i];
 			BlockObject view = GetViewBlock (i, block.Type);
@@ -52,17 +59,39 @@ public class WorldGameObject : MonoBehaviour
 	BlockObject GetViewBlock (int blockIndex, GameWorld.BlockType type)
 	{
 		Quaternion rotation = Quaternion.identity;
-		GameObject prefab = GetTilePrefab (type, Game.World.getCubeData(blockIndex),ref rotation);
+		GameObject prefab = GetTilePrefab (type, Game.World.getCubeData (blockIndex), ref rotation);
 		GameObject obj = Instantiate (prefab, new Vector3 (blockIndex % GameWorld.SIZE_X, 0, blockIndex / GameWorld.SIZE_Z), rotation) as GameObject;
 		BlockObject blockObj = obj.GetComponentInChildren<BlockObject> ();
+//SimplexNoise.Noise.Generate ((float)(blockIndex % GameWorld.SIZE_X) / GameWorld.SIZE_X, (float)(blockIndex / GameWorld.SIZE_Z) / GameWorld.SIZE_Z);
+
+		int tileSubdivisions = 3;
+
+		float tileSize = 1f / (float)tileSubdivisions;
+		int maxDecorators = 3;
+		int decorators = 0;
+		for (int i = 0; i < tileSubdivisions * tileSubdivisions; i++) {
+			int tileX = i % tileSubdivisions;
+			int tileZ = i / tileSubdivisions;
+			if (decorators < maxDecorators && UnityEngine.Random.Range (0f, 1f) > 0.95f) {
+				decorators++;
+				float noiseVal = UnityEngine.Random.Range (0.15f, 1f);
+
+				Vector3 tilePos = new Vector3 (blockIndex % GameWorld.SIZE_X + tileSize * tileX - 0.5f, 0.001f, blockIndex / GameWorld.SIZE_Z + tileSize * tileZ - 0.5f);
+				if (type != GameWorld.BlockType.DirtGround)
+					tilePos += Vector3.up;
+				BlockDecorators.GetDecorator (type, tilePos, tileSize);
+			}
+		}
 
 		if (type == GameWorld.BlockType.Gold)
 			blockObj.DefaultMaterial = _GoldMaterial;
 		else if (type == GameWorld.BlockType.Food)
 			blockObj.DefaultMaterial = _FoodMaterial;
+		else if (type == GameWorld.BlockType.DirtGround)
+			blockObj.DefaultMaterial = _FloorMaterial;
 		else
 			blockObj.DefaultMaterial = _DirtMaterial;
-		blockObj.UpdateMaterial();
+		blockObj.UpdateMaterial ();
 
 		if (blockObj == null)
 			throw new Exception ("Failed to get BlockObject component when instantiating " + type + " block");
@@ -84,25 +113,29 @@ public class WorldGameObject : MonoBehaviour
 		_Corner2 = Resources.Load<GameObject> ("Terrain/Walls/Corner2") as GameObject;
 		_Floor = Resources.Load<GameObject> ("Terrain/Walls/Floor") as GameObject;
 
+		_CirclePrefab = Resources.Load<GameObject> ("Terrain/circleprefab") as GameObject;
+
 		_DirtMaterial = Resources.Load<Material> ("Materials/DirtMaterial") as Material;
 		_FoodMaterial = Resources.Load<Material> ("Materials/FoodMaterial") as Material;
 		_GoldMaterial = Resources.Load<Material> ("Materials/GoldMaterial") as Material;
+		_FloorMaterial = Resources.Load<Material> ("Materials/FloorMaterial") as Material;
+		_CircleTestMaterial = Resources.Load<Material> ("Materials/circletest") as Material;
 	}
 
-	GameObject GetTilePrefab(GameWorld.BlockType type, CubeData block, ref Quaternion rotation)
+	GameObject GetTilePrefab (GameWorld.BlockType type, CubeData block, ref Quaternion rotation)
 	{
-		if (block.IsGround())
+		if (block.IsGround ())
 			return _Floor;
 
-		CubeData leftBlock = Game.World.getLeftCube(block);
-		CubeData rightBlock = Game.World.getRightCube(block);
-		CubeData topBlock = Game.World.getTopCube(block);
-		CubeData bottomBlock = Game.World.getBottomCube(block);
+		CubeData leftBlock = Game.World.getLeftCube (block);
+		CubeData rightBlock = Game.World.getRightCube (block);
+		CubeData topBlock = Game.World.getTopCube (block);
+		CubeData bottomBlock = Game.World.getBottomCube (block);
 
-		bool left = leftBlock != null ? leftBlock.IsGround() : false;
-		bool right = rightBlock != null ? rightBlock.IsGround() : false;
-		bool top = topBlock != null ? topBlock.IsGround() : false;
-		bool bottom = bottomBlock != null ? bottomBlock.IsGround() : false;
+		bool left = leftBlock != null ? leftBlock.IsGround () : false;
+		bool right = rightBlock != null ? rightBlock.IsGround () : false;
+		bool top = topBlock != null ? topBlock.IsGround () : false;
+		bool bottom = bottomBlock != null ? bottomBlock.IsGround () : false;
 		
 		int freeSides = 0;
 		freeSides += left ? 1 : 0;
@@ -111,41 +144,46 @@ public class WorldGameObject : MonoBehaviour
 		freeSides += bottom ? 1 : 0;
 		
 		GameObject go = _Side0;
-		if (freeSides == 1)
-		{
+		if (freeSides == 1) {
 			go = _Side1;
-			if (left) rotation = Quaternion.Euler(Vector3.up * 180);
-			if (right) rotation = Quaternion.Euler(Vector3.up * 0);
-			if (top) rotation = Quaternion.Euler(Vector3.up * 90);
-			if (bottom) rotation = Quaternion.Euler(Vector3.up * 270);
-		}
-		else if (freeSides == 2)
-		{
-			if (left && right || top && bottom)
-			{
+			if (left)
+				rotation = Quaternion.Euler (Vector3.up * 180);
+			if (right)
+				rotation = Quaternion.Euler (Vector3.up * 0);
+			if (top)
+				rotation = Quaternion.Euler (Vector3.up * 90);
+			if (bottom)
+				rotation = Quaternion.Euler (Vector3.up * 270);
+		} else if (freeSides == 2) {
+			if (left && right || top && bottom) {
 				go = _Side2;
-				if (left && right) rotation = Quaternion.Euler(Vector3.up * 0);
-				if (top && bottom) rotation = Quaternion.Euler(Vector3.up * 90);
-			}
-			else
-			{
+				if (left && right)
+					rotation = Quaternion.Euler (Vector3.up * 0);
+				if (top && bottom)
+					rotation = Quaternion.Euler (Vector3.up * 90);
+			} else {
 				go = _Corner2;
-				if (left && top) rotation = Quaternion.Euler(Vector3.up * 180);
-				if (top && right) rotation = Quaternion.Euler(Vector3.up * 90);
-				if (right && bottom) rotation = Quaternion.Euler(Vector3.up * 0);
-				if (bottom && left) rotation = Quaternion.Euler(Vector3.up * 270);
+				if (left && top)
+					rotation = Quaternion.Euler (Vector3.up * 180);
+				if (top && right)
+					rotation = Quaternion.Euler (Vector3.up * 90);
+				if (right && bottom)
+					rotation = Quaternion.Euler (Vector3.up * 0);
+				if (bottom && left)
+					rotation = Quaternion.Euler (Vector3.up * 270);
 			}
-		}
-		else if (freeSides == 3)
-		{
+		} else if (freeSides == 3) {
 			go = _Side3;
-			if (!left) rotation = Quaternion.Euler(Vector3.up * 270);
-			if (!right) rotation = Quaternion.Euler(Vector3.up * 90);
-			if (!top) rotation = Quaternion.Euler(Vector3.up * 180);
-			if (!bottom) rotation = Quaternion.Euler(Vector3.up * 0);
+			if (!left)
+				rotation = Quaternion.Euler (Vector3.up * 270);
+			if (!right)
+				rotation = Quaternion.Euler (Vector3.up * 90);
+			if (!top)
+				rotation = Quaternion.Euler (Vector3.up * 180);
+			if (!bottom)
+				rotation = Quaternion.Euler (Vector3.up * 0);
 		}
-		if (freeSides == 4)
-		{
+		if (freeSides == 4) {
 			go = _Side4;
 		}
 		

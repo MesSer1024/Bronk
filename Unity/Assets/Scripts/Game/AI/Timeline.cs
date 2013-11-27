@@ -22,7 +22,7 @@ public abstract class Timeline<Keyframe, Value> : Bronk.ITimeline
 
 	public abstract TimelineType Type { get; }
 
-	protected static T Create<T, Keyframe,Value> (Func<Keyframe, Keyframe, float, Value> func) where T : Timeline<Keyframe, Value>, new()
+	protected static T Create<T, K,V> (Func<K, K, float, V> func) where T : Timeline<K, V>, new()
 	{
 		T timeline = new T ();
 		timeline._InterpolationFunc = func;
@@ -59,22 +59,19 @@ public abstract class Timeline<Keyframe, Value> : Bronk.ITimeline
 		_Keyframes.Add (new KeyframeItem<Keyframe> (frame, time));
 	}
 
-    public void removeKeyframesInFuture()
-    {
-        int lastIndex = _Keyframes.Count;
-        for (int i = 0; i < _Keyframes.Count; i++)
-        {
-            if (Time.time > _Keyframes[i].Time)
-            {
-                lastIndex = i;
-            }
-        }
+	public void removeKeyframesInFuture ()
+	{
+		int lastIndex = _Keyframes.Count;
+		for (int i = 0; i < _Keyframes.Count; i++) {
+			if (Time.time > _Keyframes [i].Time) {
+				lastIndex = i;
+			}
+		}
 
-        if (lastIndex < _Keyframes.Count)
-        {
-            _Keyframes.RemoveRange(lastIndex, _Keyframes.Count - lastIndex);
-        }
-    }
+		if (lastIndex < _Keyframes.Count) {
+			_Keyframes.RemoveRange (lastIndex, _Keyframes.Count - lastIndex);
+		}
+	}
 
 	public float GetNextKeyTime (float time)
 	{
@@ -112,12 +109,12 @@ public abstract class Timeline<Keyframe, Value> : Bronk.ITimeline
 		return Mathf.Max (0, time - _Keyframes [_Keyframes.Count - 1].Time);
 	}
 
-	public bool HasNewValue(float prevTime, float currentTime)
+	public bool HasNewValue (float prevTime, float currentTime)
 	{
 		if (_Keyframes.Count == 0)
 			return false;
 		for (int i = 0; i < _Keyframes.Count; i++) {
-			if (prevTime < _Keyframes [i].Time && _Keyframes[i].Time <= currentTime) {
+			if (prevTime < _Keyframes [i].Time && _Keyframes [i].Time <= currentTime) {
 				return true;
 			}
 		}

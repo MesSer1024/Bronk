@@ -1,4 +1,4 @@
-Shader "Custom/Unlit" 
+Shader "Custom/Unlit Transparent" 
 {	
 	Properties {
 		_Color ("Color", Color) = (0.5,0.5,0.5,0.5) 
@@ -6,10 +6,11 @@ Shader "Custom/Unlit"
 	}
 	SubShader 
 	{
-		Tags { "Queue"="Geometry" "RenderType"="Opaque"}
+		Tags { "Queue"="Geometry" "RenderType"="Transparent"}
 		
 		ZTest LEqual
-		ZWrite On
+		ZWrite Off
+		Blend SrcAlpha OneMinusSrcAlpha
 		
 		Pass 
 		{			

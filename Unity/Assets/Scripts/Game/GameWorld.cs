@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿﻿using UnityEngine;
 using System.Collections.Generic;
 
 namespace Bronk
@@ -82,14 +82,14 @@ namespace Bronk
 
 					float normalizedTileX = lowResX - Mathf.Floor (lowResX);
 					float normalizedTileZ = lowResZ = Mathf.Floor (lowResZ);
-					float noiseValueX = SimplexNoise.Noise.Generate (x, z) * 1f;
-					float noiseValueZ = SimplexNoise.Noise.Generate (z, x) * 1f;
+					float noiseValueX = SimplexNoise.Noise.Generate (normalizedTileX, normalizedTileZ) * 1f;
+					float noiseValueZ = SimplexNoise.Noise.Generate (normalizedTileZ, normalizedTileX) * 1f;
 					int indexX = Mathf.Clamp ((int)((lowResZ + noiseValueZ) * lowResSizeZ), 0, lowResSizeX - 1);
 					int indexZ = Mathf.Clamp ((int)(lowResX + noiseValueX), 0, lowResSizeZ - 1);
 
 					float value1 = lowResValues [(int)lowResX + (int)lowResZ * lowResSizeZ];
 					float value2 = lowResValues [indexX + indexZ * lowResSizeZ];
-					float value = (SimplexNoise.Noise.Generate (x, z) < 0f) ? value1 : value2;
+					float value = (SimplexNoise.Noise.Generate (normalizedX, normalizedZ) < 0f) ? value1 : value2;
 					if (value < 0.075) {
 						t = BlockType.DirtGround;
 					} else if (value < 0.75) {
