@@ -17,9 +17,13 @@ public class GameCamera : MonoBehaviour
 	private bool _IsTapping = false;
 	private bool _IsPanning = false;
 	private bool _TouchInProgress = false;
+	private Vector2[] _VelocityBuffer;
+	private int _VelocityBufferIndex;
+	private Vector2 _FingerMoveVector;
 
 	void Awake ()
 	{
+		_VelocityBuffer = new Vector2[4];
 		Application.targetFrameRate = 60;
 		UpdatePosition ();
 	}
@@ -36,7 +40,7 @@ public class GameCamera : MonoBehaviour
 			Vector2 delta2D = _Velocity * Sensitivity * Time.deltaTime;
 			Vector3 transformedDelta = Quaternion.LookRotation (-new Vector3 (Offset.x, 0, Offset.z)) * new Vector3 (delta2D.x, 0, delta2D.y);
 			Position2D += new Vector2 (transformedDelta.x, transformedDelta.z);
-			UpdatePosition ();		
+			UpdatePosition ();
 		}
 	}
 
@@ -91,6 +95,8 @@ public class GameCamera : MonoBehaviour
 	{
 		if (Input.touchCount == 1) {
 			Touch finger = Input.touches [0];
+			if (finger.deltaTime > 0.2f)
+				return;
 			if (finger.phase == TouchPhase.Began && !_TouchInProgress)
 				_IsTapping = true;
 			if (_IsTapping && (finger.phase == TouchPhase.Moved || finger.phase == TouchPhase.Stationary)) {
@@ -152,10 +158,23 @@ public class GameCamera : MonoBehaviour
 					}
 				}
 			}
+			Vector2 deltaPos = finger.deltaPosition;
+			_VelocityBuffer [_VelocityBufferIndex] = -deltaPos / finger.deltaTime;
+			_VelocityBufferIndex++;
+			if (_VelocityBufferIndex >= _VelocityBuffer.Length)
+				_VelocityBufferIndex = 0;
 
 			if (finger.phase == TouchPhase.Moved || finger.phase == TouchPhase.Began) {
-				Vector2 deltaPos = finger.deltaPosition;
-				if (deltaPos.magnitude > 15 || _IsPanning) {
+				if (!_IsPanning) {
+					_FingerMoveVector += deltaPos;
+					if (_FingerMoveVector.magnitude > 20) {
+						Vector2 movedExceptThisFrame = _FingerMoveVector - deltaPos;
+						Vector3 transformedDir = transform.TransformDirection (-new Vector3 (movedExceptThisFrame.x, 0, movedExceptThisFrame.y) * Sensitivity);
+						Position2D += new Vector2 (transformedDir.x, transformedDir.z);
+						_IsPanning = true;
+					}
+				}
+				if (_IsPanning) {
 
 					_LastPanTime = Time.time;
 					if (_SemiHighlightEntity != null) {
@@ -163,15 +182,25 @@ public class GameCamera : MonoBehaviour
 						_SemiHighlightEntity = null; 
 					}
 					_IsPanning = true;
-					_Velocity = -deltaPos / finger.deltaTime;
+					Vector3 transformedDir = transform.TransformDirection (-new Vector3 (deltaPos.x, 0, deltaPos.y) * Sensitivity);
+					Position2D += new Vector2 (transformedDir.x, transformedDir.z);
+					UpdatePosition ();
 					_IsTapping = false;
 				} else {
 					_Velocity = Vector2.zero;
 				}
 			} else if (finger.phase == TouchPhase.Stationary) {
 				_Velocity = Vector2.zero;
+			} else if (_IsPanning && finger.phase == TouchPhase.Ended) {
+				Vector2 velocity = Vector2.zero;
+				for (int i = 0; i < _VelocityBuffer.Length; i++) {
+					velocity += _VelocityBuffer [i];
+				}
+				velocity /= _VelocityBuffer.Length;
+				_Velocity = velocity; 
 			}
 		} else {
+			_FingerMoveVector = Vector2.zero;
 			_IsPanning = false;
 			_TouchInProgress = false;
 			_IsTapping = false;
@@ -219,6 +248,11 @@ public class GameCamera : MonoBehaviour
 	float GetCameraHeight (Vector2 pos2D)
 	{
 		return 0f;
+	}
+
+	void OnPreRender ()
+	{
+		BlockDecorators.Update ();
 	}
 
 	void GetTileIndices (Ray ray, out int endXIndex, out int endYIndex)

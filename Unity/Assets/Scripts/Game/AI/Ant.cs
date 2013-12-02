@@ -6,20 +6,22 @@ using UnityEngine;
 
 namespace Bronk
 {
-    public class Ant : GameEntity, ITimelinedEntity
+    public class Ant : GameEntity
 	{
         private AntStateTimeline _stateTimeline;
         private PositionTimeline _positionTimeline;
+		private JobTimeline _jobTimeline;
+
 
         public override Vector3 Position
         {
             get
             {
-                return _positionTimeline.GetValue(Time.time);
+                return _positionTimeline.GetValue(Game.LogicTime);
             }
             set
             {
-                _positionTimeline.AddKeyframe(Time.time, value);
+                _positionTimeline.AddKeyframe(Game.LogicTime, value);
             }
         }
 
@@ -27,21 +29,21 @@ namespace Bronk
         {
             get
             {
-                return _stateTimeline.GetValue(Time.time);
+                return _stateTimeline.GetValue(Game.LogicTime);
             }
             set
             {
-                _stateTimeline.AddKeyframe(Time.time, value);
+				_stateTimeline.AddKeyframe(Game.LogicTime, value);
             }
         }
 
-        public Ant()
+		public Ant(int id)
+			: base(id)
         {
             _stateTimeline = AntStateTimeline.Create();
             _positionTimeline = PositionTimeline.Create();
-
-            _positionTimeline.AddKeyframe(Time.time, Position);
-            _stateTimeline.AddKeyframe(Time.time, GameEntity.States.Idle);
+			_jobTimeline = JobTimeline.Create ();
+			_stateTimeline.AddKeyframe(0, GameEntity.States.Idle);
         }
 
         public void init()
@@ -51,16 +53,14 @@ namespace Bronk
 
         public void resetStateFuture()
         {
-            //var oldState = _stateTimeline.GetValue(Time.time);
-            _stateTimeline.removeKeyframesInFuture();
-            //_stateTimeline.AddKeyframe(Time.time, oldState);
+			_stateTimeline.removeKeyframesInFuture(Game.LogicTime);
         }
 
         public void resetPositionFuture()
         {
-            var oldPos = _positionTimeline.GetValue(Time.time);
-            _positionTimeline.removeKeyframesInFuture();
-            _positionTimeline.AddKeyframe(Time.time, oldPos);
+            var oldPos = _positionTimeline.GetValue(Game.LogicTime);
+			_positionTimeline.removeKeyframesInFuture(Game.LogicTime);
+            _positionTimeline.AddKeyframe(Game.LogicTime, oldPos);
         }
 
         public void addStateKeyframe(float time, GameEntity.States state) {
@@ -80,11 +80,16 @@ namespace Bronk
         public AntStateTimeline GetStateTimeline()
         {
             return _stateTimeline;
-        }
+		}
 
-        public PositionTimeline GetPositionTimeline()
-        {
-            return _positionTimeline;
-        }
+		public PositionTimeline GetPositionTimeline()
+		{
+			return _positionTimeline;
+		}
+
+		public JobTimeline GetJobTimeline()
+		{
+			return _jobTimeline;
+		}
     }
 }

@@ -11,8 +11,10 @@ namespace Bronk
 
     public class AIMain : IMessageListener
 	{
-        private List<Ant> _ants = new List<Ant>();
-        private List<CharacterAnimationController> _antViews = new List<CharacterAnimationController>();
+		private int _AntIDCounter;
+		private List<Ant> _ants = new List<Ant>();
+		private List<DigJob> _availableJobs = new List<DigJob> ();
+		private Pathfinding _pathfinding = new Pathfinding (GameWorld.SIZE_X, GameWorld.SIZE_Z, Game.World.Blocks);
 
         public AIMain()
         {
@@ -24,10 +26,11 @@ namespace Bronk
             Ant ant;
             switch (type)
             {
-                case 1:
-                    ant = new Ant();
-                    _ants.Add(ant);
-                    ant.State = GameEntity.States.Removable;
+				case 1:
+					ant = new Ant (_AntIDCounter++);
+					_ants.Add (ant);
+					ant.State = GameEntity.States.Removable;
+					Game.World.ViewComponent.CreateAnt (ant.ID, type);
                     break;
                 default:
                     throw new Exception("TODO: make a decent solution for what type of ant to create!");
@@ -35,20 +38,56 @@ namespace Bronk
             return ant;
         }
 
-        public void update(float delta)
+		public void update(float delta)
         {
             //iterate through all available jobs
+			for (int antIndex = 0; antIndex < _ants.Count; antIndex++) {
+				var ant = _ants [antIndex];
+				JobTimeline antJobs = ant.GetJobTimeline ();
+				if (antJobs.GetValue(Game.LogicTime) == null) 
+				{
+					for (int i = 0; i < _availableJobs.Count; i++) 
+					{
+						var job = _availableJobs [i];
+						if (job.AssignedAnts.Count == 0) 
+						{
+							var path = PathfindForBlock (ant.Position, job.BlockID);
 
-            int i = 0;
-            foreach (var ant in _ants)
-            {
-                ant.update(delta);
-            }
+							if (path != null) {
 
-            foreach (var ant in _antViews)
-            {
-                ant.LogicCharacter = _ants[i++];
-            }
+								ant.resetPositionFuture ();
+								ant.resetStateFuture ();
+								float dt = Game.LogicTime;
+								float movementTime = 0.75f;
+								float miningTime = 3.0f;
+								//ant.addPositionKeyframe(dt, Game.World.getCubePosition(path[0].cube.Index));
+								//ant.addPositionKeyframe(dt, ant.Position);
+								ant.addStateKeyframe (dt, GameEntity.States.Move);
+								//starting on second item since first item is "start position" finishing on second last since last is end position
+								for (int nodeIndex = 1; nodeIndex < path.Count - 1; nodeIndex++) {
+									var node = path [nodeIndex];
+									dt += movementTime;
+									ant.addPositionKeyframe (dt, Game.World.getCubePosition (node.blockID));
+								}
+								ant.addStateKeyframe (dt, GameEntity.States.Mine);
+								ant.addStateKeyframe (dt + miningTime, GameEntity.States.Idle);
+								Game.World.ViewComponent.SetTimeline (ant.ID, ant.GetPositionTimeline ());
+								Game.World.ViewComponent.SetTimeline (ant.ID, ant.GetStateTimeline());
+
+								job.AssignedAnts.Add (ant);
+
+								antJobs.AddKeyframe (Game.LogicTime, job);
+								antJobs.AddKeyframe (dt + miningTime, null);
+
+								Game.World.Blocks.SetBlockType (job.BlockID, GameWorld.BlockType.DirtGround, dt + miningTime);
+								Game.World.Blocks.setBlockSelected (job.BlockID, false, dt + miningTime);
+								Game.World.ViewComponent.SetBlockType (job.BlockID, GameWorld.BlockType.DirtGround, dt + miningTime);
+								Game.World.ViewComponent.SetBlockSelected (job.BlockID, false, dt + miningTime);
+							}
+						}
+					}
+				}
+			}
         }
 
         public void onMessage(IMessage message)
@@ -56,25 +95,51 @@ namespace Bronk
             if (message is CubeClickedMessage)
             {
                 var msg = message as CubeClickedMessage;
-				var cube = Game.World.Cubes [msg.getCubeIndex()];
-                foreach (var ant in _ants)
-                {
-                    Debug.Log("Applying stuff to ant!");
 
-                    Func<Vector3, Vector3> convertTo2dAlignedVector = (Vector3 v) =>
-                    {
-                        Vector3 asdf = v;
-                        asdf.y = v.z;
-                        asdf.z = 0;
-                        return asdf;
-                    };
+				int cubeIndex = msg.getCubeIndex ();
 
-                    var p = new Pathfinding(GameWorld.SIZE_X, GameWorld.SIZE_Z, Game.World.Cubes);
+				bool newSelected = Game.World.Blocks.getBlockSelected(cubeIndex); 
+				newSelected = !newSelected;
+				Game.World.Blocks.setBlockSelected (cubeIndex, newSelected, Time.time); // set selected on view time
+				if (newSelected) 
+				{
+					_availableJobs.Add (new DigJob (cubeIndex));
+				} 
+				else 
+				{
+					for (int jobIndex = 0; jobIndex < _availableJobs.Count; jobIndex++) 
+					{
+						if (_availableJobs [jobIndex].BlockID == cubeIndex) 
+						{
+							var job = _availableJobs [jobIndex];
+							for (int i = 0; i < job.AssignedAnts.Count; i++) {
+								UnassignJobFromAnt (job, job.AssignedAnts [i]);
+							}
+							_availableJobs.RemoveAt (jobIndex);
+						}
+					}
+				}
+            }
+        }
 
-                    var path = p.findPath(convertTo2dAlignedVector(ant.Position), convertTo2dAlignedVector(Game.World.getCubePosition(cube.Index)));
+		void UnassignJobFromAnt (DigJob job, Ant ant)
+		{
+			ant.resetStateFuture ();
+			ant.resetPositionFuture ();
+			ant.GetJobTimeline ().removeKeyframesInFuture (Game.LogicTime);
+			ant.addStateKeyframe(Game.LogicTime, GameEntity.States.Idle);
+			Game.World.ViewComponent.SetTimeline (ant.ID, ant.GetPositionTimeline ());
+			Game.World.ViewComponent.SetTimeline (ant.ID, ant.GetStateTimeline());
+			var block = Game.World.Blocks.getBlock (job.BlockID);
+			Game.World.ViewComponent.SetBlockType (job.BlockID, block.Type, Game.LogicTime);
+			Game.World.ViewComponent.SetBlockSelected (job.BlockID, block.Selected, Game.LogicTime);
+		}
 
-                    #if VERBOSE_PATHFINDING
-                    if (path != null && path.Count > 0)
+		List<Pathfinding.Node> PathfindForBlock (Vector2 position, int blockID)
+		{
+			var path = _pathfinding.findPath (position, Game.World.getCubePosition (blockID));
+			#if VERBOSE_PATHFINDING
+			                    if (path != null && path.Count > 0)
                     {
                         Debug.Log(String.Format("Moving between {0} and {1}", ant.Position, Game.World.getCubePosition(cube.Index)));
                         foreach (var node in path)
@@ -87,46 +152,9 @@ namespace Bronk
                         Logger.Log(String.Format("Could not find path between {0} and {1}", ant.Position, Game.World.getCubePosition(cube.Index)));
                     }
                     #endif
+			return path;
 
-                    if (path != null)
-                    {
-                        path = trimPath(path);
-
-                        #if VERBOSE_PATHFINDING
-                        Debug.Log(String.Format("Trimmed path between {0} and {1}", ant.Position, Game.World.getCubePosition(cube.Index)));
-                        foreach (var node in path)
-                        {   
-                            Debug.Log(String.Format("\t using: ({0},{1})", node.x, node.y), Game.World.ViewComponent.getVisualCubeObject(node.cube.Index));
-                        }
-                        #endif
-
-
-                        ant.resetPositionFuture();
-                        ant.resetStateFuture();
-
-                        float dt = Time.time;
-                        float movementTime = 0.75f;
-                        float miningTime = 3.0f;
-
-                        //ant.addPositionKeyframe(dt, Game.World.getCubePosition(path[0].cube.Index));
-                        //ant.addPositionKeyframe(dt, ant.Position);
-                        ant.addStateKeyframe(dt, GameEntity.States.Move);
-
-                        //starting on second item since first item is "start position" finishing on second last since last is end position
-                        for (int i = 1; i < path.Count - 1; i++)
-                        {
-                            var node = path[i];
-                            dt += movementTime;
-                            ant.addPositionKeyframe(dt, Game.World.getCubePosition(node.cube.Index));
-                        }
-                        ant.addStateKeyframe(dt, GameEntity.States.Mine);
-                        ant.addStateKeyframe(dt + miningTime, GameEntity.States.Idle);
-
-                    }
-
-                }
-            }
-        }
+		}
 
         private List<Pathfinding.Node> trimPath(List<Pathfinding.Node> path)
         {
@@ -185,11 +213,6 @@ namespace Bronk
             //    }
             //}
             return path;
-        }
-
-        internal void addAntView(CharacterAnimationController c)
-        {
-            _antViews.Add(c);
         }
     }
 }

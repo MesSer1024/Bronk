@@ -7,5 +7,6 @@ public enum TimelineType
 	Position,
 	AntState,
 	BlockType,
-	Selected, 
+	Selected,
+	Job, 
 }

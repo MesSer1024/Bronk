@@ -29,12 +29,19 @@ Shader "Custom/Unlit"
 				float2 texcoord : TEXCOORD0;
 				float4 color : COLOR;
 			};
+
+			struct appdata_unlit
+			{
+			    float4 vertex : POSITION;
+			    float4 texcoord : TEXCOORD0;
+			    fixed4 color : COLOR;
+			};
 			
-			v2f vert (appdata_full v)
+			v2f vert (appdata_unlit v)
 			{
 				v2f o;
 				o.pos = mul (UNITY_MATRIX_MVP, v.vertex);	
-				o.texcoord = TRANSFORM_TEX(v.texcoord, _MainTex);	
+				o.texcoord = v.texcoord;	
 
 				o.color = v.color;
 

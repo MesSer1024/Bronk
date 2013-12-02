@@ -59,11 +59,11 @@ public abstract class Timeline<Keyframe, Value> : Bronk.ITimeline
 		_Keyframes.Add (new KeyframeItem<Keyframe> (frame, time));
 	}
 
-	public void removeKeyframesInFuture ()
+	public void removeKeyframesInFuture (float currentTime)
 	{
 		int lastIndex = _Keyframes.Count;
 		for (int i = 0; i < _Keyframes.Count; i++) {
-			if (Time.time > _Keyframes [i].Time) {
+			if (currentTime > _Keyframes [i].Time) {
 				lastIndex = i;
 			}
 		}

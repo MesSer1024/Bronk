@@ -6,11 +6,10 @@ Shader "Custom/Unlit Transparent"
 	}
 	SubShader 
 	{
-		Tags { "Queue"="Geometry" "RenderType"="Transparent"}
-		
+		Tags { "Queue"="AlphaTest" "IgnoreProjector"="True" "RenderType"="TransparentCutout"}
+		 
 		ZTest LEqual
 		ZWrite Off
-		Blend SrcAlpha OneMinusSrcAlpha
 		
 		Pass 
 		{			
@@ -47,7 +46,7 @@ Shader "Custom/Unlit Transparent"
 				float4 tex = tex2D(_MainTex, i.texcoord);
 				
 				tex.rgb *= i.color.rgb * _Color;
-				
+				clip(tex.a - 0.1);
 				return tex;
 			}
 			ENDCG

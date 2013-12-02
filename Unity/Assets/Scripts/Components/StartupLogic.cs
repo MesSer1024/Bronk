@@ -4,12 +4,13 @@ using Bronk;
 
 public class StartupLogic : MonoBehaviour {
 
-	void Awake() {	
+	void Start() {	
 		Translate.init();
 		Game.state = Game.States.Playing;
         Game.init();
+		Game.Start ();
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
         Game.update(Time.deltaTime);

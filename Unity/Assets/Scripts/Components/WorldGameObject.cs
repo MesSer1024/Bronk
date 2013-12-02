@@ -6,9 +6,11 @@ using System;
 public class WorldGameObject : MonoBehaviour
 {
 	public GameObject cubePrefab;
-	private ViewBlock[] _cubes;
-	private List<CharacterAnimationController> _ants;
+	private GameWorldData _blockData;
+	private BlockObject[] _BlockSceneObjects;
 	Dictionary<int, ITimelineObject> _Objects;
+	private List<BlockTypeChange> _futureBlockChanges = new List<BlockTypeChange> ();
+	private GameObject _AntPrefab;
 	private GameObject _Side0;
 	private GameObject _Side1;
 	private GameObject _Side2;
@@ -16,72 +18,68 @@ public class WorldGameObject : MonoBehaviour
 	private GameObject _Side4;
 	private GameObject _Corner2;
 	private GameObject _Floor;
-	private GameObject _CirclePrefab;
-
-
 	private Material _DirtMaterial;
 	private Material _FoodMaterial;
 	private Material _GoldMaterial;
 	private Material _FloorMaterial;
-	private Material _CircleTestMaterial;
-
 	private Vector3[] _DecoratorVertexBuffer;
 	private Color[] _DecoratorColorBuffer;
 
-	void Start ()
+	void Awake ()
+	{
+		Game.World.ViewComponent = this;
+	}
+
+	public void init ()
 	{
 		BlockDecorators.Initialize ();
-		_ants = new List<CharacterAnimationController> ();
-		LoadTilePrefabs ();
-		_cubes = new ViewBlock[Game.World.Cubes.Count];
-		UnityEngine.Random.seed = "WAT".GetHashCode ();
-		for (var i = 0; i < Game.World.Cubes.Count; ++i) {
-			var block = Game.World.Cubes [i];
-			BlockObject view = GetViewBlock (i, block.Type);
-			_cubes [i].BlockType = block.Type;
-			view.Index = i;
-			_cubes [i].ViewObject = view;
+		_Objects = new Dictionary<int, ITimelineObject> ();
+
+		LoadResources ();
+		_blockData = new GameWorldData ();
+		_blockData.OnBlockChanged += OnBlockChanged;
+		_BlockSceneObjects = new BlockObject[Game.World.Blocks.SizeX * Game.World.Blocks.SizeZ];
+		_blockData.init (Game.World.Blocks);
+		for (int i = 0; i < _BlockSceneObjects.Length; i++) {
+			_BlockSceneObjects [i] = GetViewBlock (i, _blockData.GetBlockType(i));
 		}
+	}
 
-		for (int i = 0; i < 4; i++) {
-			var go = Instantiate (Resources.Load<GameObject> ("CharacterPrefabs/AntWorker")) as GameObject;
-			var c = go.GetComponent<CharacterAnimationController> ();
-			if (c == null)
-				throw new Exception ("Unable to create object from gameobject.getcomponent");
+	void OnBlockChanged (int blockID, BlockData oldBlock, BlockData newBlock)
+	{
+		if (oldBlock.Type != newBlock.Type) {
 
-			//c.transform.position = new Vector3(Game.World.StartArea.x, 0, Game.World.StartArea.y);
+			UpdateBlockView (blockID);
 
-			Game.AI.addAntView (c);
+			int leftBlock = _blockData.getLeftCube (blockID);
+			int rightBlock = _blockData.getRightCube (blockID);
+			int topBlock = _blockData.getTopCube (blockID);
+			int bottomBlock = _blockData.getBottomCube (blockID);
+
+			if (leftBlock != -1)
+				UpdateBlockView (leftBlock);
+			if (rightBlock != -1)
+				UpdateBlockView (rightBlock);
+			if (topBlock != -1)
+				UpdateBlockView (topBlock);
+			if (bottomBlock != -1)
+				UpdateBlockView (bottomBlock);
 		}
-		Game.World.ViewComponent = this;
+		if (oldBlock.Selected != newBlock.Selected) {
+			BlockObject viewObject = _BlockSceneObjects [blockID];
+			if (viewObject != null)
+				viewObject.SetSelected (newBlock.Selected);
+		}
 	}
 
 	BlockObject GetViewBlock (int blockIndex, GameWorld.BlockType type)
 	{
 		Quaternion rotation = Quaternion.identity;
-		GameObject prefab = GetTilePrefab (type, Game.World.getCubeData (blockIndex), ref rotation);
+		GameObject prefab = GetTilePrefab (type, blockIndex, ref rotation);
 		GameObject obj = Instantiate (prefab, new Vector3 (blockIndex % GameWorld.SIZE_X, 0, blockIndex / GameWorld.SIZE_Z), rotation) as GameObject;
 		BlockObject blockObj = obj.GetComponentInChildren<BlockObject> ();
-//SimplexNoise.Noise.Generate ((float)(blockIndex % GameWorld.SIZE_X) / GameWorld.SIZE_X, (float)(blockIndex / GameWorld.SIZE_Z) / GameWorld.SIZE_Z);
 
-		int tileSubdivisions = 3;
-
-		float tileSize = 1f / (float)tileSubdivisions;
-		int maxDecorators = 3;
-		int decorators = 0;
-		for (int i = 0; i < tileSubdivisions * tileSubdivisions; i++) {
-			int tileX = i % tileSubdivisions;
-			int tileZ = i / tileSubdivisions;
-			if (decorators < maxDecorators && UnityEngine.Random.Range (0f, 1f) > 0.95f) {
-				decorators++;
-				float noiseVal = UnityEngine.Random.Range (0.15f, 1f);
-
-				Vector3 tilePos = new Vector3 (blockIndex % GameWorld.SIZE_X + tileSize * tileX - 0.5f, 0.001f, blockIndex / GameWorld.SIZE_Z + tileSize * tileZ - 0.5f);
-				if (type != GameWorld.BlockType.DirtGround)
-					tilePos += Vector3.up;
-				BlockDecorators.GetDecorator (type, tilePos, tileSize);
-			}
-		}
+		blockObj.BlockType = type;
 
 		if (type == GameWorld.BlockType.Gold)
 			blockObj.DefaultMaterial = _GoldMaterial;
@@ -95,6 +93,7 @@ public class WorldGameObject : MonoBehaviour
 
 		if (blockObj == null)
 			throw new Exception ("Failed to get BlockObject component when instantiating " + type + " block");
+		blockObj.Index = blockIndex;
 		return blockObj;
 	}
 
@@ -103,7 +102,7 @@ public class WorldGameObject : MonoBehaviour
 		GameObject.Destroy (obj.gameObject);
 	}
 
-	void LoadTilePrefabs ()
+	void LoadResources ()
 	{
 		_Side0 = Resources.Load<GameObject> ("Terrain/Walls/Side0") as GameObject;
 		_Side1 = Resources.Load<GameObject> ("Terrain/Walls/Side1") as GameObject;
@@ -113,29 +112,28 @@ public class WorldGameObject : MonoBehaviour
 		_Corner2 = Resources.Load<GameObject> ("Terrain/Walls/Corner2") as GameObject;
 		_Floor = Resources.Load<GameObject> ("Terrain/Walls/Floor") as GameObject;
 
-		_CirclePrefab = Resources.Load<GameObject> ("Terrain/circleprefab") as GameObject;
-
 		_DirtMaterial = Resources.Load<Material> ("Materials/DirtMaterial") as Material;
 		_FoodMaterial = Resources.Load<Material> ("Materials/FoodMaterial") as Material;
 		_GoldMaterial = Resources.Load<Material> ("Materials/GoldMaterial") as Material;
 		_FloorMaterial = Resources.Load<Material> ("Materials/FloorMaterial") as Material;
-		_CircleTestMaterial = Resources.Load<Material> ("Materials/circletest") as Material;
+
+		_AntPrefab = Resources.Load<GameObject> ("CharacterPrefabs/AntWorker") as GameObject;
 	}
 
-	GameObject GetTilePrefab (GameWorld.BlockType type, CubeData block, ref Quaternion rotation)
+	GameObject GetTilePrefab (GameWorld.BlockType type, int blockID, ref Quaternion rotation)
 	{
-		if (block.IsGround ())
+		if (type == GameWorld.BlockType.DirtGround)
 			return _Floor;
 
-		CubeData leftBlock = Game.World.getLeftCube (block);
-		CubeData rightBlock = Game.World.getRightCube (block);
-		CubeData topBlock = Game.World.getTopCube (block);
-		CubeData bottomBlock = Game.World.getBottomCube (block);
+		int leftBlock = _blockData.getLeftCube (blockID);
+		int rightBlock = _blockData.getRightCube (blockID);
+		int topBlock = _blockData.getTopCube (blockID);
+		int bottomBlock = _blockData.getBottomCube (blockID);
 
-		bool left = leftBlock != null ? leftBlock.IsGround () : false;
-		bool right = rightBlock != null ? rightBlock.IsGround () : false;
-		bool top = topBlock != null ? topBlock.IsGround () : false;
-		bool bottom = bottomBlock != null ? bottomBlock.IsGround () : false;
+		bool left = leftBlock != -1 ? IsGroundBlock (leftBlock) : false;
+		bool right = rightBlock != -1 ? IsGroundBlock (rightBlock) : false;
+		bool top = topBlock != -1 ? IsGroundBlock (topBlock) : false;
+		bool bottom = bottomBlock != -1 ? IsGroundBlock (bottomBlock) : false;
 		
 		int freeSides = 0;
 		freeSides += left ? 1 : 0;
@@ -192,14 +190,18 @@ public class WorldGameObject : MonoBehaviour
 
 	void Update ()
 	{
-
+		_blockData.Update (Time.time);
 	}
 
-	public GameObject getVisualCubeObject (int index)
+	private bool IsGroundBlock (int blockID)
 	{
-		if (index < 0 || index >= _cubes.Length)
-			throw new ArgumentOutOfRangeException ("index");
-		return _cubes [index].ViewObject.gameObject;
+		return _blockData.GetBlockType (blockID) == GameWorld.BlockType.DirtGround;
+	}
+
+	public GameObject getVisualCubeObject (int blockID)
+	{
+		var viewObject = _BlockSceneObjects [blockID];
+		return viewObject != null ? viewObject.gameObject : null;
 	}
 
 	public object getCubesBetween (int _item1Index, int _item2Index)
@@ -207,36 +209,53 @@ public class WorldGameObject : MonoBehaviour
 		return null;
 	}
 
+	public void CreateAnt (int id, int type)
+	{
+		switch (type) {
+		case 1:
+			var go = Instantiate (_AntPrefab) as GameObject;
+			var c = go.GetComponent<CharacterAnimationController> ();
+			if (c == null)
+				throw new Exception ("Unable to create object from gameobject.getcomponent");
+
+			_Objects.Add (id, c);
+			break;
+		default:
+			break;
+		}
+	}
+
 	public GameWorld.BlockType GetBlockType (int blockID)
 	{
-		if (blockID < 0 || blockID >= _cubes.Length)
-			throw new ArgumentOutOfRangeException ("index");
-		return _cubes [blockID].BlockType;
+		return _blockData.GetBlockType (blockID);
 	}
 
-	public void SetBlockSelected (int blockID, bool selected)
+	public void SetBlockType (int blockID, GameWorld.BlockType type, float time)
 	{
-		if (blockID < 0 || blockID >= _cubes.Length)
-			throw new ArgumentOutOfRangeException ("index");
-
-		ViewBlock viewBlock = _cubes [blockID];
-		viewBlock.Selected = selected;
-		if (viewBlock.ViewObject != null)
-			viewBlock.ViewObject.SetSelected (viewBlock.Selected);
+		_blockData.SetBlockType (blockID, type, time);
 	}
 
-	public void SetBlockType (int blockID, GameWorld.BlockType type)
+	public void SetBlockSelected (int blockID, bool selected, float time)
 	{
-		if (blockID < 0 || blockID >= _cubes.Length)
-			throw new ArgumentOutOfRangeException ("index");
+		_blockData.setBlockSelected (blockID, selected, time);
+	}
 
-		ViewBlock viewBlock = _cubes [blockID];
-		if (viewBlock.BlockType != type && viewBlock.ViewObject != null) {
-			ReleaseViewBlock (viewBlock.ViewObject);
+	void UpdateBlockView (int blockID)
+	{
+		BlockObject viewObject = _BlockSceneObjects [blockID];
+		if (viewObject != null) {
+			ReleaseViewBlock (viewObject);
 		}
-		viewBlock.BlockType = type;
-		viewBlock.ViewObject = GetViewBlock (blockID, type);
-		viewBlock.ViewObject.SetSelected (viewBlock.Selected);
+		var blockData = _blockData.getBlock (blockID);
+		viewObject = GetViewBlock (blockID, blockData.Type);
+		if (viewObject != null)
+			viewObject.SetSelected (blockData.Selected);
+		_BlockSceneObjects [blockID] = viewObject;
+	}
+
+	public void SetTimeline (int objectID, ITimeline timeline)
+	{
+		SetTimeline (objectID, timeline.Type, timeline);
 	}
 
 	void SetTimeline (int objectID, TimelineType timelineType, ITimeline timeline)
@@ -262,9 +281,9 @@ public class WorldGameObject : MonoBehaviour
 		return obj;
 	}
 
-	public void OnBlockInteract (int index)
+	public void OnBlockInteract (int blockID)
 	{
-		SetBlockSelected (index, !_cubes [index].Selected); // simulate selection on view
-		MessageManager.ExecuteMessage (new CubeClickedMessage ("cube", index));
+		SetBlockSelected (blockID, !_blockData.getBlockSelected(blockID), Time.time); // simulate selection on view
+		MessageManager.ExecuteMessage (new CubeClickedMessage ("cube", blockID));
 	}
 }

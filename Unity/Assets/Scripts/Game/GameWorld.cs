@@ -1,4 +1,4 @@
-﻿﻿using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
 
 namespace Bronk
@@ -20,19 +20,17 @@ namespace Bronk
 			Gold,
 		}
 
-		public List<CubeData> Cubes { get { return _data; } }
+		public GameWorldData Blocks { get; private set;}
         public Rect StartArea { get; private set; }
 
-		private List<CubeData> _data;
 
 		public GameWorld ()
 		{
-			_data = new List<CubeData> (SIZE_X * SIZE_Z);
+			Blocks = new GameWorldData ();
 		}
 
 		public void init ()
 		{
-			_data.Clear ();
 
 			Random.seed = "L33T HAXXOR".GetHashCode ();
 
@@ -52,14 +50,12 @@ namespace Bronk
 			if (gameCam != null)
 				gameCam.SetPosition (startAreaPos);
 
-
+			var blockArray = new BlockData[SIZE_X * SIZE_Z];
 
 			int lowResSizeX = (SIZE_X / 5);
 			int lowResSizeZ = (SIZE_Z / 5);
 			float[] lowResValues = new float[lowResSizeX * lowResSizeZ ];
 			for (int i = 0; i < lowResValues.Length; i++) {
-				int x = i % lowResSizeX;
-				int y = i / lowResSizeZ;
 				lowResValues [i] = Random.Range (0, 1f);
 			}
 
@@ -80,16 +76,15 @@ namespace Bronk
 					float lowResX = normalizedX * lowResSizeX;
 					float lowResZ = normalizedZ * lowResSizeZ;
 
-					float normalizedTileX = lowResX - Mathf.Floor (lowResX);
-					float normalizedTileZ = lowResZ = Mathf.Floor (lowResZ);
-					float noiseValueX = SimplexNoise.Noise.Generate (normalizedTileX, normalizedTileZ) * 1f;
-					float noiseValueZ = SimplexNoise.Noise.Generate (normalizedTileZ, normalizedTileX) * 1f;
+
+					float noiseValueX = SimplexNoise.Noise.Generate (x, z) * 1f;
+					float noiseValueZ = SimplexNoise.Noise.Generate (z, x) * 1f;
 					int indexX = Mathf.Clamp ((int)((lowResZ + noiseValueZ) * lowResSizeZ), 0, lowResSizeX - 1);
 					int indexZ = Mathf.Clamp ((int)(lowResX + noiseValueX), 0, lowResSizeZ - 1);
 
 					float value1 = lowResValues [(int)lowResX + (int)lowResZ * lowResSizeZ];
 					float value2 = lowResValues [indexX + indexZ * lowResSizeZ];
-					float value = (SimplexNoise.Noise.Generate (normalizedX, normalizedZ) < 0f) ? value1 : value2;
+					float value = (SimplexNoise.Noise.Generate (x, z) < 0f) ? value1 : value2;
 					if (value < 0.075) {
 						t = BlockType.DirtGround;
 					} else if (value < 0.75) {
@@ -100,12 +95,12 @@ namespace Bronk
 						t = BlockType.Food;
 					}
 				}
-
-				var cube = new CubeData (i, t);
-				_data.Add (cube);
+				BlockData block;
+				block.Selected = false;
+				block.Type = t;
+				blockArray [i] = block;
 			}
-
-
+			Blocks.init (blockArray, SIZE_X, SIZE_Z);
 		}
 
 		static void GenerateStartArea (out int startX, out int startZ, out int endX, out int endZ)
@@ -121,62 +116,9 @@ namespace Bronk
 			startZ += (startAreaSizeZ - (endZ - startZ));
 		}
 
-        public CubeData getCubeData(int index)
-        {
-            return _data[index];
-        }
-
-		public Vector3 getCubePosition (int index)
+		public Vector2 getCubePosition (int blockID)
 		{
-			return new Vector3 (index % SIZE_X, 0, (int)(index / SIZE_Z));
+			return Blocks.getBlockPosition (blockID);
 		}
-
-        public CubeData getCubeByPosition(Vector3 pos)
-        {
-            int index = (int)(pos.x) + (int)(pos.z) * SIZE_X;
-            if(index >= _data.Count || index < 0) 
-                throw new System.Exception("No cube found on " + pos);
-            return _data[index];
-        }
-
-        public CubeData getRightCube(CubeData node)
-        {
-            int tarId = node.Index + 1;
-            if (tarId % SIZE_X > 0)
-            {
-                return _data[tarId];
-            }
-            return null;
-        }
-
-        public CubeData getLeftCube(CubeData node)
-        {
-            var tarId = (node.Index % SIZE_X) - 1;
-            if (tarId < 0)
-            {
-                return null;
-            }
-            return _data[node.Index - 1];
-        }
-
-        public CubeData getTopCube(CubeData node)
-        {
-            var tarId = node.Index - SIZE_X;
-            if (tarId >= 0)
-            {
-                return _data[tarId];
-            }
-            return null;
-        }
-
-        public CubeData getBottomCube(CubeData node)
-        {
-            var tarId = node.Index + SIZE_X;
-            if (tarId < _data.Count)
-            {
-                return _data[tarId];
-            }
-            return null;
-        }
 	}
 }

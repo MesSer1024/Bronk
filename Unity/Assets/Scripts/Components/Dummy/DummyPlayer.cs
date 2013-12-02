@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Bronk;
 
 
-public class DummyPlayer : MonoBehaviour, ITimelinedEntity
+public class DummyPlayer : MonoBehaviour
 {
 	float _ActionTimer;
 	Vector3 _TargetPos;
@@ -18,6 +18,7 @@ public class DummyPlayer : MonoBehaviour, ITimelinedEntity
 
 	AntStateTimeline _AntStateTimeline;
 	PositionTimeline _PositionTimeline;
+	private CharacterAnimationController _View;
 	public GameEntity.States CurrentState;
 
 	void Awake()
@@ -31,19 +32,9 @@ public class DummyPlayer : MonoBehaviour, ITimelinedEntity
 
 	void Start()
 	{		
-		CharacterAnimationController controller = GetComponent<CharacterAnimationController>();
-		controller.LogicCharacter = this;
+		_View = GetComponent<CharacterAnimationController>();
 	}
-	
-	public AntStateTimeline GetStateTimeline()
-	{
-		return _AntStateTimeline;
-	}
-	
-	public PositionTimeline GetPositionTimeline()
-	{
-		return _PositionTimeline;
-	}
+
 
 	void AddKeyframe(GameEntity.States state, float startTime = float.NegativeInfinity)
 	{
@@ -120,6 +111,8 @@ public class DummyPlayer : MonoBehaviour, ITimelinedEntity
 				}
 				else
 					AddKeyframe(newState);
+
+				UpdateViewTimelines ();			
 			}
 
 			CurrentState = _AntStateTimeline.GetValue(Time.time);
@@ -132,5 +125,11 @@ public class DummyPlayer : MonoBehaviour, ITimelinedEntity
 			_TargetPos = new Vector3(x, 0, z);
 			transform.position = _TargetPos;
 		}
+	}
+
+	void UpdateViewTimelines ()
+	{
+		_View.GetTimeline (TimelineType.AntState).CopyFrom (_AntStateTimeline);
+		_View.GetTimeline (TimelineType.Position).CopyFrom (_PositionTimeline);
 	}
 }

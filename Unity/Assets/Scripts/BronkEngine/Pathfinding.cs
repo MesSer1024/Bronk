@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +13,11 @@ namespace Bronk
         private int _sizeX;
         private int _sizeY;
         private Node endNode;
-        private List<CubeData> _cubes;
+		private GameWorldData _blocks;
+
+		private List<Node> _openList = new List<Node>();
+		private int _pathfindCounter;
+		private int _pathfindID;
 
         public class Node
         {
@@ -23,13 +27,10 @@ namespace Bronk
             public int f_totalCost;
             public int g_costFromStart;
             public int h_heuristicToFinish;
-            public CubeData cube;
+			public int blockID;
             public bool inOpen;
             public bool finished;
-
-			public bool isBlocked() {
-				return cube.Type != GameWorld.BlockType.DirtGround;
-            }
+			public int pathfindID;
         }
 
         /// <summary>
@@ -39,11 +40,11 @@ namespace Bronk
         /// <param name="sizeX"></param>
         /// <param name="sizeY"></param>
         /// <param name="cubes"></param>
-        public Pathfinding(int sizeX, int sizeY, List<CubeData> cubes)
+		public Pathfinding(int sizeX, int sizeY, GameWorldData blocks)
         {
             _sizeX = sizeX;
             _sizeY = sizeY;
-            _cubes = cubes;
+			_blocks = blocks;
 
             _nodes = new Node[_sizeX, _sizeY];
             int i = 0;
@@ -54,7 +55,7 @@ namespace Bronk
                 {
                     _nodes[x, y] = new Node()
                     {
-                        cube = _cubes[i++],
+						blockID = i++,
                         x = x,
                         y = y,
                         finished = false,
@@ -66,6 +67,24 @@ namespace Bronk
             
         }
 
+		private void MaybeResetNode(Node node)
+		{
+			if (node.pathfindID != _pathfindID)
+			{
+				node.finished = false;
+				node.f_totalCost = int.MaxValue;
+				node.g_costFromStart = int.MaxValue;
+				node.inOpen = false;
+				node.h_heuristicToFinish = 0;
+				node.parent = null;
+				node.pathfindID = _pathfindID;
+			}
+		}
+
+		public bool isNodeBlocked(Node node) {
+			return _blocks.GetBlockType(node.blockID) != GameWorld.BlockType.DirtGround;
+		}
+
         /// <summary>
         /// Expecting a vector containing x & y-values, z does not matter... Will include final node in response if a path is found, no matter if it is blocked or not
         /// </summary>
@@ -74,13 +93,13 @@ namespace Bronk
         /// <returns></returns>
         public List<Node> findPath(Vector3 start, Vector3 end)
         {
-            var startNode = _nodes[(int)start.x, (int)start.y];
-            endNode = _nodes[(int)end.x, (int)end.y];
+			_pathfindID = _pathfindCounter;
+			_pathfindCounter++;
+			endNode = _nodes[(int)start.x, (int)start.y];
+			var startNode = _nodes[(int)end.x, (int)end.y];
 
-            if (startNode.isBlocked())
-            {
-                throw new Exception("Seems like startNode is blocked!");
-            }
+			MaybeResetNode (startNode);
+			MaybeResetNode (endNode);
 
             bool reachedEnd = false;
 
@@ -88,22 +107,21 @@ namespace Bronk
             startNode.h_heuristicToFinish = Math.Abs(endNode.x - startNode.x) + Math.Abs(endNode.y - startNode.y);
             startNode.f_totalCost = startNode.g_costFromStart + startNode.h_heuristicToFinish;
 
-            var openList = new List<Node>();
-            openList.Add(startNode);
+            _openList.Add(startNode);
 
             int totalIterations = 0;
 
-            while (openList.Count > 0)
+            while (_openList.Count > 0)
             {
                 totalIterations++;
                 Node node = null;
 
                 //find next item to iterate over
                 int bestIndex = 0;
-                int bestCost = openList[0].f_totalCost;
-                for (int i = 1; i < openList.Count; i++)
+                int bestCost = _openList[0].f_totalCost;
+                for (int i = 1; i < _openList.Count; i++)
                 {
-                    node = openList[i];
+                    node = _openList[i];
                     if (!node.finished)
                     {
                         if (node.f_totalCost < bestCost)
@@ -113,9 +131,9 @@ namespace Bronk
                         }
                     }
                 }
-                node = openList[bestIndex];
+                node = _openList[bestIndex];
                 node.finished = true;
-                openList.Remove(node);
+				_openList.RemoveAt(bestIndex);
                 //--
 
                 if (node == endNode)
@@ -123,10 +141,10 @@ namespace Bronk
                     reachedEnd = true;
                     break;
                 }
-                addAdjacentNodes(ref openList, node, endNode);
+                addAdjacentNodes(ref _openList, node, endNode);
             }
 
-            Logger.Log(String.Format("Total Iterations {0}", totalIterations));
+			_openList.Clear ();
             //build final path
             if (reachedEnd || endNode.parent != null)
             {
@@ -134,10 +152,10 @@ namespace Bronk
                 var node = endNode;
                 while (node.parent != null)
                 {
-                    output.Insert(0, node);
+					output.Add(node);
                     node = node.parent;
                 }
-                output.Insert(0, startNode);
+				output.Add(startNode);
                 return output;
             }
             else
@@ -151,7 +169,7 @@ namespace Bronk
         {
             if (node.finished)
                 return false;
-			if (node.isBlocked())
+			if (isNodeBlocked(node))
                 return false;
             return true;
         }
@@ -190,6 +208,7 @@ namespace Bronk
             if (node.x + 1 < _sizeX)
             {
                 var tar = _nodes[node.x + 1, node.y];
+				MaybeResetNode (tar);
                 if (tar == targetNode || isValid(tar))
                 {
                     //1
@@ -205,7 +224,8 @@ namespace Bronk
             //left
             if (node.x - 1 >= 0)
             {
-                var tar = _nodes[node.x - 1, node.y];
+				var tar = _nodes[node.x - 1, node.y];
+				MaybeResetNode (tar);
                 if (tar == targetNode || isValid(tar))
                 {
                     //1
@@ -221,7 +241,8 @@ namespace Bronk
             //top
             if (node.y - 1 >= 0)
             {
-                var tar = _nodes[node.x, node.y - 1];
+				var tar = _nodes[node.x, node.y - 1];
+				MaybeResetNode (tar);
                 if (tar == targetNode || isValid(tar))
                 {
                     //1
@@ -237,7 +258,8 @@ namespace Bronk
             //bottom
             if (node.y + 1 < _sizeY)
             {
-                var tar = _nodes[node.x, node.y + 1];
+				var tar = _nodes[node.x, node.y + 1];
+				MaybeResetNode (tar);
                 if (tar == targetNode || isValid(tar))
                 {
                     //1
@@ -262,7 +284,7 @@ namespace Bronk
                     for (int x = 0; x < _sizeX; x++)
                     {
                         var c = _nodes[x, y];
-						sb.Append(c.isBlocked() ? "x" : "-");
+						sb.Append(isNodeBlocked(c) ? "x" : "-");
                     }
                     sb.Append(Environment.NewLine);
                 }
@@ -280,7 +302,7 @@ namespace Bronk
                         }
                         else
                         {
-							sb.Append(c.isBlocked() ? "x" : "-");
+							sb.Append(isNodeBlocked(c) ? "x" : "-");
                         }
                     }
                     sb.Append(Environment.NewLine);
