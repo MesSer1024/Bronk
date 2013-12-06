@@ -49,7 +49,6 @@ namespace Bronk
 				var ant = _ants [closestAntIndex];
 				var antJobs = ant.GetJobTimeline ();
 				var path = PathfindForBlock (ant.Position, job.BlockID);
-
 				if (path != null) {
 
 					ant.resetPositionFuture ();
@@ -139,6 +138,7 @@ namespace Bronk
 			Game.World.ViewComponent.SetTimeline (ant.ID, ant.GetPositionTimeline ());
 			Game.World.ViewComponent.SetTimeline (ant.ID, ant.GetStateTimeline ());
 			var block = Game.World.Blocks.getBlock (job.BlockID);
+			Game.World.Blocks.SetBlockType (job.BlockID, block.Type, Game.LogicTime);
 			Game.World.ViewComponent.SetBlockType (job.BlockID, block.Type, Game.LogicTime);
 			Game.World.ViewComponent.SetBlockSelected (job.BlockID, block.Selected, Game.LogicTime);
 		}
@@ -171,16 +171,28 @@ namespace Bronk
 
 			if (path.Count < 3)
 				return path;
+			List<Pathfinding.Node> toRemove = new List<Pathfinding.Node> ();
 
-			Pathfinding.Node previousNode = path [1];
+			int lastBadNode = 0;
 			for (int i = 1; i < path.Count - 2; i++) {
-				bool canSee = Game.World.Blocks.CanSee (Game.World.getCubePosition (previousNode.blockID), Game.World.getCubePosition (path [i].blockID));
-				if (canSee == false) {
-					previousNode = path [i];
-				} else {
-					path.RemoveAt (i);
-					i--;
+				var b1 = Game.World.getCubePosition (path [lastBadNode].blockID);
+				var b2 = Game.World.getCubePosition (path [i].blockID);
+				bool canSee = Game.World.Blocks.CanSee (path [lastBadNode].blockID, path [i].blockID);
+				if (canSee == false){
+					for (int j = i - 2; j > lastBadNode; j--) {
+						toRemove.Add (path [j]);
+					}
+					lastBadNode = i - 1;
 				}
+			}
+			int toIndex = lastBadNode;//lastBadNode == 0 ? -1 : lastBadNode;
+			for (int j = path.Count - 3; j > toIndex; j--) {
+				toRemove.Add (path [j]);
+			}
+
+			for (int i = toRemove.Count - 1; i >= 0; i--) {
+				if (!path.Remove (toRemove [i]))
+					throw new Exception ();
 			}
 			//asdfasasifjsadifasjidofjasdfoi can't figure this out - DD
 			return path;
