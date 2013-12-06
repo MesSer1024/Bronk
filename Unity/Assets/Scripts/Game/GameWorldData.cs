@@ -87,11 +87,11 @@ namespace Bronk
 			return _data [blockID];
 		}
 
-		public int getBlockIDByPosition(Vector3 pos)
+		public int getBlockIDByPosition(Vector2 pos)
         {
-			int index = (int)(pos.x) + (int)(pos.z) * _sizeX;
-			if(index >= _data.Length || index < 0) 
-				throw new System.Exception("No block found on " + pos);
+			int index = (int)(pos.x) + (int)(pos.y) * _sizeX;
+			if (index >= _data.Length || index < 0)
+				return -1;
             return index;
         }
 
@@ -246,6 +246,56 @@ namespace Bronk
 						Time = time,
 					});
 				}
+			}
+		}
+
+		public bool CanSee(Vector2 p1, Vector2 p2)
+		{
+			Debug.Log ("p1 " + p1 + " p2 " + p2);
+			Vector2 distance = (p1 - p2);
+			Vector2 dir = distance.normalized;
+			int targetBlock = getBlockIDByPosition (p2);
+			if (targetBlock == -1)
+				return false;
+			int block = getBlockIDByPosition (p1);
+			if (block == -1)
+				return false;
+			if (block == targetBlock)
+				return true;
+			Vector2 progress = p1;
+			while (true) {
+				Debug.Log ("block " + block % SizeX + " " + block / SizeZ);
+				float xProgress = progress.x % 1;
+				float yProgress = progress.y % 1;
+				float xVelocity = dir.x;
+				float yVelocity = dir.y;
+				float distanceRemainingX = 1 - xProgress;
+				float distanceRemainingY = 1 - yProgress;
+				float arrivalX = distanceRemainingX / xVelocity;
+				float arrivalY = distanceRemainingY / yVelocity;
+				if (xVelocity == 0 || arrivalX > arrivalY) {
+					progress += dir * arrivalY;
+					if (dir.y > 0)
+						block = getTopCube (block);
+					else
+						block = getBottomCube (block);
+				} else {
+					progress += dir * arrivalX;
+					if (dir.x > 0)
+						block = getRightCube (block);
+					else
+						block = getLeftCube (block);
+				}
+				if (block == -1) {
+					Debug.Log ("outside");
+					return false;
+				}
+				if (GetBlockType (block) != GameWorld.BlockType.DirtGround) {
+					Debug.Log ("block type " + GetBlockType(block));
+					return false;
+				}
+				if (block == targetBlock)
+					return true;
 			}
 		}
 		public bool getBlockSelected(int blockID)

@@ -198,6 +198,11 @@ public class WorldGameObject : MonoBehaviour
 		return _blockData.GetBlockType (blockID) == GameWorld.BlockType.DirtGround;
 	}
 
+	public Vector2 GetBlockPosition(int blockID)
+	{
+		return _blockData.getBlockPosition (blockID);
+	}
+
 	public GameObject getVisualCubeObject (int blockID)
 	{
 		var viewObject = _BlockSceneObjects [blockID];

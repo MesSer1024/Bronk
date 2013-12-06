@@ -1,8 +1,17 @@
 ﻿using UnityEngine;
 using Bronk;
 using System.Collections;
-
-public class AntStateTimeline : Timeline<GameEntity.States, GameEntity.States>
+public struct StateData
+{
+	public GameEntity.States State;
+	public int DataID;
+	public StateData (GameEntity.States state, int dataId = -1)
+	{
+		State = state;
+		DataID = dataId;
+	}
+}
+public class AntStateTimeline : Timeline<StateData, StateData>
 {
 	public override TimelineType Type {
 		get {
@@ -11,10 +20,10 @@ public class AntStateTimeline : Timeline<GameEntity.States, GameEntity.States>
 	}
 	public static AntStateTimeline Create ()
 	{
-		return Create <AntStateTimeline, GameEntity.States, GameEntity.States>(Interpolate);
+		return Create <AntStateTimeline, StateData, StateData>(Interpolate);
 	}
 
-	private static GameEntity.States Interpolate (GameEntity.States v1, GameEntity.States v2, float t)
+	private static StateData Interpolate (StateData v1, StateData v2, float t)
 	{
 		if (t == 1)
 			return v2;

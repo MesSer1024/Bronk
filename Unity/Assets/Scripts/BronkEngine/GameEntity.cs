@@ -21,7 +21,7 @@ namespace Bronk
 			Sleep
         }
 
-        public virtual States State
+		public virtual StateData State
         {
             get { return _state; }
             set { _state = value; }
@@ -34,7 +34,7 @@ namespace Bronk
 		public int ID { get { return _ID; } }
 		private int _ID;
         private float _health;
-        protected States _state;
+		protected StateData _state;
         protected Vector3 _position;
 
 		public GameEntity(int id)

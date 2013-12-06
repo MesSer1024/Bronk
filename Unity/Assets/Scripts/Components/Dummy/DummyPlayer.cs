@@ -27,7 +27,7 @@ public class DummyPlayer : MonoBehaviour
 		_PositionTimeline = PositionTimeline.Create();
 		_PositionTimeline.AddKeyframe(Time.time, transform.position);
 
-		AddKeyframe(GameEntity.States.Idle);
+		AddKeyframe (new StateData (GameEntity.States.Idle));
 	}
 
 	void Start()
@@ -36,13 +36,13 @@ public class DummyPlayer : MonoBehaviour
 	}
 
 
-	void AddKeyframe(GameEntity.States state, float startTime = float.NegativeInfinity)
+	void AddKeyframe(StateData state, float startTime = float.NegativeInfinity)
 	{
 		if (startTime == float.NegativeInfinity)
 			startTime = Time.time + 2f;
 
 		_AntStateTimeline.AddKeyframe(startTime, state);
-		if (state == GameEntity.States.Move)
+		if (state.State == GameEntity.States.Move)
 		{
 			Vector3 currentPos = _PositionTimeline.GetValue(startTime);
 			Vector3 targetPos = new Vector3(Random.Range(-10, 10),0,Random.Range(-10, 10));
@@ -64,7 +64,7 @@ public class DummyPlayer : MonoBehaviour
 		
 		_PositionTimeline.AddKeyframe(startTime, currentPos);		
 		_PositionTimeline.AddKeyframe(endTime, targetPos);
-		_AntStateTimeline.AddKeyframe(startTime, GameEntity.States.Move);
+		_AntStateTimeline.AddKeyframe(startTime, new StateData( GameEntity.States.Move));
 
 		return endTime;
 	}
@@ -101,21 +101,21 @@ public class DummyPlayer : MonoBehaviour
 				if (newState == GameEntity.States.Mine)
 				{
 					float endTime = AddMoveKeyframe(Time.time, DummyWorld.Instance.GetGoldPos());
-					AddKeyframe(GameEntity.States.Mine, endTime);
+					AddKeyframe(new StateData(GameEntity.States.Mine), endTime);
 				}
 				else if (newState == GameEntity.States.Sleep)
 				{
 					DummyBed dummyBed = DummyWorld.Instance.GetBed();
 					float endTime = AddMoveKeyframe(Time.time, dummyBed.transform.position);
-					AddKeyframe(GameEntity.States.Sleep, endTime);
+					AddKeyframe(new StateData(GameEntity.States.Sleep), endTime);
 				}
 				else
-					AddKeyframe(newState);
+					AddKeyframe(new StateData(newState));
 
 				UpdateViewTimelines ();			
 			}
 
-			CurrentState = _AntStateTimeline.GetValue(Time.time);
+			CurrentState = _AntStateTimeline.GetValue(Time.time).State;
 		}
 		else
 		{

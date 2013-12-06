@@ -27,14 +27,14 @@ public class CharacterAnimationController : MonoBehaviour, ITimelineObject
 		_CurrentStateInfo = _Animator.GetCurrentAnimatorStateInfo (0);
 		_NextStateInfo = _Animator.GetNextAnimatorStateInfo (0);
 
-		GameEntity.States state = _StateTimeline.GetValue (Time.time);
+		StateData state = _StateTimeline.GetValue (Time.time);
 
-		switch (state) {
+		switch (state.State) {
 		case GameEntity.States.Idle: 
 			DoIdle ();
 			break;
 		case GameEntity.States.Mine:
-			DoMining ();
+			DoMining (state);
 			break;
 		case GameEntity.States.Move:
 			DoMovement ();
@@ -106,13 +106,15 @@ public class CharacterAnimationController : MonoBehaviour, ITimelineObject
 		}
 	}
 
-	void DoMining ()
+	void DoMining (StateData state)
 	{
 		AnimationEnum animEnum = AnimationEnum.Mine;
 		if (_CurrentStateInfo.nameHash != Animations.Get (animEnum).Hash &&
 		    _NextStateInfo.nameHash != Animations.Get (animEnum).Hash) {
 			PlayAnimation (animEnum, _StateTimeline.GetCurrentKeyframeTime (Time.time));
 		}
+		Vector2 pos2D = Game.World.ViewComponent.GetBlockPosition (state.DataID);
+		_Transform.LookAt (new Vector3 (pos2D.x, 0, pos2D.y));
 	}
 
 	void DoMovement ()

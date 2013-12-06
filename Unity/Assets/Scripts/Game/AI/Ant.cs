@@ -8,6 +8,7 @@ namespace Bronk
 {
     public class Ant : GameEntity
 	{
+		public float MoveSpeed = 3f;
         private AntStateTimeline _stateTimeline;
         private PositionTimeline _positionTimeline;
 		private JobTimeline _jobTimeline;
@@ -25,11 +26,11 @@ namespace Bronk
             }
         }
 
-        public override GameEntity.States State
+		public override StateData State
         {
             get
             {
-                return _stateTimeline.GetValue(Game.LogicTime);
+				return _stateTimeline.GetValue(Game.LogicTime);
             }
             set
             {
@@ -43,7 +44,7 @@ namespace Bronk
             _stateTimeline = AntStateTimeline.Create();
             _positionTimeline = PositionTimeline.Create();
 			_jobTimeline = JobTimeline.Create ();
-			_stateTimeline.AddKeyframe(0, GameEntity.States.Idle);
+			_stateTimeline.AddKeyframe(0, new StateData(GameEntity.States.Idle));
         }
 
         public void init()
@@ -63,8 +64,8 @@ namespace Bronk
             _positionTimeline.AddKeyframe(Game.LogicTime, oldPos);
         }
 
-        public void addStateKeyframe(float time, GameEntity.States state) {
-            _stateTimeline.AddKeyframe(time, state);
+		public void addStateKeyframe(float time, StateData state) {
+			_stateTimeline.AddKeyframe(time, state);
         }
 
         public void addPositionKeyframe(float time, Vector3 v)

@@ -55,7 +55,7 @@ public abstract class Timeline<Keyframe, Value> : Bronk.ITimeline
 	public void AddKeyframe (float time, Keyframe frame)
 	{
 		if (_Keyframes.Count > 0 && _Keyframes [_Keyframes.Count - 1].Time > time)
-			throw new ArgumentException ("time later than last keyframe");
+			throw new ArgumentException ("time needs to be later than last keyframe: " + time + " < " + _Keyframes[_Keyframes.Count - 1].Time);
 		_Keyframes.Add (new KeyframeItem<Keyframe> (frame, time));
 	}
 
@@ -107,6 +107,13 @@ public abstract class Timeline<Keyframe, Value> : Bronk.ITimeline
 			}
 		}
 		return Mathf.Max (0, time - _Keyframes [_Keyframes.Count - 1].Time);
+	}
+
+	public bool HasFuture(float time)
+	{
+		if (_Keyframes.Count == 0)
+			return false;
+		return _Keyframes [_Keyframes.Count - 1].Time >= time;
 	}
 
 	public bool HasNewValue (float prevTime, float currentTime)
