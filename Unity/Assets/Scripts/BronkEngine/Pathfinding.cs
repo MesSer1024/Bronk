@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Bronk
 {
-    class Pathfinding
+    public class Pathfinding
     {
         private const int MOVE_COST = 1;
         private Node[,] _nodes;

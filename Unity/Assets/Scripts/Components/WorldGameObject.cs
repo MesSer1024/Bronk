@@ -9,7 +9,7 @@ public class WorldGameObject : MonoBehaviour
 	private GameWorldData _blockData;
 	private BlockObject[] _BlockSceneObjects;
 	Dictionary<int, ITimelineObject> _Objects;
-	private List<BlockTypeChange> _futureBlockChanges = new List<BlockTypeChange> ();
+    //private List<BlockTypeChange> _futureBlockChanges = new List<BlockTypeChange> ();
 	private GameObject _AntPrefab;
 	private GameObject _Side0;
 	private GameObject _Side1;
