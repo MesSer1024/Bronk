@@ -30,18 +30,24 @@ public class CharacterAnimationController : MonoBehaviour, ITimelineObject
 		StateData state = _StateTimeline.GetValue (Time.time);
 
 		switch (state.State) {
-		case GameEntity.States.Idle: 
-			DoIdle ();
-			break;
-		case GameEntity.States.Mine:
-			DoMining (state);
-			break;
-		case GameEntity.States.Move:
-			DoMovement ();
-			break;
-		case GameEntity.States.Sleep:
-			DoSleep ();
-			break;
+            case GameEntity.States.Idle:
+                DoIdle();
+                break;
+            case GameEntity.States.Mine:
+                DoMining(state);
+                break;
+            case GameEntity.States.Move:
+                DoMovement();
+                break;
+            case GameEntity.States.Sleep:
+                DoSleep();
+                break;
+            case GameEntity.States.WaitingForOtherJobToFinish:
+                DoSleep();
+                break;
+            case GameEntity.States.Carry:
+                DoCarry();
+                break;
 		}
 
 
@@ -121,6 +127,14 @@ public class CharacterAnimationController : MonoBehaviour, ITimelineObject
 	{
 
 	}
+
+    private void DoCarry() {
+        AnimationEnum animEnum = AnimationEnum.Mine;
+        if (_CurrentStateInfo.nameHash != Animations.Get(animEnum).Hash &&
+            _NextStateInfo.nameHash != Animations.Get(animEnum).Hash) {
+            PlayAnimation(animEnum, _StateTimeline.GetCurrentKeyframeTime(Time.time));
+        }
+    }
 }
 
 
