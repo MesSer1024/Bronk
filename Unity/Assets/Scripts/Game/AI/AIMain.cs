@@ -51,7 +51,6 @@ namespace Bronk
 				var path = PathfindForBlock (ant.Position, job.BlockID);
 
 				if (path != null) {
-
 					ant.resetPositionFuture ();
 					ant.resetStateFuture ();
 					float dt = Game.LogicTime;
@@ -123,7 +122,7 @@ namespace Bronk
 							for (int i = 0; i < job.AssignedAnts.Count; i++) {
 								UnassignJobFromAnt (job, job.AssignedAnts [i]);
 							}
-							_availableJobs.RemoveAt (jobIndex);
+							_availableJobs.RemoveAt (jobIndex--);
 						}
 					}
 				}
@@ -168,7 +167,6 @@ namespace Bronk
 
 		private List<Pathfinding.Node> trimPath (List<Pathfinding.Node> path)
 		{
-
 			if (path.Count < 3)
 				return path;
 
@@ -182,58 +180,6 @@ namespace Bronk
 					i--;
 				}
 			}
-			//asdfasasifjsadifasjidofjasdfoi can't figure this out - DD
-			return path;
-			//for (int i = 0; i < path.Count; i++)
-			//{
-			//    var node = path[i];
-			//    Pathfinding.Node lastValidNode = null;
-			//    for (int j = i + 2; j < path.Count; ++j)
-			//    {
-			//        //check can move directly to item instead of traversing through stuff...
-			//        //draw line, does that line cross any other stuff that is possible to walk through, we can remove the previous node
-			//        var nextWaypoint = path[j];
-                    
-			//        float k = (float)((nextWaypoint.y - node.y)) / (float)((nextWaypoint.x - node.x));
-			//        //k = 1 means every time x is increased by 1, y is increased by 1
-			//        //k = 1.25 means every time x is increased by 1, y is increased by 1.25
-
-			//        var touchedTiles = new List<Pathfinding.Node>();
-
-			//    }
-			//}
-
-			//int removedEntries = 0;
-			//int timesMovingX = 0;
-			//int timesMovingY = 0;
-			//for (int i = path.Count - 2; i >= 0; --i)
-			//{
-			//    var node = path[i];
-			//    var nextNode = path[i-1];
-			//    if(node.y == nextNode.y) {
-			//        //moving x-direction
-			//        timesMovingX++;
-			//        timesMovingY = 0;
-
-			//        if (timesMovingX > 1)
-			//        {
-			//            path.RemoveAt(i);
-			//            removedEntries++;
-			//        }
-			//    }
-			//    else if (node.x == nextNode.x)
-			//    {
-			//        //moving y-direction
-			//        timesMovingX = 0;
-			//        timesMovingY++;
-
-			//        if (timesMovingY > 1)
-			//        {
-			//            path.RemoveAt(i);
-			//            removedEntries++;
-			//        }
-			//    }
-			//}
 			return path;
 		}
 	}
