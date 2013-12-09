@@ -12,6 +12,7 @@ namespace Bronk
         {
             Removable,
             Idle,
+            WaitingForOtherJobToFinish,
             Carry,
             Mine,
             Combat,

@@ -85,13 +85,35 @@ namespace Bronk
 			return _blocks.GetBlockType(node.blockID) != GameWorld.BlockType.DirtGround;
 		}
 
+        public List<Pathfinding.Node> PathfindForBlock(Vector2 position, int blockID) {
+            var path = findPath(position, Game.World.getCubePosition(blockID));
+#if VERBOSE_PATHFINDING
+			                    if (path != null && path.Count > 0)
+                    {
+                        Debug.Log(String.Format("Moving between {0} and {1}", ant.Position, Game.World.getCubePosition(cube.Index)));
+                        foreach (var node in path)
+                        {   
+							Debug.Log(String.Format("\t using: ({0},{1})", node.x, node.y), Game.World.ViewComponent.getVisualCubeObject(node.cube.Index));
+                        }
+                    }
+                    else
+                    {
+                        Logger.Log(String.Format("Could not find path between {0} and {1}", ant.Position, Game.World.getCubePosition(cube.Index)));
+                    }
+#endif
+            if (path != null)
+                path = trimPath(path);
+            return path;
+
+        }
+
         /// <summary>
         /// Expecting a vector containing x & y-values, z does not matter... Will include final node in response if a path is found, no matter if it is blocked or not
         /// </summary>
         /// <param name="start"></param>
         /// <param name="end"></param>
         /// <returns></returns>
-        public List<Node> findPath(Vector3 start, Vector3 end)
+        private List<Node> findPath(Vector2 start, Vector2 end)
         {
 			_pathfindID = _pathfindCounter;
 			_pathfindCounter++;
@@ -162,6 +184,35 @@ namespace Bronk
             {
                 return null;
             }
+        }
+
+        private List<Pathfinding.Node> trimPath(List<Pathfinding.Node> path) {
+            if (path.Count < 3)
+                return path;
+            List<Pathfinding.Node> toRemove = new List<Pathfinding.Node>();
+
+            int lastBadNode = 0;
+            for (int i = 1; i < path.Count - 2; i++) {
+                var b1 = Game.World.getCubePosition(path[lastBadNode].blockID);
+                var b2 = Game.World.getCubePosition(path[i].blockID);
+                bool canSee = Game.World.Blocks.CanSee(path[lastBadNode].blockID, path[i].blockID);
+                if (canSee == false) {
+                    for (int j = i - 2; j > lastBadNode; j--) {
+                        toRemove.Add(path[j]);
+                    }
+                    lastBadNode = i - 1;
+                }
+            }
+            int toIndex = lastBadNode;
+            for (int j = path.Count - 3; j > toIndex; j--) {
+                toRemove.Add(path[j]);
+            }
+
+            for (int i = toRemove.Count - 1; i >= 0; i--) {
+                if (!path.Remove(toRemove[i]))
+                    throw new Exception();
+            }
+            return path;
         }
 
 

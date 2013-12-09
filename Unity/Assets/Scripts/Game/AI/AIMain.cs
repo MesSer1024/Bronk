@@ -59,24 +59,35 @@ namespace Bronk
                         break;
 
                     var ant = _ants[bestAntIndex];
-                    if(digjob.plan(ant)) {
-                        //plan a pickup job
-                        var pickupJob = new CarryJob(digjob.BlockID, Game.World.Blocks.getBlockIDByPosition(Game.World.StartArea.center));
-                        addedJobs.Add(pickupJob);
+                    var path = _pathfinding.PathfindForBlock(ant.Position, digjob.BlockID);
+                    if (path != null) {
+                        digjob.plan(ant, path);
+
+                        //create a pickup job
+                        if (Game.World.Blocks.GetBlockType(digjob.BlockID) == GameWorld.BlockType.Gold) {
+                            var pickupJob = new CarryJob(digjob.BlockID, Game.World.Blocks.getBlockIDByPosition(Game.World.StartArea.center), digjob.EndTime);
+                            addedJobs.Add(pickupJob);
+                        }
                     }
                 } else if (job is CarryJob) {
                     var carryJob = job as CarryJob;
-                    Vector2 jobPos = Game.World.Blocks.getBlockPosition(carryJob.FetchedFromBlockID);
+                    Vector2 jobPos = Game.World.Blocks.getBlockPosition(carryJob.BlockID_start);
                     int bestAntIndex = FindClosestUnoccupiedAntIndex(jobPos);
                     if (bestAntIndex == -1)
                         break;
 
-                    carryJob.plan(_ants[bestAntIndex]);
+                    var ant = _ants[bestAntIndex];
+                    var pathToPickup = _pathfinding.PathfindForBlock(ant.Position, carryJob.BlockID_start);
+                    var pathToDropOff = _pathfinding.PathfindForBlock(Game.World.Blocks.getBlockPosition(carryJob.BlockID_start), carryJob.BlockID_end);
+                    if (pathToPickup != null && pathToDropOff != null) {
+                        carryJob.plan(ant, pathToPickup, pathToDropOff);
+                    }
                 } else {
                     throw new Exception("No implementation for job of type: " + job);
                 }
 			}
-            _availableJobs.AddRange(addedJobs);
+            if(addedJobs.Count > 0)
+                _availableJobs.AddRange(addedJobs);
 		}
 
 		int FindClosestUnoccupiedAntIndex (Vector2 jobPos)
@@ -107,7 +118,7 @@ namespace Bronk
 				newSelected = !newSelected;
 				Game.World.Blocks.setBlockSelected (cubeIndex, newSelected, Time.time); // set selected on view time
 				if (newSelected) {
-                    var job = new DigJob(cubeIndex, _pathfinding);
+                    var job = new DigJob(cubeIndex);
 					_availableJobs.Add (job);
 				} else {
 					for (int jobIndex = 0; jobIndex < _availableJobs.Count; jobIndex++) {

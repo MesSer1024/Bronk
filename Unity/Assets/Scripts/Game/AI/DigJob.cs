@@ -8,21 +8,15 @@ namespace Bronk
 	{
 		public int BlockID;
 		public List<Ant> AssignedAnts = new List<Ant>();
-        private Pathfinding _pathfinding;
 
         public float StartTime { get; private set; }
         public float EndTime { get; private set;}
 
-		public DigJob(int blockID, Pathfinding pathfinder) {
+		public DigJob(int blockID) {
 			BlockID = blockID;
-            _pathfinding = pathfinder;
 		}
 
-        public bool plan(Ant ant) {
-            var path = PathfindForBlock(ant.Position, BlockID);
-            if (path == null)
-                return false;
-
+        public void plan(Ant ant, List<Pathfinding.Node> path) {
             AssignedAnts.Add(ant);
 
             ant.resetPositionFuture();
@@ -59,7 +53,6 @@ namespace Bronk
             Game.World.Blocks.setBlockSelected(BlockID, false, EndTime);
             Game.World.ViewComponent.SetBlockType(BlockID, GameWorld.BlockType.DirtGround, EndTime);
             Game.World.ViewComponent.SetBlockSelected(BlockID, false, EndTime);
-            return true;
         }
 
         public void dispose() {
@@ -81,59 +74,7 @@ namespace Bronk
             if (AssignedAnts.Count == 0 || StartTime == 0 || EndTime == 0)
                 return false;
 
-            return Game.LogicTime >= StartTime;
-        }
-
-        private List<Pathfinding.Node> PathfindForBlock(Vector2 position, int blockID) {
-            var path = _pathfinding.findPath(position, Game.World.getCubePosition(blockID));
-#if VERBOSE_PATHFINDING
-			                    if (path != null && path.Count > 0)
-                    {
-                        Debug.Log(String.Format("Moving between {0} and {1}", ant.Position, Game.World.getCubePosition(cube.Index)));
-                        foreach (var node in path)
-                        {   
-							Debug.Log(String.Format("\t using: ({0},{1})", node.x, node.y), Game.World.ViewComponent.getVisualCubeObject(node.cube.Index));
-                        }
-                    }
-                    else
-                    {
-                        Logger.Log(String.Format("Could not find path between {0} and {1}", ant.Position, Game.World.getCubePosition(cube.Index)));
-                    }
-#endif
-            if (path != null)
-                path = trimPath(path);
-            return path;
-
-        }
-
-        private List<Pathfinding.Node> trimPath(List<Pathfinding.Node> path) {
-
-            if (path.Count < 3)
-                return path;
-            List<Pathfinding.Node> toRemove = new List<Pathfinding.Node>();
-
-            int lastBadNode = 0;
-            for (int i = 1; i < path.Count - 2; i++) {
-                var b1 = Game.World.getCubePosition(path[lastBadNode].blockID);
-                var b2 = Game.World.getCubePosition(path[i].blockID);
-                bool canSee = Game.World.Blocks.CanSee(path[lastBadNode].blockID, path[i].blockID);
-                if (canSee == false) {
-                    for (int j = i - 2; j > lastBadNode; j--) {
-                        toRemove.Add(path[j]);
-                    }
-                    lastBadNode = i - 1;
-                }
-            }
-            int toIndex = lastBadNode;
-            for (int j = path.Count - 3; j > toIndex; j--) {
-                toRemove.Add(path[j]);
-            }
-
-            for (int i = toRemove.Count - 1; i >= 0; i--) {
-                if (!path.Remove(toRemove[i]))
-                    throw new Exception();
-            }
-            return path;
+            return AssignedAnts.Count > 0;
         }
 
         public void abortByUser() {
@@ -151,6 +92,7 @@ namespace Bronk
                 Game.World.ViewComponent.SetBlockType(BlockID, block.Type, Game.LogicTime);
                 Game.World.ViewComponent.SetBlockSelected(BlockID, block.Selected, Game.LogicTime);
             }
+            AssignedAnts.Clear();
         }
     }
 }

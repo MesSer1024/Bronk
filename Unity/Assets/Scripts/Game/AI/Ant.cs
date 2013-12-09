@@ -64,6 +64,10 @@ namespace Bronk
             _positionTimeline.AddKeyframe(Game.LogicTime, oldPos);
         }
 
+        public void resetJobFuture() {
+            _jobTimeline.removeKeyframesInFuture(Game.LogicTime);
+        }
+
 		public void addStateKeyframe(float time, StateData state) {
 			_stateTimeline.AddKeyframe(time, state);
         }

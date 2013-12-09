@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Bronk
 {
-	public class JobTimeline : Timeline<DigJob, DigJob>
+    public class JobTimeline : Timeline<IJob, IJob>
 	{
 		public override TimelineType Type {
 			get {
@@ -13,10 +13,10 @@ namespace Bronk
 
 		public static JobTimeline Create ()
 		{
-			return Create <JobTimeline, DigJob, DigJob> (Interpolate);
+            return Create<JobTimeline, IJob, IJob>(Interpolate);
 		}
 
-		private static DigJob Interpolate (DigJob v1, DigJob v2, float t)
+        private static IJob Interpolate(IJob v1, IJob v2, float t)
 		{
 			if (t == 1)
 				return v2;
