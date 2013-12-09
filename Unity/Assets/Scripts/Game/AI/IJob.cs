@@ -12,8 +12,13 @@ namespace Bronk
         //event JobCallback Completed;
         //event JobCallback AbortedByAnt;
 
-        void complete();
+        void dispose();
         void abortByAnt();
         void abortByUser();
+        bool isFinished();
+        bool isPlanned();
+
+        float StartTime { get; }
+        float EndTime { get; }
 	}
 }

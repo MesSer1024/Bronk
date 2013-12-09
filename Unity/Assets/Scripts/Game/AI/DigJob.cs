@@ -6,64 +6,82 @@ namespace Bronk
 {
 	public class DigJob : IJob
 	{
-        //public event JobCallback Completed;
-        //public event JobCallback AbortedByAnt;
-
 		public int BlockID;
 		public List<Ant> AssignedAnts = new List<Ant>();
         private Pathfinding _pathfinding;
 
-		public DigJob(int blockID, Pathfinding pathfinder)
-		{
+        public float StartTime { get; private set; }
+        public float EndTime { get; private set;}
+
+		public DigJob(int blockID, Pathfinding pathfinder) {
 			BlockID = blockID;
             _pathfinding = pathfinder;
 		}
 
-        public void plan(Ant ant) {
+        public bool plan(Ant ant) {
+            var path = PathfindForBlock(ant.Position, BlockID);
+            if (path == null)
+                return false;
+
             AssignedAnts.Add(ant);
 
-            var digjob = this;
-            var antJobs = ant.GetJobTimeline();
-            var path = PathfindForBlock(ant.Position, digjob.BlockID);
-            if (path != null) {
-                ant.resetPositionFuture();
-                ant.resetStateFuture();
-                float dt = Game.LogicTime;
-                float moveSpeed = ant.MoveSpeed;
-                float miningTime = 3.0f;
-                ant.addStateKeyframe(dt, new StateData(GameEntity.States.Move));
-                Vector2 lastPosition = ant.Position;
-                for (int nodeIndex = 1; nodeIndex < path.Count - 1; nodeIndex++) {
-                    var node = path[nodeIndex];
-                    Vector2 blockPosition = Game.World.getCubePosition(node.blockID);
-                    float distance = (blockPosition - lastPosition).magnitude;
-                    dt += distance / moveSpeed;
-                    ant.addPositionKeyframe(dt, blockPosition);
-                    lastPosition = blockPosition;
-                }
-                ant.addStateKeyframe(dt, new StateData(GameEntity.States.Mine, digjob.BlockID));
-                ant.addStateKeyframe(dt + miningTime, new StateData(GameEntity.States.Idle));
-                Game.World.ViewComponent.SetTimeline(ant.ID, ant.GetPositionTimeline());
-                Game.World.ViewComponent.SetTimeline(ant.ID, ant.GetStateTimeline());
-
-                digjob.AssignedAnts.Add(ant);
-                antJobs.AddKeyframe(Game.LogicTime, digjob);
-                antJobs.AddKeyframe(dt + miningTime, null);
-
-                //update world/blocks when mining is complete
-                Game.World.Blocks.SetBlockType(digjob.BlockID, GameWorld.BlockType.DirtGround, dt + miningTime);
-                Game.World.Blocks.setBlockSelected(digjob.BlockID, false, dt + miningTime);
-                Game.World.ViewComponent.SetBlockType(digjob.BlockID, GameWorld.BlockType.DirtGround, dt + miningTime);
-                Game.World.ViewComponent.SetBlockSelected(digjob.BlockID, false, dt + miningTime);
+            ant.resetPositionFuture();
+            ant.resetStateFuture();
+            float dt = Game.LogicTime;
+            float moveSpeed = ant.MoveSpeed;
+            float miningTime = 3.0f;
+            ant.addStateKeyframe(dt, new StateData(GameEntity.States.Move));
+            Vector2 lastPosition = ant.Position;
+            for (int nodeIndex = 1; nodeIndex < path.Count - 1; nodeIndex++) {
+                var node = path[nodeIndex];
+                Vector2 blockPosition = Game.World.getCubePosition(node.blockID);
+                float distance = (blockPosition - lastPosition).magnitude;
+                dt += distance / moveSpeed;
+                ant.addPositionKeyframe(dt, blockPosition);
+                lastPosition = blockPosition;
             }
+
+            StartTime = dt;
+            EndTime = dt + miningTime;
+
+            ant.addStateKeyframe(StartTime, new StateData(GameEntity.States.Mine, BlockID));
+            ant.addStateKeyframe(EndTime, new StateData(GameEntity.States.Idle));
+            Game.World.ViewComponent.SetTimeline(ant.ID, ant.GetPositionTimeline());
+            Game.World.ViewComponent.SetTimeline(ant.ID, ant.GetStateTimeline());
+
+            AssignedAnts.Add(ant);
+            var antJobs = ant.GetJobTimeline();
+            antJobs.AddKeyframe(StartTime, this);
+            antJobs.AddKeyframe(EndTime, null);
+
+            //update world/blocks when mining is complete
+            Game.World.Blocks.SetBlockType(BlockID, GameWorld.BlockType.DirtGround, EndTime);
+            Game.World.Blocks.setBlockSelected(BlockID, false, EndTime);
+            Game.World.ViewComponent.SetBlockType(BlockID, GameWorld.BlockType.DirtGround, EndTime);
+            Game.World.ViewComponent.SetBlockSelected(BlockID, false, EndTime);
+            return true;
         }
 
-        public void complete() {
-            //if (Completed != null)
-            //    Completed.Invoke(this);
+        public void dispose() {
+            AssignedAnts.Clear();
         }
 
         public void abortByAnt() {
+            AssignedAnts.Clear();
+        }
+
+        public bool isFinished() {
+            if (AssignedAnts.Count == 0 || StartTime == 0 || EndTime == 0)
+                return false;
+
+            return Game.LogicTime >= EndTime;
+        }
+
+        public bool isPlanned() {
+            if (AssignedAnts.Count == 0 || StartTime == 0 || EndTime == 0)
+                return false;
+
+            return Game.LogicTime >= StartTime;
         }
 
         private List<Pathfinding.Node> PathfindForBlock(Vector2 position, int blockID) {

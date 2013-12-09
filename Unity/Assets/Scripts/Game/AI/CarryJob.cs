@@ -11,17 +11,19 @@ namespace Bronk
         public event JobCallback Completed;
         public event JobCallback AbortedByAnt;
 
-        public GameObject WhatToCarry;
         public int TransportToBlockId;
         public int FetchedFromBlockID;
 
-        public CarryJob(GameObject go, int fetchFromBlockId, int targetBlockId) {
-            WhatToCarry = go;
+        public CarryJob(int fetchFromBlockId, int targetBlockId) {
             FetchedFromBlockID = fetchFromBlockId;
             TransportToBlockId = targetBlockId;
         }
 
-        public void complete() {
+        public void plan(Ant ant) {
+
+        }
+
+        public void dispose() {
             if (Completed != null)
                 Completed.Invoke(this);
         }
@@ -34,6 +36,25 @@ namespace Bronk
 
         public void abortByUser() {
             throw new NotImplementedException();
+        }
+
+
+        public bool isFinished() {
+            throw new NotImplementedException();
+        }
+
+
+        public bool isPlanned() {
+            throw new NotImplementedException();
+        }
+
+
+        public float StartTime {
+            get { throw new NotImplementedException(); }
+        }
+
+        public float EndTime {
+            get { throw new NotImplementedException(); }
         }
     }
 }

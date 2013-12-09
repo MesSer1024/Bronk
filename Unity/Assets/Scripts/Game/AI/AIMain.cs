@@ -12,7 +12,7 @@ namespace Bronk
 	{
 		private int _AntIDCounter;
 		private List<Ant> _ants = new List<Ant> ();
-		private List<DigJob> _availableJobs = new List<DigJob> ();
+        private List<IJob> _availableJobs = new List<IJob>();
 		private Pathfinding _pathfinding = new Pathfinding (GameWorld.SIZE_X, GameWorld.SIZE_Z, Game.World.Blocks);
 
 		public AIMain ()
@@ -36,25 +36,47 @@ namespace Bronk
 			return ant;
 		}
 
-		public void update (float delta)
-		{
+		public void update (float delta) {
+            var addedJobs = new List<IJob>();
 			for (int i = 0; i < _availableJobs.Count; i++) {
 				var job = _availableJobs [i];
-				if (job.AssignedAnts.Count > 0)
-					continue;
+
+                //check if it is already planned, remove if finished
+                if (job.isPlanned()) {
+                    if (job.isFinished()) {
+                        job.dispose();
+                        _availableJobs.RemoveAt(i--);
+                    }
+                    continue;
+                }
 
                 if (job is DigJob) {
                     //for digging, we need a valid block and a free ant to continue
                     var digjob = job as DigJob;
                     Vector2 jobPos = Game.World.Blocks.getBlockPosition(digjob.BlockID);
-                    int closestAntIndex = FindClosestUnoccupiedAntIndex(jobPos);
-                    if (closestAntIndex == -1)
+                    int bestAntIndex = FindClosestUnoccupiedAntIndex(jobPos);
+                    if (bestAntIndex == -1)
                         break;
 
-                    var ant = _ants[closestAntIndex];
-                    digjob.plan(ant);
+                    var ant = _ants[bestAntIndex];
+                    if(digjob.plan(ant)) {
+                        //plan a pickup job
+                        var pickupJob = new CarryJob(digjob.BlockID, Game.World.Blocks.getBlockIDByPosition(Game.World.StartArea.center));
+                        addedJobs.Add(pickupJob);
+                    }
+                } else if (job is CarryJob) {
+                    var carryJob = job as CarryJob;
+                    Vector2 jobPos = Game.World.Blocks.getBlockPosition(carryJob.FetchedFromBlockID);
+                    int bestAntIndex = FindClosestUnoccupiedAntIndex(jobPos);
+                    if (bestAntIndex == -1)
+                        break;
+
+                    carryJob.plan(_ants[bestAntIndex]);
+                } else {
+                    throw new Exception("No implementation for job of type: " + job);
                 }
 			}
+            _availableJobs.AddRange(addedJobs);
 		}
 
 		int FindClosestUnoccupiedAntIndex (Vector2 jobPos)
@@ -89,9 +111,10 @@ namespace Bronk
 					_availableJobs.Add (job);
 				} else {
 					for (int jobIndex = 0; jobIndex < _availableJobs.Count; jobIndex++) {
-						if (_availableJobs [jobIndex].BlockID == cubeIndex) {
-                            _availableJobs[jobIndex].abortByUser();
-							_availableJobs.RemoveAt (jobIndex--);
+                        var job = _availableJobs[jobIndex];
+                        if(job is DigJob && (job as DigJob).BlockID == cubeIndex) {
+                            job.abortByUser();
+							_availableJobs.RemoveAt(jobIndex--);
 						}
 					}
 				}
