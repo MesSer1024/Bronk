@@ -64,7 +64,7 @@ public abstract class Timeline<Keyframe, Value> : Bronk.ITimeline
 		int lastIndex = _Keyframes.Count;
 		for (int i = 0; i < _Keyframes.Count; i++) {
 			if (currentTime > _Keyframes [i].Time) {
-				lastIndex = i;
+				lastIndex = i + 1;
 			}
 		}
 
