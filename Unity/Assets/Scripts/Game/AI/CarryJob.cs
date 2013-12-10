@@ -10,18 +10,18 @@ namespace Bronk
 	{
         public int BlockID_start;
         public int BlockID_end;
+        public float EarliestPickupTime;
 
         public List<Ant> AssignedAnts = new List<Ant>();
 
         public float StartTime { get; private set; }
         public float EndTime { get; private set; }
 
-        private float _earliestPickupTime;
 
         public CarryJob(int fetchFromBlockId, int targetBlockId, float earliestPickupTime) {
             BlockID_start = fetchFromBlockId;
             BlockID_end = targetBlockId;
-            _earliestPickupTime = earliestPickupTime;
+            EarliestPickupTime = earliestPickupTime;
         }
 
         public void plan(Ant ant, List<Pathfinding.Node> pathToPickup, List<Pathfinding.Node> pathToDropOffZone) {
@@ -52,11 +52,11 @@ namespace Bronk
             }
 
             //wait for right amount of time to pass
-            if (dt < _earliestPickupTime) {
+            if (dt < EarliestPickupTime) {
                 ant.addStateKeyframe(dt, new StateData(GameEntity.States.WaitingForOtherJobToFinish));
             }
             //start carrying when object is available
-            dt = Math.Max(dt, _earliestPickupTime); 
+            dt = Math.Max(dt, EarliestPickupTime); 
             ant.addPositionKeyframe(dt, lastPosition);
 
             //carry to target
@@ -94,15 +94,19 @@ namespace Bronk
         }
 
         private void clearStateOfAnt(Ant ant) {
+            Debug.Log("CarryJob clearStateOfAnt ID=" + ant.ID);
             ant.resetStateFuture();
             ant.resetPositionFuture();
             ant.GetJobTimeline().removeKeyframesInFuture(Game.LogicTime);
             ant.addStateKeyframe(Game.LogicTime, new StateData(GameEntity.States.Idle));
+            Game.World.ViewComponent.SetTimeline(ant.ID, ant.GetPositionTimeline());
+            Game.World.ViewComponent.SetTimeline(ant.ID, ant.GetStateTimeline());
 
             //TODO: Drop anything being carried at the ants current position
         }
 
         public void abortByUser() {
+            Debug.Log("CarryJob abortByUser ants=" + AssignedAnts.Count);
             foreach (var ant in AssignedAnts) {
                 clearStateOfAnt(ant);
             }

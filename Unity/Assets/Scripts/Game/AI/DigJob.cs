@@ -10,11 +10,12 @@ namespace Bronk
 		public List<Ant> AssignedAnts = new List<Ant>();
 
         public float StartTime { get; private set; }
-        public float EndTime { get; private set;}
+        public float EndTime { get; private set; }
 
-		public DigJob(int blockID) {
+        public DigJob(int blockID) {
 			BlockID = blockID;
 		}
+
 
         public void plan(Ant ant, List<Pathfinding.Node> path) {
             AssignedAnts.Add(ant);
@@ -43,7 +44,6 @@ namespace Bronk
             Game.World.ViewComponent.SetTimeline(ant.ID, ant.GetPositionTimeline());
             Game.World.ViewComponent.SetTimeline(ant.ID, ant.GetStateTimeline());
 
-            AssignedAnts.Add(ant);
             var antJobs = ant.GetJobTimeline();
             antJobs.AddKeyframe(StartTime, this);
             antJobs.AddKeyframe(EndTime, null);
@@ -78,6 +78,7 @@ namespace Bronk
         }
 
         public void abortByUser() {
+            Debug.Log("DigJob abortByUser ants=" + AssignedAnts.Count);
             foreach (var ant in AssignedAnts) {
                 ant.resetStateFuture();
                 ant.resetPositionFuture();
@@ -85,7 +86,7 @@ namespace Bronk
                 ant.addStateKeyframe(Game.LogicTime, new StateData(GameEntity.States.Idle));
                 Game.World.ViewComponent.SetTimeline(ant.ID, ant.GetPositionTimeline());
                 Game.World.ViewComponent.SetTimeline(ant.ID, ant.GetStateTimeline());
-
+                Debug.Log("DigJob abortByUser antID=" + ant.ID);
                 //change world...
                 var block = Game.World.Blocks.getBlock(BlockID);
                 Game.World.Blocks.SetBlockType(BlockID, block.Type, Game.LogicTime);

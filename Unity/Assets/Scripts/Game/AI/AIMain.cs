@@ -14,6 +14,7 @@ namespace Bronk
 		private List<Ant> _ants = new List<Ant> ();
         private List<IJob> _availableJobs = new List<IJob>();
 		private Pathfinding _pathfinding = new Pathfinding (GameWorld.SIZE_X, GameWorld.SIZE_Z, Game.World.Blocks);
+        private static Dictionary<IJob, List<IJob>> _jobDependencies = new Dictionary<IJob, List<IJob>>();
 
 		public AIMain ()
 		{
@@ -65,8 +66,9 @@ namespace Bronk
 
                         //create a pickup job
                         if (Game.World.Blocks.GetBlockType(digjob.BlockID) == GameWorld.BlockType.Gold) {
-                            var pickupJob = new CarryJob(digjob.BlockID, Game.World.Blocks.getBlockIDByPosition(Game.World.StartArea.center), digjob.EndTime);
-                            addedJobs.Add(pickupJob);
+                            var carryJob = new CarryJob(digjob.BlockID, Game.World.Blocks.getBlockIDByPosition(Game.World.StartArea.center), digjob.EndTime);
+                            AddDependencyBetweenJobs(digjob, carryJob);
+                            addedJobs.Add(carryJob);
                         }
                     }
                 } else if (job is CarryJob) {
@@ -89,6 +91,13 @@ namespace Bronk
             if(addedJobs.Count > 0)
                 _availableJobs.AddRange(addedJobs);
 		}
+
+        private static void AddDependencyBetweenJobs(IJob parent, IJob child) {
+            if(!_jobDependencies.ContainsKey(parent)) {
+                _jobDependencies.Add(parent, new List<IJob>());
+            }
+            _jobDependencies[parent].Add(child);
+        }
 
 		int FindClosestUnoccupiedAntIndex (Vector2 jobPos)
 		{
@@ -118,14 +127,23 @@ namespace Bronk
 				newSelected = !newSelected;
 				Game.World.Blocks.setBlockSelected (cubeIndex, newSelected, Time.time); // set selected on view time
 				if (newSelected) {
-                    var job = new DigJob(cubeIndex);
-					_availableJobs.Add (job);
+					_availableJobs.Add (new DigJob(cubeIndex));
 				} else {
 					for (int jobIndex = 0; jobIndex < _availableJobs.Count; jobIndex++) {
                         var job = _availableJobs[jobIndex];
                         if(job is DigJob && (job as DigJob).BlockID == cubeIndex) {
+                            if (_jobDependencies.ContainsKey(job)) {
+                                Debug.Log(String.Format("Found {0} depedencise on this job", _jobDependencies[job].Count));
+                                foreach (var child in _jobDependencies[job]) {
+                                    child.abortByUser();
+                                    _availableJobs.Remove(child);
+                                }
+                                _jobDependencies[job].Clear();
+                            } else {
+                                Debug.Log(String.Format("No dependencies found for the job being removed"));
+                            }
                             job.abortByUser();
-							_availableJobs.RemoveAt(jobIndex--);
+                            _availableJobs.RemoveAt(jobIndex--);
 						}
 					}
 				}
