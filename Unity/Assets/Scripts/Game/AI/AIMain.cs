@@ -13,12 +13,16 @@ namespace Bronk
 		private int _AntIDCounter;
 		private List<Ant> _ants = new List<Ant> ();
         private List<IJob> _availableJobs = new List<IJob>();
-		private Pathfinding _pathfinding = new Pathfinding (GameWorld.SIZE_X, GameWorld.SIZE_Z, Game.World.Blocks);
+		private Pathfinding _pathfinding;
+        private PathfindingToBase _pathfindToBase;
         private static Dictionary<IJob, List<IJob>> _jobDependencies = new Dictionary<IJob, List<IJob>>();
 
 		public AIMain ()
 		{
 			MessageManager.AddListener (this);
+            _pathfinding = new Pathfinding(GameWorld.SIZE_X, GameWorld.SIZE_Z, Game.World.Blocks);
+            _pathfindToBase = new PathfindingToBase(GameWorld.SIZE_X, GameWorld.SIZE_Z, Game.World.Blocks);
+            _pathfindToBase.init(Game.World.Blocks.getBlockIDByPosition(Game.World.StartArea.center));
 		}
 
 		public Ant createAnt (int type = 1)
@@ -45,6 +49,11 @@ namespace Bronk
                 //check if it is already planned, remove if finished
                 if (job.isPlanned()) {
                     if (job.isFinished()) {
+                        if (job is DigJob) {
+                            var digJob = job as DigJob;
+                            MessageManager.QueueMessage(new BlockMinedMessage(digJob.BlockID));
+                        }
+
                         job.dispose();
                         _availableJobs.RemoveAt(i--);
                     }
@@ -80,7 +89,7 @@ namespace Bronk
 
                     var ant = _ants[bestAntIndex];
                     var pathToPickup = _pathfinding.PathfindForBlock(ant.Position, carryJob.BlockID_start);
-                    var pathToDropOff = _pathfinding.PathfindForBlock(Game.World.Blocks.getBlockPosition(carryJob.BlockID_start), carryJob.BlockID_end);
+                    var pathToDropOff = _pathfindToBase.pathfindToHomebaseFrom(carryJob.BlockID_start);
                     if (pathToPickup != null && pathToDropOff != null) {
                         carryJob.plan(ant, pathToPickup, pathToDropOff);
                     }

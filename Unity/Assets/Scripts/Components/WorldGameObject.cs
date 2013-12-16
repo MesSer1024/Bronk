@@ -289,6 +289,6 @@ public class WorldGameObject : MonoBehaviour
 	public void OnBlockInteract (int blockID)
 	{
 		SetBlockSelected (blockID, !_blockData.getBlockSelected(blockID), Time.time); // simulate selection on view
-		MessageManager.ExecuteMessage (new CubeClickedMessage ("cube", blockID));
+		MessageManager.QueueMessage(new CubeClickedMessage ("cube", blockID));
 	}
 }

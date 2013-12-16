@@ -129,11 +129,11 @@ public class CharacterAnimationController : MonoBehaviour, ITimelineObject
 	}
 
     private void DoCarry() {
-        AnimationEnum animEnum = AnimationEnum.Mine;
-        if (_CurrentStateInfo.nameHash != Animations.Get(animEnum).Hash &&
-            _NextStateInfo.nameHash != Animations.Get(animEnum).Hash) {
-            PlayAnimation(animEnum, _StateTimeline.GetCurrentKeyframeTime(Time.time));
-        }
+        //AnimationEnum animEnum = AnimationEnum.Mine;
+        //if (_CurrentStateInfo.nameHash != Animations.Get(animEnum).Hash &&
+        //    _NextStateInfo.nameHash != Animations.Get(animEnum).Hash) {
+        //    PlayAnimation(animEnum, _StateTimeline.GetCurrentKeyframeTime(Time.time));
+        //}
     }
 }
 

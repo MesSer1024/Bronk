@@ -49,6 +49,7 @@ namespace Bronk
 		public static void update(float delta)
         {
 			LogicTime = Time.time + 0.3f; // Logic buffer time 
+            MessageManager.Update();
 			World.Blocks.Update (LogicTime);
             AI.update(delta);
         }

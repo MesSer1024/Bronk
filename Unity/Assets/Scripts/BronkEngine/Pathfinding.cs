@@ -67,8 +67,10 @@ namespace Bronk
             
         }
 
-		private void MaybeResetNode(Node node)
+		private void MaybeLazyResetNode(Node node)
 		{
+            // if it hasn't been touched during this pathfinding algorithm, 
+            //this is a lazy reset function, so we don't have to start with resetting every node every time we do a pathfind
 			if (node.pathfindID != _pathfindID)
 			{
 				node.finished = false;
@@ -115,13 +117,12 @@ namespace Bronk
         /// <returns></returns>
         private List<Node> findPath(Vector2 start, Vector2 end)
         {
-			_pathfindID = _pathfindCounter;
-			_pathfindCounter++;
+			_pathfindID = _pathfindCounter++;
 			endNode = _nodes[(int)start.x, (int)start.y];
 			var startNode = _nodes[(int)end.x, (int)end.y];
 
-			MaybeResetNode (startNode);
-			MaybeResetNode (endNode);
+			MaybeLazyResetNode (startNode);
+			MaybeLazyResetNode (endNode);
 
             bool reachedEnd = false;
 
@@ -259,7 +260,7 @@ namespace Bronk
             if (node.x + 1 < _sizeX)
             {
                 var tar = _nodes[node.x + 1, node.y];
-				MaybeResetNode (tar);
+				MaybeLazyResetNode (tar);
                 if (tar == targetNode || isValid(tar))
                 {
                     //1
@@ -276,7 +277,7 @@ namespace Bronk
             if (node.x - 1 >= 0)
             {
 				var tar = _nodes[node.x - 1, node.y];
-				MaybeResetNode (tar);
+				MaybeLazyResetNode (tar);
                 if (tar == targetNode || isValid(tar))
                 {
                     //1
@@ -293,7 +294,7 @@ namespace Bronk
             if (node.y - 1 >= 0)
             {
 				var tar = _nodes[node.x, node.y - 1];
-				MaybeResetNode (tar);
+				MaybeLazyResetNode (tar);
                 if (tar == targetNode || isValid(tar))
                 {
                     //1
@@ -310,7 +311,7 @@ namespace Bronk
             if (node.y + 1 < _sizeY)
             {
 				var tar = _nodes[node.x, node.y + 1];
-				MaybeResetNode (tar);
+				MaybeLazyResetNode (tar);
                 if (tar == targetNode || isValid(tar))
                 {
                     //1
