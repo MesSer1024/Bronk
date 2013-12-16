@@ -211,6 +211,10 @@ public class WorldGameObject : MonoBehaviour, IMessageListener
         _Objects.Add(gold.ItemID, gold);
     }
 
+    public void RemoveGoldItem(GoldObject gold) {
+        _Objects.Remove(gold.ItemID);
+    }
+
     public GameObject InstantiateGoldItemView(GoldObject gold) {
         Debug.Log("Instantiating gameObject based on:" + gold.StartBlockID);
         var go = Instantiate(_GoldItemPrefab, new Vector3(gold.StartBlockID % GameWorld.SIZE_X, 0, gold.StartBlockID / GameWorld.SIZE_Z), Quaternion.Euler(Vector3.up * 0)) as GameObject;

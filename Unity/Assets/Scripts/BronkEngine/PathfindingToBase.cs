@@ -211,11 +211,11 @@ namespace Bronk
 
             if (node.parent != null) {
                 //we have a valid path from this block to home base
-                output.Add(node);
-                while (node.parent != null) {
-                    output.Add(node.parent);
+                while (node != _homeBaseNode) {
+                    output.Add(node);
                     node = node.parent;
                 }
+                output.Add(_homeBaseNode);
             } else {
                 //this block is "not reachable" from base move the ant to a nearby block
                 if (node.blockID == _homeBaseNode.blockID) {
@@ -236,11 +236,11 @@ namespace Bronk
                         }
                         
                         node = neighbours[bestIndex];
-                        output.Add(node);
-                        while (node.parent != null) {
+                        while (node != _homeBaseNode) {
                             output.Add(node);
                             node = node.parent;
                         }
+                        output.Add(_homeBaseNode);
                     }
                 }
             }

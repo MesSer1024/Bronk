@@ -114,6 +114,9 @@ namespace Bronk
                 clearStateOfAnt(ant);
             }
             AssignedAnts.Clear();
+            if (ItemToPickup != null && ItemToPickup is GoldObject) {
+                Game.World.ViewComponent.RemoveGoldItem(ItemToPickup as GoldObject);
+            }
         }
 
 

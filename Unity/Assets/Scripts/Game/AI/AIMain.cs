@@ -55,6 +55,10 @@ namespace Bronk
                         }
 
                         job.dispose();
+                        if (_jobDependencies.ContainsKey(job)) {
+                            _jobDependencies[job].Clear();
+                            _jobDependencies.Remove(job);
+                        }
                         _availableJobs.RemoveAt(i--);
                     }
                     continue;
@@ -84,6 +88,7 @@ namespace Bronk
                         }
                     }
                 } else if (job is CarryJob) {
+                    //would probably be wise not to do any carry jobs unless they are highly prioritized or there are only carry jobs in queue
                     var carryJob = job as CarryJob;
                     Vector2 jobPos = Game.World.Blocks.getBlockPosition(carryJob.BlockID_start);
                     int bestAntIndex = FindClosestUnoccupiedAntIndex(jobPos);
