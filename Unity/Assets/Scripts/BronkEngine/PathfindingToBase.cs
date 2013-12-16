@@ -46,12 +46,34 @@ namespace Bronk
                     }
                 }
 
-                updatedNode.inOpen = false;
-                tryUpdateNodeWith(updatedNode, bestNeighbour);
-                //updatedNode.parent = bestNeighbour;
-                //updatedNode.g_costFromStart = bestNeighbour.g_costFromStart + MOVE_COST;
-                //updatedNode.h_heuristicToFinish = Math.Abs(_homeBaseNode.x - updatedNode.x) + Math.Abs(_homeBaseNode.y - updatedNode.y);
-                //updatedNode.f_totalCost = updatedNode.g_costFromStart + updatedNode.h_heuristicToFinish;
+                updatedNode.g_costFromStart = bestNeighbour.g_costFromStart + MOVE_COST;
+                updatedNode.h_heuristicToFinish = Math.Abs(_homeBaseNode.x - updatedNode.x) + Math.Abs(_homeBaseNode.y - updatedNode.y);
+                updatedNode.f_totalCost = updatedNode.g_costFromStart + updatedNode.h_heuristicToFinish;
+                updatedNode.parent = bestNeighbour;
+                //if we have more than one neighbour that means that we might have found a new cheaper way and need to update graph
+                if (neighbours.Count > 1) {
+                    MessageManager.QueueMessage(new ScheduleGraphUpdateMessage(msg.BlockID, neighbours));
+                }
+
+            }
+        }
+
+        public void updateGraphBasedOnNode(int blockID, List<Pathfinding.Node> blockNeighbours) {
+            var updatedNode = nodeFromID(blockID);
+            var changedNodes = new List<Pathfinding.Node>(4);
+
+            foreach (var node in blockNeighbours)
+            {
+                if (node.g_costFromStart > updatedNode.g_costFromStart + MOVE_COST) {
+                    node.g_costFromStart = updatedNode.g_costFromStart + MOVE_COST;
+                    node.parent = updatedNode;
+                    node.h_heuristicToFinish = Math.Abs(_homeBaseNode.x - node.x) + Math.Abs(_homeBaseNode.y - node.y);
+                    node.f_totalCost = node.g_costFromStart + node.h_heuristicToFinish;
+                    changedNodes.Add(node);
+                }
+            }
+            foreach (var node in changedNodes) {
+                updateGraphBasedOnNode(node.blockID, FindNonBlockedNeighbours(node));
             }
         }
 

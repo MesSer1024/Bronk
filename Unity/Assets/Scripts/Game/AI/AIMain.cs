@@ -156,7 +156,11 @@ namespace Bronk
 						}
 					}
 				}
-			}
+            } else if (message is ScheduleGraphUpdateMessage) {
+                //TODO: if we have sufficient amount of time left this frame or something...
+                var msg = message as ScheduleGraphUpdateMessage;
+                _pathfindToBase.updateGraphBasedOnNode(msg.BlockID, msg.Neighbours);
+            }
 		}
 	}
 }
