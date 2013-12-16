@@ -16,12 +16,13 @@ namespace Bronk
 
         public float StartTime { get; private set; }
         public float EndTime { get; private set; }
+        public ITimelineObject ItemToPickup { get; set; }
 
-
-        public CarryJob(int fetchFromBlockId, int targetBlockId, float earliestPickupTime) {
+        public CarryJob(int fetchFromBlockId, int targetBlockId, float earliestPickupTime, ITimelineObject itemToPickup) {
             BlockID_start = fetchFromBlockId;
             BlockID_end = targetBlockId;
             EarliestPickupTime = earliestPickupTime;
+            ItemToPickup = itemToPickup;
         }
 
         public void plan(Ant ant, List<Pathfinding.Node> pathToPickup, List<Pathfinding.Node> pathToDropOffZone) {
@@ -60,7 +61,9 @@ namespace Bronk
             ant.addPositionKeyframe(dt, lastPosition);
 
             //carry to target
-            ant.addStateKeyframe(dt, new StateData(GameEntity.States.Carry));
+            var data = new StateData(GameEntity.States.Carry);
+            data.Gold = ItemToPickup as GoldObject;
+            ant.addStateKeyframe(dt, data);
 
             for (int nodeIndex = 1; nodeIndex < pathToDropOffZone.Count - 1; nodeIndex++) {
                 var node = pathToDropOffZone[nodeIndex];
@@ -128,5 +131,6 @@ namespace Bronk
 
             return AssignedAnts.Count > 0;
         }
+
     }
 }

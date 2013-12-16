@@ -46,7 +46,7 @@ public class CharacterAnimationController : MonoBehaviour, ITimelineObject
                 DoSleep();
                 break;
             case GameEntity.States.Carry:
-                DoCarry();
+                DoCarry(state);
                 break;
 		}
 
@@ -119,7 +119,7 @@ public class CharacterAnimationController : MonoBehaviour, ITimelineObject
 		    _NextStateInfo.nameHash != Animations.Get (animEnum).Hash) {
 			PlayAnimation (animEnum, _StateTimeline.GetCurrentKeyframeTime (Time.time));
 		}
-		Vector2 pos2D = Game.World.ViewComponent.GetBlockPosition (state.DataID);
+		Vector2 pos2D = Game.World.ViewComponent.GetBlockPosition (state.BlockID);
 		_Transform.LookAt (new Vector3 (pos2D.x, 0, pos2D.y));
 	}
 
@@ -128,12 +128,10 @@ public class CharacterAnimationController : MonoBehaviour, ITimelineObject
 
 	}
 
-    private void DoCarry() {
-        //AnimationEnum animEnum = AnimationEnum.Mine;
-        //if (_CurrentStateInfo.nameHash != Animations.Get(animEnum).Hash &&
-        //    _NextStateInfo.nameHash != Animations.Get(animEnum).Hash) {
-        //    PlayAnimation(animEnum, _StateTimeline.GetCurrentKeyframeTime(Time.time));
-        //}
+    private void DoCarry(StateData state) {
+        if (state.Gold != null && state.Gold.View != null) {
+            state.Gold.View.transform.position = transform.position;
+        }
     }
 }
 

@@ -33,13 +33,6 @@ namespace Bronk
 			public int pathfindID;
         }
 
-        /// <summary>
-        /// Create a pathfinding graph that is possible to use for finding out collisions, [0,0] = top left, [sizeX,sizeY] = bottom right
-        /// Uses CubeData to find out if a tile is walkable or not, expecting tiles to be ordered as (x=0,y=0, x=1,y=0, x=2,y=0) ...
-        /// </summary>
-        /// <param name="sizeX"></param>
-        /// <param name="sizeY"></param>
-        /// <param name="cubes"></param>
 		public Pathfinding(int sizeX, int sizeY, GameWorldData blocks)
         {
             _sizeX = sizeX;

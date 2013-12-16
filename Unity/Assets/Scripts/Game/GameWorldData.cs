@@ -31,7 +31,6 @@ namespace Bronk
 		private System.Func<int, int> _WalkTopFunc;
 		private System.Func<int,int> _WalkBottomFunc;
 
-		public delegate void BlockChangeDelegate (int blockID,BlockData oldBlock,BlockData newBlock);
 
 		public int SizeX { get { return _sizeX; } }
 
@@ -39,18 +38,18 @@ namespace Bronk
 
 		List<BlockTypeChange> _futureBlockTypeChanges = new List<BlockTypeChange> ();
 		List<BlockSelectedChange> _futureBlockSelectedChanges = new List<BlockSelectedChange> ();
-		public BlockChangeDelegate OnBlockChanged;
-		private int _sizeX;
+
+        private int _sizeX;
 		private int _sizeZ;
 		private BlockData[] _data;
 		private float _now;
 
 		public GameWorldData ()
 		{
-			_WalkLeftFunc = getLeftCube;
-			_WalkRightFunc = getRightCube;
-			_WalkTopFunc = getTopCube;
-			_WalkBottomFunc = getBottomCube;
+			_WalkLeftFunc = getLeftBlock;
+			_WalkRightFunc = getRightBlock;
+			_WalkTopFunc = getUpBlock;
+			_WalkBottomFunc = getDownBlock;
 		}
 
 		public void init (BlockData[] data, int sizeX, int sizeZ)
@@ -179,14 +178,11 @@ namespace Bronk
 			}
 		}
 
-		void CallOnBlockChanged (int blockID, ref BlockData oldblock, ref BlockData newBlock)
-		{
-			if (OnBlockChanged != null)
-				OnBlockChanged (blockID, oldblock, newBlock);
+		void CallOnBlockChanged (int blockID, ref BlockData oldblock, ref BlockData newBlock) {
+            MessageManager.QueueMessage(new BlockChangedMessage(blockID, oldblock, newBlock));
 		}
 
-		public int getRightCube (int blockID)
-		{
+		public int getRightBlock(int blockID) {
 			int tarId = blockID + 1;
 			if (tarId % _sizeX > 0) {
 				return tarId;
@@ -194,8 +190,7 @@ namespace Bronk
 			return -1;
 		}
 
-		public int getLeftCube (int blockID)
-		{
+		public int getLeftBlock(int blockID) {
 			var tarId = (blockID % _sizeX) - 1;
 			if (tarId < 0) {
 				return -1;
@@ -203,8 +198,7 @@ namespace Bronk
 			return blockID - 1;
 		}
 
-		public int getTopCube (int blockID)
-		{
+		public int getUpBlock(int blockID) {
 			var tarId = blockID - _sizeX;
 			if (tarId >= 0) {
 				return tarId;
@@ -212,8 +206,7 @@ namespace Bronk
 			return -1;
 		}
 
-		public int getBottomCube (int blockID)
-		{
+		public int getDownBlock(int blockID) {
 			var tarId = blockID + _sizeX;
 			if (tarId < _data.Length) {
 				return tarId;

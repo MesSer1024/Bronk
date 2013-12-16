@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using Bronk;
 using System;
 
-public class WorldGameObject : MonoBehaviour
+public class WorldGameObject : MonoBehaviour, IMessageListener
 {
 	public GameObject cubePrefab;
 	private GameWorldData _blockData;
 	private BlockObject[] _BlockSceneObjects;
 	Dictionary<int, ITimelineObject> _Objects;
     //private List<BlockTypeChange> _futureBlockChanges = new List<BlockTypeChange> ();
-	private GameObject _AntPrefab;
+    public GameObject _GoldItemPrefab;
+    private GameObject _AntPrefab;
+
 	private GameObject _Side0;
 	private GameObject _Side1;
 	private GameObject _Side2;
@@ -36,39 +38,12 @@ public class WorldGameObject : MonoBehaviour
 		_Objects = new Dictionary<int, ITimelineObject> ();
 
 		LoadResources ();
+        MessageManager.AddListener(this);
 		_blockData = new GameWorldData ();
-		_blockData.OnBlockChanged += OnBlockChanged;
 		_BlockSceneObjects = new BlockObject[Game.World.Blocks.SizeX * Game.World.Blocks.SizeZ];
 		_blockData.init (Game.World.Blocks);
 		for (int i = 0; i < _BlockSceneObjects.Length; i++) {
 			_BlockSceneObjects [i] = GetViewBlock (i, _blockData.GetBlockType(i));
-		}
-	}
-
-	void OnBlockChanged (int blockID, BlockData oldBlock, BlockData newBlock)
-	{
-		if (oldBlock.Type != newBlock.Type) {
-
-			UpdateBlockView (blockID);
-
-			int leftBlock = _blockData.getLeftCube (blockID);
-			int rightBlock = _blockData.getRightCube (blockID);
-			int topBlock = _blockData.getTopCube (blockID);
-			int bottomBlock = _blockData.getBottomCube (blockID);
-
-			if (leftBlock != -1)
-				UpdateBlockView (leftBlock);
-			if (rightBlock != -1)
-				UpdateBlockView (rightBlock);
-			if (topBlock != -1)
-				UpdateBlockView (topBlock);
-			if (bottomBlock != -1)
-				UpdateBlockView (bottomBlock);
-		}
-		if (oldBlock.Selected != newBlock.Selected) {
-			BlockObject viewObject = _BlockSceneObjects [blockID];
-			if (viewObject != null)
-				viewObject.SetSelected (newBlock.Selected);
 		}
 	}
 
@@ -93,7 +68,7 @@ public class WorldGameObject : MonoBehaviour
 
 		if (blockObj == null)
 			throw new Exception ("Failed to get BlockObject component when instantiating " + type + " block");
-		blockObj.Index = blockIndex;
+		blockObj.BlockID = blockIndex;
 		return blockObj;
 	}
 
@@ -103,7 +78,7 @@ public class WorldGameObject : MonoBehaviour
 	}
 
 	void LoadResources ()
-	{
+	{   
 		_Side0 = Resources.Load<GameObject> ("Terrain/Walls/Side0") as GameObject;
 		_Side1 = Resources.Load<GameObject> ("Terrain/Walls/Side1") as GameObject;
 		_Side2 = Resources.Load<GameObject> ("Terrain/Walls/Side2") as GameObject;
@@ -118,6 +93,8 @@ public class WorldGameObject : MonoBehaviour
 		_FloorMaterial = Resources.Load<Material> ("Materials/FloorMaterial") as Material;
 
 		_AntPrefab = Resources.Load<GameObject> ("CharacterPrefabs/AntWorker") as GameObject;
+
+        _GoldItemPrefab = Resources.Load<GameObject>("PropPrefabs/Chair") as GameObject;
 	}
 
 	GameObject GetTilePrefab (GameWorld.BlockType type, int blockID, ref Quaternion rotation)
@@ -125,10 +102,10 @@ public class WorldGameObject : MonoBehaviour
 		if (type == GameWorld.BlockType.DirtGround)
 			return _Floor;
 
-		int leftBlock = _blockData.getLeftCube (blockID);
-		int rightBlock = _blockData.getRightCube (blockID);
-		int topBlock = _blockData.getTopCube (blockID);
-		int bottomBlock = _blockData.getBottomCube (blockID);
+		int leftBlock = _blockData.getLeftBlock (blockID);
+		int rightBlock = _blockData.getRightBlock (blockID);
+		int topBlock = _blockData.getUpBlock (blockID);
+		int bottomBlock = _blockData.getDownBlock (blockID);
 
 		bool left = leftBlock != -1 ? IsGroundBlock (leftBlock) : false;
 		bool right = rightBlock != -1 ? IsGroundBlock (rightBlock) : false;
@@ -230,6 +207,18 @@ public class WorldGameObject : MonoBehaviour
 		}
 	}
 
+    public void AddGoldItem(GoldObject gold) {
+        _Objects.Add(gold.ItemID, gold);
+    }
+
+    public GameObject InstantiateGoldItemView(GoldObject gold) {
+        Debug.Log("Instantiating gameObject based on:" + gold.StartBlockID);
+        var go = Instantiate(_GoldItemPrefab, new Vector3(gold.StartBlockID % GameWorld.SIZE_X, 0, gold.StartBlockID / GameWorld.SIZE_Z), Quaternion.Euler(Vector3.up * 0)) as GameObject;
+        go.transform.position += new Vector3(0.3f, 0, -0.5f);
+        go.transform.localScale -= new Vector3(0.45f, 0f, 0.45f);
+        return go;
+    }
+
 	public GameWorld.BlockType GetBlockType (int blockID)
 	{
 		return _blockData.GetBlockType (blockID);
@@ -291,4 +280,58 @@ public class WorldGameObject : MonoBehaviour
 		SetBlockSelected (blockID, !_blockData.getBlockSelected(blockID), Time.time); // simulate selection on view
 		MessageManager.QueueMessage(new CubeClickedMessage ("cube", blockID));
 	}
+
+    public void onMessage(IMessage message) {
+        if (message is BlockChangedMessage) {
+            var msg = message as BlockChangedMessage;
+            onBlockChanged(msg.BlockID, msg.OldBlock, msg.NewBlock);
+        }
+    }
+
+    void onBlockChanged(int blockID, BlockData oldBlock, BlockData newBlock) {
+        if (oldBlock.Type != newBlock.Type) {
+
+            UpdateBlockView(blockID);
+
+            int leftBlock = _blockData.getLeftBlock(blockID);
+            int rightBlock = _blockData.getRightBlock(blockID);
+            int topBlock = _blockData.getUpBlock(blockID);
+            int bottomBlock = _blockData.getDownBlock(blockID);
+
+            if (leftBlock != -1)
+                UpdateBlockView(leftBlock);
+            if (rightBlock != -1)
+                UpdateBlockView(rightBlock);
+            if (topBlock != -1)
+                UpdateBlockView(topBlock);
+            if (bottomBlock != -1)
+                UpdateBlockView(bottomBlock);
+
+            if (oldBlock.Type == GameWorld.BlockType.Gold) {
+                var item = getGoldObjectFromStartBlock(blockID);
+                //item.View check required since this message is sent both when selected/deselected and when the block is really changed...
+                if (item != null && item.View == null) {
+                    item.View = InstantiateGoldItemView(item);
+                }
+            }
+        }
+        if (oldBlock.Selected != newBlock.Selected) {
+            BlockObject viewObject = _BlockSceneObjects[blockID];
+            if (viewObject != null)
+                viewObject.SetSelected(newBlock.Selected);
+        }
+    }
+
+    public GoldObject getGoldObjectFromStartBlock(int blockID) {
+        //TODO: Rewrite to actually work in a decent way
+        foreach (var item in _Objects.Values) {
+            if (item is GoldObject) {
+                var gold = item as GoldObject;
+                if (gold.StartBlockID == blockID) {
+                    return gold;
+                }
+            }
+        }
+        return null;
+    }
 }

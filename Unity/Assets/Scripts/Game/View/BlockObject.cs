@@ -13,7 +13,7 @@ public class BlockObject : MonoBehaviour, IInteractable
 	private bool _semiSelected;
 	private bool _selected;
 	private List<BlockDecorators.DecoratorObject> _Decorators;
-	public int Index;
+	public int BlockID;
 
 	static BlockObject ()
 	{
@@ -40,7 +40,7 @@ public class BlockObject : MonoBehaviour, IInteractable
 			int index = indices [i];
 			int tileX = index % tileSubdivisions;
 			int tileZ = index / tileSubdivisions;
-			Vector3 tilePos = new Vector3 (Index % GameWorld.SIZE_X - 0.5f + tileX * tileSize + tileSize * 0.5f, 0.001f, Index / GameWorld.SIZE_Z - 0.5f + tileZ * tileSize + tileSize * 0.5f);
+			Vector3 tilePos = new Vector3 (BlockID % GameWorld.SIZE_X - 0.5f + tileX * tileSize + tileSize * 0.5f, 0.001f, BlockID / GameWorld.SIZE_Z - 0.5f + tileZ * tileSize + tileSize * 0.5f);
 			if (BlockType != GameWorld.BlockType.DirtGround)
 				tilePos += Vector3.up;
 			_Decorators.Add (BlockDecorators.GetDecorator (BlockType, tilePos, tileSize));
@@ -71,7 +71,7 @@ public class BlockObject : MonoBehaviour, IInteractable
 
 	public void Interact ()
 	{
-		Game.World.ViewComponent.OnBlockInteract (Index);
+		Game.World.ViewComponent.OnBlockInteract (BlockID);
 	}
 
 	public void SemiSelect (bool semiSelected)

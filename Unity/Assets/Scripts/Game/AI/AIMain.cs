@@ -10,7 +10,7 @@ namespace Bronk
 {
 	public class AIMain : IMessageListener
 	{
-		private int _AntIDCounter;
+		private int _objectCounter;
 		private List<Ant> _ants = new List<Ant> ();
         private List<IJob> _availableJobs = new List<IJob>();
 		private Pathfinding _pathfinding;
@@ -30,7 +30,7 @@ namespace Bronk
 			Ant ant;
 			switch (type) {
 			case 1:
-				ant = new Ant (_AntIDCounter++);
+				ant = new Ant (_objectCounter++);
 				_ants.Add (ant);
 				ant.State = new StateData (GameEntity.States.Removable);
 				Game.World.ViewComponent.CreateAnt (ant.ID, type);
@@ -75,7 +75,10 @@ namespace Bronk
 
                         //create a pickup job
                         if (Game.World.Blocks.GetBlockType(digjob.BlockID) == GameWorld.BlockType.Gold) {
-                            var carryJob = new CarryJob(digjob.BlockID, Game.World.Blocks.getBlockIDByPosition(Game.World.StartArea.center), digjob.EndTime);
+                            var gold = new GoldObject(digjob.BlockID, _objectCounter++);
+                            Game.World.ViewComponent.AddGoldItem(gold);
+                            var carryJob = new CarryJob(digjob.BlockID, Game.World.Blocks.getBlockIDByPosition(Game.World.StartArea.center), digjob.EndTime, gold);
+                            
                             AddDependencyBetweenJobs(digjob, carryJob);
                             addedJobs.Add(carryJob);
                         }

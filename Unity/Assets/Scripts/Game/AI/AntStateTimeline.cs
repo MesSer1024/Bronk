@@ -4,11 +4,14 @@ using System.Collections;
 public struct StateData
 {
 	public GameEntity.States State;
-	public int DataID;
+	public int BlockID;
+    public GoldObject Gold;
+
 	public StateData (GameEntity.States state, int dataId = -1)
 	{
 		State = state;
-		DataID = dataId;
+		BlockID = dataId;
+        Gold = null;
 	}
 }
 public class AntStateTimeline : Timeline<StateData, StateData>
