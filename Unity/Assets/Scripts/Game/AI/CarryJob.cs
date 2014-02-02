@@ -134,6 +134,5 @@ namespace Bronk
 
             return AssignedAnts.Count > 0;
         }
-
     }
 }

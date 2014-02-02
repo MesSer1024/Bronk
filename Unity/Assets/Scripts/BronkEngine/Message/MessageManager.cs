@@ -7,35 +7,22 @@ public static class MessageManager {
 
 	private static List<IMessageListener> _listeners = new List<IMessageListener>();
 	private static Queue<IMessage> _queue = new Queue<IMessage>();
-	
-	//these items are there for handling adding/removing items during execution of messages
-	private static bool isExecuting = false;
-	private static List<IMessageListener> _removables = new List<IMessageListener>(2);
-	private static List<IMessageListener> _addables = new List<IMessageListener>(2);
-	//-----
+
+    private static bool isExecuting;
 	
 	public static void AddListener (IMessageListener listener)
 	{
-		if (isExecuting)
-			_addables.Add (listener);
-		else
-			_listeners.Add (listener);
+		_listeners.Add (listener);
 	}
 	
 	public static void RemoveListener (IMessageListener listener)
 	{
-		if (isExecuting)
-			_removables.Add(listener);
-		else
-			_listeners.RemoveAll (a => a == listener);
+		_listeners.RemoveAll (a => a == listener);
 	}
 	
 	public static void RemoveAllListeners ()
 	{
-		if (isExecuting)
-			_removables.AddRange (_listeners);
-		else
-			_listeners.Clear ();
+		_listeners.Clear ();
 	}
 	
 	/// <summary>
@@ -45,13 +32,13 @@ public static class MessageManager {
 	public static void ExecuteMessage (IMessage msg)
 	{
 		if (isExecuting) {
-			Logger.Error ("LOGIC_ERROR: Cannot execute a message while another message is being Executed");
+			Logger.Error ("LOGIC_ERROR: You probably should not execute a message while another message is being executed!");
 		}
 		
 		isExecuting = true;
-		foreach (var listener in _listeners) {
-			if(!_removables.Contains(listener))
-				listener.onMessage (msg);
+        var listenerCopy = _listeners.ToArray();
+        foreach (var listener in listenerCopy) {
+			listener.onMessage (msg);
 		}
 		isExecuting = false;
 	}
@@ -66,28 +53,12 @@ public static class MessageManager {
 	
 	public static void Update ()
 	{
-		syncLists ();
-		while (_queue.Count > 0) {
-			ExecuteMessage (_queue.Dequeue ());
-		}
-		syncLists();
-	}
-	
-	private static void syncLists ()
-	{
-		if (_removables.Count > 0) {
-			foreach (var listener in _removables) {
-				_listeners.RemoveAll (a => a == listener);
-			}
-			_removables.Clear ();
-		}
-		
-		if (_addables.Count > 0) {
-			foreach (var listener in _addables) {
-				_listeners.Add (listener);
-			}
-			_addables.Clear ();
-		}
+        var queueCopy = _queue.ToArray();
+        _queue.Clear();
+        foreach (var item in queueCopy) {
+            ExecuteMessage(item);
+        }
+        //TODO: Consider adding one or more additional passes since messages might have spawned more items in queue that needs to be resolved now?
 	}
 	
 }

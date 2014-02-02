@@ -6,6 +6,7 @@ namespace Bronk
 	public class GameWorld
 	{
         public WorldGameObject ViewComponent { get; set; }
+        public StockpileComp StockpileComponent { get; set; }
 
 		public const int SIZE_X = 100;
 		public const int SIZE_Z = 100;
@@ -101,6 +102,7 @@ namespace Bronk
 				blockArray [i] = block;
 			}
 			Blocks.init (blockArray, SIZE_X, SIZE_Z);
+            StockpileComponent.init();
 		}
 
 		static void GenerateStartArea (out int startX, out int startZ, out int endX, out int endZ)

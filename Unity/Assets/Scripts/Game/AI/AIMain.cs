@@ -52,7 +52,11 @@ namespace Bronk
                         if (job is DigJob) {
                             var digJob = job as DigJob;
                             MessageManager.QueueMessage(new BlockMinedMessage(digJob.BlockID));
+                        } else if (job is CarryJob) {
+                            var carryJob = job as CarryJob;
+                            MessageManager.QueueMessage(new ItemDeliveredMessage(carryJob.BlockID_start, carryJob.BlockID_end, carryJob.ItemToPickup));
                         }
+
 
                         job.dispose();
                         if (_jobDependencies.ContainsKey(job)) {

@@ -20,5 +20,5 @@ namespace Bronk
 
         float StartTime { get; }
         float EndTime { get; }
-	}
+    }
 }
