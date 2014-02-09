@@ -8,8 +8,8 @@ namespace Bronk
         public WorldGameObject ViewComponent { get; set; }
         public StockpileComp StockpileComponent { get; set; }
 
-		public const int SIZE_X = 100;
-		public const int SIZE_Z = 100;
+		public const int SIZE_X = 11;
+		public const int SIZE_Z = 11;
 
 		public enum BlockType
 		{
@@ -32,16 +32,12 @@ namespace Bronk
 
 		public void init ()
 		{
-
 			Random.seed = "L33T HAXXOR".GetHashCode ();
 
 			int startX;
 			int startZ;
 			int endX;
 			int endZ;
-
-            
-
 			GenerateStartArea (out startX, out startZ, out endX, out endZ);
 
             StartArea = new Rect(startX, startZ, endX - startX, endZ - startZ);
@@ -103,19 +99,39 @@ namespace Bronk
 			}
 			Blocks.init (blockArray, SIZE_X, SIZE_Z);
             StockpileComponent.init();
+            PlaceArtifact();
 		}
+
+        public void PlaceArtifact()
+        {
+            Vector2 artifactPosition = StartArea.center + new Vector2(3,0);
+            ArtifactObject artifact = new ArtifactObject(Blocks.getBlockIDByPosition(artifactPosition), AIMain.GenerateUniqueId());
+
+            //item.View check required since this message is sent both when selected/deselected and when the block is really changed...
+            if (artifact != null && artifact.View == null)
+            {
+                artifact.View = ViewComponent.InstantiateCarryItemView(artifact);
+            }
+        }
 
 		static void GenerateStartArea (out int startX, out int startZ, out int endX, out int endZ)
 		{
-			int startPosIndex = Random.Range (0, SIZE_X * SIZE_Z);
-			int startAreaSizeX = 8;
-			int startAreaSizeZ = 8;
-			startX = startPosIndex % SIZE_X;
-			startZ = startPosIndex / SIZE_Z;
-			endX = Mathf.Clamp (startX + startAreaSizeX, 0, SIZE_X - 1);
-			endZ = Mathf.Clamp (startZ + startAreaSizeZ, 0, SIZE_Z - 1);
-			startX += (startAreaSizeX - (endX - startX));
-			startZ += (startAreaSizeZ - (endZ - startZ));
+            //int startPosIndex = Random.Range (0, SIZE_X * SIZE_Z);
+            //int startAreaSizeX = 8;
+            //int startAreaSizeZ = 8;
+            //startX = startPosIndex % SIZE_X;
+            //startZ = startPosIndex / SIZE_Z;
+            //endX = Mathf.Clamp (startX + startAreaSizeX, 0, SIZE_X - 1);
+            //endZ = Mathf.Clamp (startZ + startAreaSizeZ, 0, SIZE_Z - 1);
+            //startX += (startAreaSizeX - (endX - startX));
+            //startZ += (startAreaSizeZ - (endZ - startZ));
+
+            int offsetFromMapBorder = 1;
+            int startAreaSize = 8;
+            startX = Random.Range(offsetFromMapBorder, SIZE_X - startAreaSize - offsetFromMapBorder - 1);
+            startZ = Random.Range(offsetFromMapBorder, SIZE_Z - startAreaSize - offsetFromMapBorder - 1);
+            endX = startX + startAreaSize;
+            endZ = startZ + startAreaSize;
 		}
 
 		public Vector2 getCubePosition (int blockID)

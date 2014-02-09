@@ -5,13 +5,13 @@ public struct StateData
 {
 	public GameEntity.States State;
 	public int BlockID;
-    public GoldObject Gold;
+    public ICarryObject CarryObject;
 
 	public StateData (GameEntity.States state, int dataId = -1)
 	{
 		State = state;
 		BlockID = dataId;
-        Gold = null;
+        CarryObject = null;
 	}
 }
 public class AntStateTimeline : Timeline<StateData, StateData>

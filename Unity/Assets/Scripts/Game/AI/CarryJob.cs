@@ -6,9 +6,8 @@ using UnityEngine;
 
 namespace Bronk
 {
-	class CarryJob : IJob
-	{
-        public int BlockID_start;
+    class CarryJob : IJob
+    {
         public int BlockID_end;
         public float EarliestPickupTime;
 
@@ -16,16 +15,17 @@ namespace Bronk
 
         public float StartTime { get; private set; }
         public float EndTime { get; private set; }
-        public ITimelineObject ItemToPickup { get; set; }
+        public ICarryObject ItemToPickup { get; set; }
 
-        public CarryJob(int fetchFromBlockId, int targetBlockId, float earliestPickupTime, ITimelineObject itemToPickup) {
-            BlockID_start = fetchFromBlockId;
+        public CarryJob(int targetBlockId, float earliestPickupTime, ICarryObject itemToPickup)
+        {
             BlockID_end = targetBlockId;
             EarliestPickupTime = earliestPickupTime;
             ItemToPickup = itemToPickup;
         }
 
-        public void plan(Ant ant, List<Pathfinding.Node> pathToPickup, List<Pathfinding.Node> pathToDropOffZone) {
+        public void plan(Ant ant, List<Pathfinding.Node> pathToPickup, List<Pathfinding.Node> pathToDropOffZone)
+        {
             if (ant == null || pathToPickup == null || pathToDropOffZone == null)
                 throw new ArgumentException();
 
@@ -40,39 +40,26 @@ namespace Bronk
             Vector2 lastPosition = ant.Position;
 
             //move to pickup spot
-            if (pathToPickup.Count > 0) 
+            if (pathToPickup.Count > 0)
                 ant.GetStateTimeline().AddKeyframe(dt, new StateData(GameEntity.States.Move));
 
-            for (int nodeIndex = 1; nodeIndex < pathToPickup.Count - 1; nodeIndex++) {
-                var node = pathToPickup[nodeIndex];
-                Vector2 blockPosition = Game.World.getCubePosition(node.blockID);
-                float distance = (blockPosition - lastPosition).magnitude;
-                dt += distance / moveSpeed;
-                ant.addPositionKeyframe(dt, blockPosition);
-                lastPosition = blockPosition;
-            }
+            JobUtilities.FillPositionTimeline(ant, pathToPickup, ref dt, moveSpeed, ref lastPosition);
 
             //wait for right amount of time to pass
-            if (dt < EarliestPickupTime) {
+            if (dt < EarliestPickupTime)
+            {
                 ant.addStateKeyframe(dt, new StateData(GameEntity.States.WaitingForOtherJobToFinish));
             }
             //start carrying when object is available
-            dt = Math.Max(dt, EarliestPickupTime); 
+            dt = Math.Max(dt, EarliestPickupTime);
             ant.addPositionKeyframe(dt, lastPosition);
 
             //carry to target
             var data = new StateData(GameEntity.States.Carry);
-            data.Gold = ItemToPickup as GoldObject;
+            data.CarryObject = ItemToPickup;
             ant.addStateKeyframe(dt, data);
 
-            for (int nodeIndex = 1; nodeIndex < pathToDropOffZone.Count - 1; nodeIndex++) {
-                var node = pathToDropOffZone[nodeIndex];
-                Vector2 blockPosition = Game.World.getCubePosition(node.blockID);
-                float distance = (blockPosition - lastPosition).magnitude;
-                dt += distance / moveSpeed;
-                ant.addPositionKeyframe(dt, blockPosition);
-                lastPosition = blockPosition;
-            }
+            JobUtilities.FillPositionTimeline(ant, pathToDropOffZone, ref dt, moveSpeed, ref lastPosition);
 
             //when everything is finished...
             EndTime = dt;
@@ -84,19 +71,23 @@ namespace Bronk
             antJobs.AddKeyframe(StartTime, this);
             antJobs.AddKeyframe(EndTime, null);
         }
-
-        public void dispose() {
+        
+        public void dispose()
+        {
             AssignedAnts.Clear();
         }
 
-        public void abortByAnt() {
-            foreach (var ant in AssignedAnts) {
+        public void abortByAnt()
+        {
+            foreach (var ant in AssignedAnts)
+            {
                 clearStateOfAnt(ant);
             }
             AssignedAnts.Clear();
         }
 
-        private void clearStateOfAnt(Ant ant) {
+        private void clearStateOfAnt(Ant ant)
+        {
             Debug.Log("CarryJob clearStateOfAnt ID=" + ant.ID);
             ant.resetStateFuture();
             ant.resetPositionFuture();
@@ -108,19 +99,23 @@ namespace Bronk
             //TODO: Drop anything being carried at the ants current position
         }
 
-        public void abortByUser() {
+        public void abortByUser()
+        {
             Debug.Log("CarryJob abortByUser ants=" + AssignedAnts.Count);
-            foreach (var ant in AssignedAnts) {
+            foreach (var ant in AssignedAnts)
+            {
                 clearStateOfAnt(ant);
             }
             AssignedAnts.Clear();
-            if (ItemToPickup != null && ItemToPickup is GoldObject) {
-                Game.World.ViewComponent.RemoveGoldItem(ItemToPickup as GoldObject);
+            if (ItemToPickup != null && ItemToPickup is GoldObject)
+            {
+                Game.World.ViewComponent.RemoveCarryItem(ItemToPickup);
             }
         }
 
 
-        public bool isFinished() {
+        public bool isFinished()
+        {
             if (AssignedAnts.Count == 0 || StartTime == 0 || EndTime == 0)
                 return false;
 
@@ -128,7 +123,8 @@ namespace Bronk
         }
 
 
-        public bool isPlanned() {
+        public bool isPlanned()
+        {
             if (AssignedAnts.Count == 0 || StartTime == 0 || EndTime == 0)
                 return false;
 

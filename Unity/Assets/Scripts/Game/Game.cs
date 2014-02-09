@@ -32,7 +32,7 @@ namespace Bronk
         public static void init()
         {
             Game.World.init();
-			Game.World.ViewComponent.init ();
+            Game.World.ViewComponent.init();
             AI = new AIMain();
         }
 

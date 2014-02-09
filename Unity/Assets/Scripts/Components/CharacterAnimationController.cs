@@ -94,7 +94,7 @@ public class CharacterAnimationController : MonoBehaviour, ITimelineObject
 
 		_MiningParticleSystem.transform.position = transform.position + Vector3.up * 2;
 		_MiningParticleSystem.Emit (15);
-		Debug.Log ("Do Effect! " + id);
+        //Debug.Log ("Do Effect! " + id);
 		
 	}
 
@@ -129,8 +129,8 @@ public class CharacterAnimationController : MonoBehaviour, ITimelineObject
 	}
 
     private void DoCarry(StateData state) {
-        if (state.Gold != null && state.Gold.View != null) {
-            state.Gold.View.transform.position = transform.position;
+        if (state.CarryObject != null && state.CarryObject.View != null) {
+            state.CarryObject.View.transform.position = transform.position;
         }
     }
 }

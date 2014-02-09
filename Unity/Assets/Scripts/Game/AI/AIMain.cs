@@ -10,13 +10,13 @@ namespace Bronk
 {
 	public class AIMain : IMessageListener
 	{
-		private int _objectCounter;
+		private static int _objectCounter;
 		private List<Ant> _ants = new List<Ant> ();
         private List<IJob> _availableJobs = new List<IJob>();
 		private Pathfinding _pathfinding;
         private PathfindingToBase _pathfindToBase;
         private static Dictionary<IJob, List<IJob>> _jobDependencies = new Dictionary<IJob, List<IJob>>();
-
+        
 		public AIMain ()
 		{
 			MessageManager.AddListener (this);
@@ -25,12 +25,17 @@ namespace Bronk
             _pathfindToBase.init(Game.World.Blocks.getBlockIDByPosition(Game.World.StartArea.center));
 		}
 
+        public static int GenerateUniqueId()
+        {
+            return _objectCounter++;
+        }
+
 		public Ant createAnt (int type = 1)
 		{
 			Ant ant;
 			switch (type) {
 			case 1:
-				ant = new Ant (_objectCounter++);
+				ant = new Ant (GenerateUniqueId());
 				_ants.Add (ant);
 				ant.State = new StateData (GameEntity.States.Removable);
 				Game.World.ViewComponent.CreateAnt (ant.ID, type);
@@ -54,7 +59,7 @@ namespace Bronk
                             MessageManager.QueueMessage(new BlockMinedMessage(digJob.BlockID));
                         } else if (job is CarryJob) {
                             var carryJob = job as CarryJob;
-                            MessageManager.QueueMessage(new ItemDeliveredMessage(carryJob.BlockID_start, carryJob.BlockID_end, carryJob.ItemToPickup));
+                            MessageManager.QueueMessage(new ItemDeliveredMessage(carryJob.ItemToPickup));
                         }
 
 
@@ -80,28 +85,28 @@ namespace Bronk
                     var path = _pathfinding.PathfindForBlock(ant.Position, digjob.BlockID);
                     if (path != null) {
                         digjob.plan(ant, path);
-
+                        
                         //create a pickup job
                         if (Game.World.Blocks.GetBlockType(digjob.BlockID) == GameWorld.BlockType.Gold) {
-                            var gold = new GoldObject(digjob.BlockID, _objectCounter++);
-                            Game.World.ViewComponent.AddGoldItem(gold);
-                            var carryJob = new CarryJob(digjob.BlockID, Game.World.Blocks.getBlockIDByPosition(Game.World.StartArea.center), digjob.EndTime, gold);
-                            
-                            AddDependencyBetweenJobs(digjob, carryJob);
-                            addedJobs.Add(carryJob);
+                            var gold = new GoldObject(digjob.BlockID, GenerateUniqueId());
+                            Game.World.ViewComponent.AddCarryItem(gold);
+                            //var carryJob = new CarryJob(Game.World.Blocks.getBlockIDByPosition(Game.World.StartArea.center), digjob.EndTime, gold);                            
+                            //AddDependencyBetweenJobs(digjob, carryJob);
+                            //addedJobs.Add(carryJob);
                         }
                     }
                 } else if (job is CarryJob) {
                     //would probably be wise not to do any carry jobs unless they are highly prioritized or there are only carry jobs in queue
                     var carryJob = job as CarryJob;
-                    Vector2 jobPos = Game.World.Blocks.getBlockPosition(carryJob.BlockID_start);
+                    var itemPosition = carryJob.ItemToPickup.BlockId;
+                    Vector2 jobPos = Game.World.Blocks.getBlockPosition(itemPosition);
                     int bestAntIndex = FindClosestUnoccupiedAntIndex(jobPos);
                     if (bestAntIndex == -1)
                         break;
 
                     var ant = _ants[bestAntIndex];
-                    var pathToPickup = _pathfinding.PathfindForBlock(ant.Position, carryJob.BlockID_start);
-                    var pathToDropOff = _pathfindToBase.pathfindToHomebaseFrom(carryJob.BlockID_start);
+                    var pathToPickup = _pathfinding.PathfindForBlock(ant.Position, itemPosition);
+                    var pathToDropOff = _pathfindToBase.pathfindToHomebaseFrom(itemPosition);
                     if (pathToPickup != null && pathToDropOff != null) {
                         carryJob.plan(ant, pathToPickup, pathToDropOff);
                     }
@@ -172,6 +177,14 @@ namespace Bronk
                 //TODO: if we have sufficient amount of time left this frame or something...
                 var msg = message as ScheduleGraphUpdateMessage;
                 _pathfindToBase.updateGraphBasedOnNode(msg.BlockID, msg.Neighbours);
+            }
+            else if (message is ItemClickedMessage)
+            {
+                //TODO: if we have sufficient amount of time left this frame or something...
+                ItemClickedMessage msg = message as ItemClickedMessage;
+                var dropOffTarget = Game.World.Blocks.getBlockIDByPosition(Game.World.StartArea.center);
+                var carryJob = new CarryJob(dropOffTarget, 0f, msg.getItem());
+                _availableJobs.Add(carryJob);
             }
 		}
 	}

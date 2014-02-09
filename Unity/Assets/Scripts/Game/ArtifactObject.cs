@@ -6,9 +6,9 @@ using UnityEngine;
 
 namespace Bronk
 {
-    public class GoldObject : ICarryObject
+    public class ArtifactObject : ICarryObject
     {
-        public GoldObject(int startBlockID, int itemID)
+        public ArtifactObject(int startBlockID, int itemID)
             : base(startBlockID, itemID)
         {
         }

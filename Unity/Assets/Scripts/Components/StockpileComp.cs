@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class StockpileComp : MonoBehaviour, IMessageListener {
     public int GoldCount { get; private set; } //TODO: Probably do this in a much better way with underlying data-class but this seems easiest for now
 
-    private List<ITimelineObject> _items;
+    private List<ICarryObject> _items;
 
 	// Use this for initialization
 	void Start () {
@@ -15,7 +15,7 @@ public class StockpileComp : MonoBehaviour, IMessageListener {
 
     void Awake() {
         Game.World.StockpileComponent = this;
-        _items = new List<ITimelineObject>();
+        _items = new List<ICarryObject>();
         GoldCount = 0;
     }
 
