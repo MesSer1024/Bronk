@@ -6,6 +6,7 @@ namespace Bronk
 	public struct BlockData
 	{
 		public GameWorld.BlockType Type;
+		public bool Discovered;
 		public bool Selected;
 	}
 
@@ -31,18 +32,20 @@ namespace Bronk
 		private System.Func<int, int> _WalkTopFunc;
 		private System.Func<int,int> _WalkBottomFunc;
 
-
 		public int SizeX { get { return _sizeX; } }
 
 		public int SizeZ { get { return _sizeZ; } }
 
+		public IntRect DiscoveredBoundingBox { get { return _discoveredBoundingBox; } }
+
 		List<BlockTypeChange> _futureBlockTypeChanges = new List<BlockTypeChange> ();
 		List<BlockSelectedChange> _futureBlockSelectedChanges = new List<BlockSelectedChange> ();
-
-        private int _sizeX;
+		Queue<int> _floodfillQueue = new Queue<int> ();
+		private int _sizeX;
 		private int _sizeZ;
 		private BlockData[] _data;
 		private float _now;
+		private IntRect _discoveredBoundingBox;
 
 		public GameWorldData ()
 		{
@@ -52,11 +55,12 @@ namespace Bronk
 			_WalkBottomFunc = getDownBlock;
 		}
 
-		public void init (BlockData[] data, int sizeX, int sizeZ)
+		public void init (BlockData[] data, int sizeX, int sizeZ, IntRect discoveredBoundingBox)
 		{
 			_data = data;
 			_sizeX = sizeX;
 			_sizeZ = sizeZ;
+			_discoveredBoundingBox = discoveredBoundingBox;
 		}
 
 		public void init (GameWorldData otherData)
@@ -65,6 +69,7 @@ namespace Bronk
 			System.Array.Copy (otherData._data, _data, _data.Length);
 			_sizeX = otherData.SizeX;
 			_sizeZ = otherData.SizeZ;
+			_discoveredBoundingBox = otherData._discoveredBoundingBox;
 		}
 
 		public void Update (float now)
@@ -162,8 +167,75 @@ namespace Bronk
 
 				newBlock.Type = type;
 				_data [blockID] = newBlock;
-				CallOnBlockChanged (blockID, ref block, ref newBlock);
+				if (SetDiscoveredBlocks (blockID) == false)
+					CallOnBlockChanged (blockID, ref block, ref newBlock);
 			}
+		}
+
+		bool SetDiscoveredBlocks (int originBlockID)
+		{
+			bool changedOrigin = SetBlockDiscovered (originBlockID);
+			_floodfillQueue.Enqueue (originBlockID);
+			while (_floodfillQueue.Count > 0) {
+				int block = _floodfillQueue.Dequeue ();
+				SetBlockDiscovered (block);
+				int rightIter = block;
+				int lastRight;
+				do {
+					lastRight = rightIter;
+					rightIter = getRightBlock (rightIter);
+				} while (rightIter != -1 && SetBlockDiscovered (rightIter) && IsBlockValid (rightIter));
+				int leftIter = block;
+				int lastLeft;
+				do {
+					lastLeft = leftIter;
+					leftIter = getLeftBlock (leftIter);
+				} while (leftIter != -1 && SetBlockDiscovered (leftIter) && IsBlockValid (leftIter));
+
+
+				int blockY = (block / SizeZ);
+				int xLeft = (lastLeft % SizeX);
+				int xRight = (lastRight % SizeX);
+				for (int i = xLeft; i <= xRight; i++) {
+					int blockUp = getUpBlock (i + blockY * SizeX);
+					if (blockUp != -1
+					    && SetBlockDiscovered (blockUp)
+					    && IsBlockValid (blockUp)) {
+						_floodfillQueue.Enqueue (blockUp);
+					}
+					int blockDown = getDownBlock (i + blockY * SizeX);
+					if (blockDown != -1
+					    && SetBlockDiscovered (blockDown)
+					    && IsBlockValid (blockDown)) {
+						_floodfillQueue.Enqueue (blockDown);
+					}
+				}
+			}
+			return changedOrigin;
+		}
+
+		bool SetBlockDiscovered (int blockID)
+		{
+			int x = blockID % GameWorld.SIZE_X;
+			int y = blockID / GameWorld.SIZE_Z;
+			if (blockID >= 0 && blockID < _data.Length) {
+				BlockData blockData = _data [blockID];
+				if (blockData.Discovered == false) {
+					BlockData newData = blockData;
+					newData.Discovered = true;
+					if (IsBlockValid (blockID))
+						newData.Selected = false;
+					_data [blockID] = newData;
+					CallOnBlockChanged (blockID, ref blockData, ref newData);
+
+					_discoveredBoundingBox.xMin = Mathf.Min (x, _discoveredBoundingBox.xMin);
+					_discoveredBoundingBox.xMax = Mathf.Max (x, _discoveredBoundingBox.xMax);
+					_discoveredBoundingBox.yMin = Mathf.Min (y, _discoveredBoundingBox.yMin);
+					_discoveredBoundingBox.yMax = Mathf.Max (y, _discoveredBoundingBox.yMax);
+					return true;
+				}
+			}
+			return false;
 		}
 
 		void SetBlockSelectedDirect (int blockID, bool newSelected)
@@ -178,11 +250,13 @@ namespace Bronk
 			}
 		}
 
-		void CallOnBlockChanged (int blockID, ref BlockData oldblock, ref BlockData newBlock) {
-            MessageManager.QueueMessage(new BlockChangedMessage(blockID, oldblock, newBlock));
+		void CallOnBlockChanged (int blockID, ref BlockData oldblock, ref BlockData newBlock)
+		{
+			MessageManager.QueueMessage (new BlockChangedMessage (blockID, oldblock, newBlock));
 		}
 
-		public int getRightBlock(int blockID) {
+		public int getRightBlock (int blockID)
+		{
 			int tarId = blockID + 1;
 			if (tarId % _sizeX > 0) {
 				return tarId;
@@ -190,7 +264,8 @@ namespace Bronk
 			return -1;
 		}
 
-		public int getLeftBlock(int blockID) {
+		public int getLeftBlock (int blockID)
+		{
 			var tarId = (blockID % _sizeX) - 1;
 			if (tarId < 0) {
 				return -1;
@@ -198,7 +273,8 @@ namespace Bronk
 			return blockID - 1;
 		}
 
-		public int getUpBlock(int blockID) {
+		public int getUpBlock (int blockID)
+		{
 			var tarId = blockID - _sizeX;
 			if (tarId >= 0) {
 				return tarId;
@@ -206,7 +282,8 @@ namespace Bronk
 			return -1;
 		}
 
-		public int getDownBlock(int blockID) {
+		public int getDownBlock (int blockID)
+		{
 			var tarId = blockID + _sizeX;
 			if (tarId < _data.Length) {
 				return tarId;

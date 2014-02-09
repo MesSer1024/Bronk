@@ -25,7 +25,6 @@ public class GameCamera : MonoBehaviour
 	{
 		_VelocityBuffer = new Vector2[4];
 		Application.targetFrameRate = 60;
-		UpdatePosition ();
 	}
 
 	void LateUpdate ()
@@ -214,8 +213,20 @@ public class GameCamera : MonoBehaviour
 		}
 	}
 
+	Vector2 GetConstrainedPos (Vector2 pos)
+	{
+		IntRect boundingBox = Game.World.Blocks.DiscoveredBoundingBox;
+		Vector2 min = Game.World.Blocks.getBlockPosition (boundingBox.xMin + boundingBox.yMin * GameWorld.SIZE_X);
+		Vector2 max = Game.World.Blocks.getBlockPosition (boundingBox.xMax + boundingBox.yMax * GameWorld.SIZE_X);
+		Vector2 constrainedPos = Vector2.Max (min, pos);
+		constrainedPos = Vector2.Min (max, constrainedPos);
+		return constrainedPos;
+	}
+
 	void UpdatePosition ()
 	{
+		Vector2 constrainedPos = GetConstrainedPos (Position2D);
+		Position2D = constrainedPos;
 		Vector3 lookatPos;
 		Vector3 cameraPos = GetCameraPos (Position2D, out lookatPos);
 		transform.position = cameraPos;

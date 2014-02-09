@@ -9,6 +9,7 @@ public class BlockObject : MonoBehaviour, IInteractable
 	public static Material _SemiSelectMaterial;
 	public Material DefaultMaterial;
 	public GameWorld.BlockType BlockType;
+	public bool Discovered;
 	private Renderer _renderer;
 	private bool _semiSelected;
 	private bool _selected;
@@ -23,9 +24,9 @@ public class BlockObject : MonoBehaviour, IInteractable
 
 	void GenerateDecorators ()
 	{
-        int tileSubdivisions = Random.Range (1, 4);
+		int tileSubdivisions = Random.Range (1, 4);
 		float tileSize = 1f / (float)tileSubdivisions; 
-        int decorators = Random.Range (0, Mathf.Min (tileSubdivisions * tileSubdivisions, 3));
+		int decorators = Random.Range (0, Mathf.Min (tileSubdivisions * tileSubdivisions, 3));
 		List<int> indices = new List<int> ();
 		for (int i = 0; i < decorators; i++) {
 			int index = Random.Range (0, tileSubdivisions * tileSubdivisions);
@@ -49,17 +50,20 @@ public class BlockObject : MonoBehaviour, IInteractable
 
 	void OnBecameVisible ()
 	{
-		GenerateDecorators ();
-
+		if (Discovered) {
+			GenerateDecorators ();
+		}
 	}
 
 	void OnBecameInvisible ()
 	{
-		for (int i = 0; i < _Decorators.Count; i++) {
-			var deco = _Decorators [i];
-			BlockDecorators.FreeDecorator (ref deco);
+		if (Discovered) {
+			for (int i = 0; i < _Decorators.Count; i++) {
+				var deco = _Decorators [i];
+				BlockDecorators.FreeDecorator (ref deco);
+			}
+			_Decorators.Clear ();
 		}
-		_Decorators.Clear ();
 	}
 
 	void Awake ()
