@@ -19,7 +19,9 @@ namespace Bronk
             Retreat, 
             Dead,
             Move,
-			Sleep
+			Sleep,
+			PickUp,
+			DropOff
         }
 
 		public virtual StateData State
