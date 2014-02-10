@@ -29,21 +29,7 @@ public class WorldGameObject : MonoBehaviour, IMessageListener
 	private Material _UnknownMaterial;
 	private Vector3[] _DecoratorVertexBuffer;
 	private Color[] _DecoratorColorBuffer;
-
-    private GameObject _Side0;
-    private GameObject _Side1;
-    private GameObject _Side2;
-    private GameObject _Side3;
-    private GameObject _Side4;
-    private GameObject _Corner2;
-    private GameObject _Floor;
-    private Material _DirtMaterial;
-    private Material _FoodMaterial;
-    private Material _GoldMaterial;
-    private Material _FloorMaterial;
-    private Vector3[] _DecoratorVertexBuffer;
-    private Color[] _DecoratorColorBuffer;
-
+    
     void Awake()
     {
         Game.World.ViewComponent = this;
@@ -73,8 +59,8 @@ public class WorldGameObject : MonoBehaviour, IMessageListener
 		GameWorld.BlockType type = blockData.Type;
 		Quaternion rotation = Quaternion.identity;
 		GameObject prefab = GetTilePrefab (ref blockData, blockIndex, ref rotation);
-        obj.transform.parent = _TerrainParent;
 		GameObject obj = Instantiate (prefab, new Vector3 (blockIndex % GameWorld.SIZE_X, 0, blockIndex / GameWorld.SIZE_Z), rotation) as GameObject;
+        obj.transform.parent = _TerrainParent;
 		BlockObject blockObj = obj.GetComponentInChildren<BlockObject> ();
 
         blockObj.BlockType = type;
@@ -126,13 +112,13 @@ public class WorldGameObject : MonoBehaviour, IMessageListener
 		_GoldItemPrefab = Resources.Load<GameObject> ("PropPrefabs/Chair") as GameObject;
     }
 
-	GameObject GetTilePrefab (ref BlockData blockData, int blockID, ref Quaternion rotation)
-	{
-		GameWorld.BlockType type = blockData.Type;
-		if (blockData.Discovered == false)
-			return _Side0;
-		if (type == GameWorld.BlockType.DirtGround)
-			return _Floor;
+    GameObject GetTilePrefab(ref BlockData blockData, int blockID, ref Quaternion rotation)
+    {
+        GameWorld.BlockType type = blockData.Type;
+        if (blockData.Discovered == false)
+            return _Side0;
+        if (type == GameWorld.BlockType.DirtGround)
+            return _Floor;
 
         int leftBlock = _blockData.getLeftBlock(blockID);
         int rightBlock = _blockData.getRightBlock(blockID);
@@ -202,6 +188,8 @@ public class WorldGameObject : MonoBehaviour, IMessageListener
         {
             go = _Side4;
         }
+        return go;
+    }
 
 	public Vector2 GetBlockPosition (int blockID)
 	{
@@ -217,12 +205,7 @@ public class WorldGameObject : MonoBehaviour, IMessageListener
     {
         return _blockData.GetBlockType(blockID) == GameWorld.BlockType.DirtGround;
     }
-
-    public Vector2 GetBlockPosition(int blockID)
-    {
-        return _blockData.getBlockPosition(blockID);
-    }
-
+    
     public GameObject getVisualCubeObject(int blockID)
     {
         var viewObject = _BlockSceneObjects[blockID];

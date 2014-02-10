@@ -8,8 +8,8 @@ namespace Bronk
         public WorldGameObject ViewComponent { get; set; }
         public StockpileComp StockpileComponent { get; set; }
 
-		public const int SIZE_X = 11;
-		public const int SIZE_Z = 11;
+		public const int SIZE_X = 100;
+		public const int SIZE_Z = 100;
 
 		public enum BlockType
 		{
