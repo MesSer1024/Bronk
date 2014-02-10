@@ -40,6 +40,9 @@ public class StockpileComp : MonoBehaviour, IMessageListener {
 
             if (msg.Item is GoldObject) {
                 GoldCount++;
+            } else if (msg.Item is ArtifactObject) {
+                //TODO: Really move this code somewhere else since this is the road to disaster...
+                Game.state = Game.States.Finished;
             }
         }
     }

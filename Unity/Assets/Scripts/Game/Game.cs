@@ -44,14 +44,17 @@ namespace Bronk
 				ant.Position = new Vector2(World.StartArea.x + 3 + i, World.StartArea.y + 2 + i);
 				Game.World.ViewComponent.SetTimeline (ant.ID, ant.GetPositionTimeline ());
 			}
+            state = States.Playing;
 		}
 
 		public static void update(float delta)
         {
-			LogicTime = Time.time + 0.3f; // Logic buffer time 
-            MessageManager.Update();
-			World.Blocks.Update (LogicTime);
-            AI.update(delta);
+            if (state == States.Playing) {
+                LogicTime = Time.time + 0.3f; // Logic buffer time 
+                MessageManager.Update();
+                World.Blocks.Update(LogicTime);
+                AI.update(delta);
+            }
         }
     }
 }
