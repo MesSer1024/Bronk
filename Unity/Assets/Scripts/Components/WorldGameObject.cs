@@ -60,7 +60,7 @@ public class WorldGameObject : MonoBehaviour, IMessageListener
 		Quaternion rotation = Quaternion.identity;
 		GameObject prefab = GetTilePrefab (ref blockData, blockIndex, ref rotation);
 		GameObject obj = Instantiate (prefab, new Vector3 (blockIndex % GameWorld.SIZE_X, 0, blockIndex / GameWorld.SIZE_Z), rotation) as GameObject;
-        obj.transform.parent = _TerrainParent;
+        //obj.transform.parent = _TerrainParent;
 		BlockObject blockObj = obj.GetComponentInChildren<BlockObject> ();
 
         blockObj.BlockType = type;
@@ -109,7 +109,7 @@ public class WorldGameObject : MonoBehaviour, IMessageListener
         _AntPrefab = Resources.Load<GameObject>("CharacterPrefabs/AntWorker") as GameObject;
         _ArtifactPrefab = Resources.Load<GameObject>("PropPrefabs/Artifact") as GameObject;
 
-		_GoldItemPrefab = Resources.Load<GameObject> ("PropPrefabs/Chair") as GameObject;
+		_GoldItemPrefab = Resources.Load<GameObject> ("PropPrefabs/Gold") as GameObject;
     }
 
     GameObject GetTilePrefab(ref BlockData blockData, int blockID, ref Quaternion rotation)
