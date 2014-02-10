@@ -9,9 +9,9 @@ namespace Bronk
 	{
         public int BlockFrom { get; private set; }
         public int BlockTo { get; private set; }
-        public ICarryObject Item { get; private set; }
+        public CarryObject Item { get; private set; }
 
-        public ItemDeliveredMessage(ICarryObject itemToDeliver)
+        public ItemDeliveredMessage(CarryObject itemToDeliver)
         {
             //BlockFrom = oldBlockID;
             //BlockTo = newBlockID;

@@ -4,7 +4,7 @@ using Bronk;
 
 public class ClickableItem : MonoBehaviour, IInteractable
 {
-    public ICarryObject CarryObject;
+    public CarryObject CarryObject;
   
     public void Interact()
     {

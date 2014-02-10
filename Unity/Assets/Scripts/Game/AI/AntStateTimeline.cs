@@ -5,7 +5,7 @@ public struct StateData
 {
 	public GameEntity.States State;
 	public int BlockID;
-    public ICarryObject CarryObject;
+    public CarryObject CarryObject;
 
 	public StateData (GameEntity.States state, int dataId = -1)
 	{

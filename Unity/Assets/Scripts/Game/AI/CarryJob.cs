@@ -15,9 +15,9 @@ namespace Bronk
 
         public float StartTime { get; private set; }
         public float EndTime { get; private set; }
-        public ICarryObject ItemToPickup { get; set; }
+        public CarryObject ItemToPickup { get; set; }
 
-        public CarryJob(int targetBlockId, float earliestPickupTime, ICarryObject itemToPickup)
+        public CarryJob(int targetBlockId, float earliestPickupTime, CarryObject itemToPickup)
         {
             BlockID_end = targetBlockId;
             EarliestPickupTime = earliestPickupTime;

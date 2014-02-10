@@ -9,7 +9,7 @@ public class WorldGameObject : MonoBehaviour, IMessageListener
     private GameWorldData _blockData;
     private BlockObject[] _BlockSceneObjects;
     Dictionary<int, ITimelineObject> _Objects;
-    Dictionary<int, ICarryObject> _CarryObjects;
+    Dictionary<int, CarryObject> _CarryObjects;
     public GameObject _GoldItemPrefab;
     private GameObject _AntPrefab;
     private GameObject _ArtifactPrefab;
@@ -40,7 +40,7 @@ public class WorldGameObject : MonoBehaviour, IMessageListener
     {
         BlockDecorators.Initialize();
         _Objects = new Dictionary<int, ITimelineObject>();
-        _CarryObjects = new Dictionary<int, ICarryObject>();
+        _CarryObjects = new Dictionary<int, CarryObject>();
 
         var terrainParent = new GameObject("Terrain");
         _TerrainParent = terrainParent.transform;
@@ -234,17 +234,17 @@ public class WorldGameObject : MonoBehaviour, IMessageListener
         }
     }
 
-    public void AddCarryItem(ICarryObject carryItem)
+    public void AddCarryItem(CarryObject carryItem)
     {
         _CarryObjects.Add(carryItem.ItemId, carryItem);
     }
 
-    public void RemoveCarryItem(ICarryObject carryItem)
+    public void RemoveCarryItem(CarryObject carryItem)
     {
         _CarryObjects.Remove(carryItem.ItemId);
     }
 
-    public GameObject InstantiateCarryItemView(ICarryObject carryItem)
+    public GameObject InstantiateCarryItemView(CarryObject carryItem)
     {
         GameObject prefab = null;
         if (carryItem is GoldObject)
@@ -376,7 +376,7 @@ public class WorldGameObject : MonoBehaviour, IMessageListener
         }
     }
 
-    public ICarryObject getCarryObjectFromStartBlock(int blockID)
+    public CarryObject getCarryObjectFromStartBlock(int blockID)
     {
         //TODO: Rewrite to actually work in a decent way
         foreach (var item in _CarryObjects.Values)

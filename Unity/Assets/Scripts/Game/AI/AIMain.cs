@@ -183,8 +183,16 @@ namespace Bronk
                 //TODO: if we have sufficient amount of time left this frame or something...
                 ItemClickedMessage msg = message as ItemClickedMessage;
                 var dropOffTarget = Game.World.Blocks.getBlockIDByPosition(Game.World.StartArea.center);
-                var carryJob = new CarryJob(dropOffTarget, 0f, msg.getItem());
-                _availableJobs.Add(carryJob);
+                var item = msg.getItem();
+
+                //TODO: make into a dictionary<id, item>-solution or something to skip this ugly hack...
+                if (!Game.World.StockpileComponent.isItemInStockpile(item)) {
+                    var result = _availableJobs.Find(a => a is CarryJob && (a as CarryJob).ItemToPickup == item);
+                    if (result == null) {
+                        var carryJob = new CarryJob(dropOffTarget, 0f, item);
+                        _availableJobs.Add(carryJob);
+                    }
+                }
             }
 		}
 	}

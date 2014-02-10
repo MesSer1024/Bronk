@@ -8,9 +8,9 @@ namespace Bronk
 		private string _id;
         private int _index;
         private int _itemId;
-        private ICarryObject _item;
+        private CarryObject _item;
 
-        public ItemClickedMessage(string id, int itemId, int cubeIndex, ICarryObject gold)
+        public ItemClickedMessage(string id, int itemId, int cubeIndex, CarryObject gold)
 		{
 			_id = id;
             _itemId = itemId;
@@ -38,7 +38,7 @@ namespace Bronk
             return _itemId;
         }
 
-        public ICarryObject getItem()
+        public CarryObject getItem()
         {
             return _item;
         }
